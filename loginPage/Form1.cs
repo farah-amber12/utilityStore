@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Data;
 
 //using Microsoft.Data.SqlClient;
+
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Microsoft.Data.SqlClient;
 using UtilityStoreApp;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-
 
 namespace loginPage
 {
