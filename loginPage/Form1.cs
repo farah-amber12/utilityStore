@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using System.Data;
 
@@ -23,41 +24,44 @@ namespace loginPage
         private void button1_Click(object sender, EventArgs e)
         {
 
-           
-                String username = tbUsername.Text;
-                String password = tbPassword.Text;
-                String role = comboBoxRole.SelectedItem.ToString(); // Assuming cbRole is a ComboBox
 
-                string connectionString = "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=UtilityStore;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
-                try
+            String username = tbUsername.Text;
+            String password = tbPassword.Text;
+            String role = comboBoxRole.SelectedItem.ToString(); // Assuming cbRole is a ComboBox
+
+            //farah db : "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=UtilityStore;Integrated Security=True;Encrypt=True;Trust Server Certificate=True"
+            
+
+            string connectionString = "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Trust Server Certificate=True";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("VerifyStaffCredentials", conn))
                     {
-                        conn.Open();
-                        using (SqlCommand cmd = new SqlCommand("VerifyStaffCredentials", conn))
-                        {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@Username", username);
-                            cmd.Parameters.AddWithValue("@UserPassword", password);
-                            cmd.Parameters.AddWithValue("@Role", role);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Username", username);
+                        cmd.Parameters.AddWithValue("@UserPassword", password);
+                        cmd.Parameters.AddWithValue("@Role", role);
 
-                            SqlDataReader reader = cmd.ExecuteReader();
-                            if (reader.Read() && reader["Status"].ToString() == "Success")
-                            {
-                                MessageBox.Show($"Login Successful! Role: {reader["Role"]}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Invalid Username, Password, or Role!", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.Read() && reader["Status"].ToString() == "Success")
+                        {
+                            MessageBox.Show($"Login Successful! Role: {reader["Role"]}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid Username, Password, or Role!", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
 
 
@@ -69,7 +73,7 @@ namespace loginPage
 
 
 
-            private void textBox1_TextChanged(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
