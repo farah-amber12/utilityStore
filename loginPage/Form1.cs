@@ -5,13 +5,21 @@ using System.Data;
 
 //using Microsoft.Data.SqlClient;
 using Microsoft.Data.SqlClient;
+using UtilityStoreApp;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
 namespace loginPage
 {
+    
     public partial class Form1 : Form
     {
+       static string frhconnect = "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=UtilityStore;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+       static  string equcoonect = "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Trust Server Certificate=True";
+         
+        public static string connectionString = equcoonect;
+        
+
         public Form1()
         {
             InitializeComponent();
@@ -33,7 +41,10 @@ namespace loginPage
             //farah db : "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=UtilityStore;Integrated Security=True;Encrypt=True;Trust Server Certificate=True"
             //eqan db : "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Trust Server Certificate=True"
 
-            string connectionString = "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Trust Server Certificate=True";
+       
+           
+                
+            
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
