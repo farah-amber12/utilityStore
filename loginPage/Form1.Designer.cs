@@ -1,4 +1,5 @@
-﻿namespace loginPage
+﻿
+namespace loginPage
 {
     partial class Form1
     {

@@ -1,4 +1,5 @@
 
+
 using System.Collections.Generic;
 using System.Data;
 
@@ -48,12 +49,16 @@ namespace loginPage
                         SqlDataReader reader = cmd.ExecuteReader();
                         if (reader.Read() && reader["Status"].ToString() == "Success")
                         {
-                            MessageBox.Show($"Login Successful! Role: {reader["Role"]}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            // If login is successful, open Form2
+                            Form2 form2 = new Form2(); // Create an instance of Form2
+                            form2.Show(); // Show the new form
+                            this.Hide(); // Hide the current form
                         }
                         else
                         {
                             MessageBox.Show("Invalid Username, Password, or Role!", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
+
                     }
                 }
             }
@@ -99,3 +104,4 @@ namespace loginPage
         }
     }
 }
+
