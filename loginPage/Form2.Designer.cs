@@ -28,7 +28,7 @@
             this.btnViewProducts = new System.Windows.Forms.Button();
             this.btnViewCustomers = new System.Windows.Forms.Button();
             this.btnManageStaff = new System.Windows.Forms.Button();
-            this.btnViewOrders = new System.Windows.Forms.Button();
+            this.btnViewOrderDetail = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
@@ -69,9 +69,9 @@
             this.btnManageStaff.Location = new System.Drawing.Point(650, 180);
 
             // btnViewOrders
-            this.btnViewOrders.Text = "View Orders";
-            this.btnViewOrders.Click += btnViewOrders_Click;
-            this.btnViewOrders.Location = new System.Drawing.Point(650, 220);
+            this.btnViewOrderDetail.Text = "View Orders";
+            this.btnViewOrderDetail.Click += btnViewOrderDetail_Click;
+            this.btnViewOrderDetail.Location = new System.Drawing.Point(650, 220);
 
             // btnLogout
             this.btnLogout.Text = "Logout";
@@ -85,7 +85,7 @@
             this.Controls.Add(this.btnViewProducts);
             this.Controls.Add(this.btnViewCustomers);
             this.Controls.Add(this.btnManageStaff);
-            this.Controls.Add(this.btnViewOrders);
+            this.Controls.Add(this.btnViewOrderDetail);
             this.Controls.Add(this.btnLogout);
 
             // Form properties
@@ -104,7 +104,7 @@
         private System.Windows.Forms.Button btnViewProducts;
         private System.Windows.Forms.Button btnViewCustomers;
         private System.Windows.Forms.Button btnManageStaff;
-        private System.Windows.Forms.Button btnViewOrders;
+        private System.Windows.Forms.Button btnViewOrderDetail;
         private System.Windows.Forms.Button btnLogout;
         #endregion
     }
