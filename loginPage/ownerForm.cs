@@ -2,6 +2,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using loginPage;
 
 namespace UtilityStoreApp
@@ -13,7 +14,7 @@ namespace UtilityStoreApp
         public Form2()
         {
             InitializeComponent();
-            dbConnection = new SqlConnection(Form1.connectionString);
+            dbConnection = new SqlConnection(loginForm.connectionString);
         }
 
         private void Form2_Load(object sender, EventArgs e)

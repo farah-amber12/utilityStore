@@ -1,7 +1,7 @@
 ﻿
 namespace loginPage
 {
-    partial class Form1
+    partial class loginForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@ namespace loginPage
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(loginForm));
             label3 = new Label();
             label4 = new Label();
             tbUsername = new TextBox();
@@ -119,7 +119,7 @@ namespace loginPage
             // comboBoxRole
             // 
             comboBoxRole.FormattingEnabled = true;
-            comboBoxRole.Items.AddRange(new object[] { "Select Role", "Owner", "Employee" });
+            comboBoxRole.Items.AddRange(new object[] { "Select Role", "Owner", "Cashier", "Manager" });
             comboBoxRole.Location = new Point(573, 119);
             comboBoxRole.Name = "comboBoxRole";
             comboBoxRole.Size = new Size(185, 33);
@@ -170,7 +170,7 @@ namespace loginPage
             checkBox1.Text = "show password";
             checkBox1.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // loginForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -189,7 +189,7 @@ namespace loginPage
             Controls.Add(label3);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            Name = "Form1";
+            Name = "loginForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "login";
             Load += Form1_Load;

@@ -2,25 +2,25 @@
 
 using System.Collections.Generic;
 using System.Data;
-
+using UtilityStoreApp;
 //using Microsoft.Data.SqlClient;
 
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Microsoft.Data.SqlClient;
-using UtilityStoreApp;
+//using UtilityStoreApp;
 
 namespace loginPage
 {
     
-    public partial class Form1 : Form
+    public partial class loginForm: Form
     {
        static string frhconnect = "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=UtilityStore;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
        static  string equcoonect = "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Trust Server Certificate=True";
          
-        public static string connectionString = equcoonect;
+        public static string connectionString = frhconnect;
         
 
-        public Form1()
+        public loginForm()
         {
             InitializeComponent();
         }
@@ -60,11 +60,34 @@ namespace loginPage
                         SqlDataReader reader = cmd.ExecuteReader();
                         if (reader.Read() && reader["Status"].ToString() == "Success")
                         {
-                            // If login is successful, open Form2
-                            Form2 form2 = new Form2(); // Create an instance of Form2
-                            form2.Show(); // Show the new form
-                            this.Hide(); // Hide the current form
+                            string userRole = reader["Role"].ToString();
+
+                            if (userRole == "manager")
+                            {
+                                manager managerForm = new manager();
+                                managerForm.Show();
+                            }
+                            else if (userRole == "owner")
+                            {
+                               Form2  owner= new Form2();
+                               owner.Show();
+                            }
+                            else if(userRole == "cashier")
+                            {
+                                cashier cashierForm = new cashier();
+                                cashierForm.Show(); 
+                            }
+                           
+                            else
+                            {
+                                MessageBox.Show("Unknown role. Please contact the administrator.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+                            this.Hide(); // Hide the current form after opening the new one
                         }
+
+                       
                         else
                         {
                             MessageBox.Show("Invalid Username, Password, or Role!", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
