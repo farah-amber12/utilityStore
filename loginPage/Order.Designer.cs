@@ -37,6 +37,7 @@
             ClientSize = new Size(1246, 645);
             Name = "Order";
             Text = "Order";
+            Load += Order_Load;
             ResumeLayout(false);
         }
 

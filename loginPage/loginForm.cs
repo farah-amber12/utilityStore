@@ -3,22 +3,22 @@
 using System.Collections.Generic;
 using System.Data;
 using UtilityStoreApp;
-//using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using Microsoft.Data.SqlClient;
-//using UtilityStoreApp;
+
+using UtilityStoreApp;
 
 namespace loginPage
 {
-    
-    public partial class loginForm: Form
+
+    public partial class loginForm : Form
     {
-       static string frhconnect = "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=UtilityStore;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
-       static  string equcoonect = "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Trust Server Certificate=True";
-         
-        public static string connectionString = frhconnect;
-        
+        static string frhconnect = "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=UtilityStore;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+        static string equconnect = "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+
+        public static string connectionString = equconnect;
+
 
         public loginForm()
         {
@@ -41,10 +41,10 @@ namespace loginPage
             //farah db : "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=UtilityStore;Integrated Security=True;Encrypt=True;Trust Server Certificate=True"
             //eqan db : "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Trust Server Certificate=True"
 
-       
-           
-                
-            
+
+
+
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -69,15 +69,15 @@ namespace loginPage
                             }
                             else if (userRole == "owner")
                             {
-                               Form2  owner= new Form2();
-                               owner.Show();
+                                OwnerForm owner = new OwnerForm();
+                                owner.Show();
                             }
-                            else if(userRole == "cashier")
+                            else if (userRole == "cashier")
                             {
                                 cashier cashierForm = new cashier();
-                                cashierForm.Show(); 
+                                cashierForm.Show();
                             }
-                           
+
                             else
                             {
                                 MessageBox.Show("Unknown role. Please contact the administrator.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -87,7 +87,7 @@ namespace loginPage
                             this.Hide(); // Hide the current form after opening the new one
                         }
 
-                       
+
                         else
                         {
                             MessageBox.Show("Invalid Username, Password, or Role!", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -133,6 +133,11 @@ namespace loginPage
         }
 
         private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
         {
 
         }

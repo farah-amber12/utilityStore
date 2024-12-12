@@ -1,15 +1,9 @@
 ﻿namespace UtilityStoreApp
 {
-    partial class Form2
+    partial class OwnerForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -19,121 +13,116 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
         private void InitializeComponent()
         {
-            lblWelcome = new Label();
-            dataGridView = new DataGridView();
-            btnViewCategories = new Button();
-            btnViewProducts = new Button();
-            btnViewCustomers = new Button();
             btnManageStaff = new Button();
-            btnViewOrderDetail = new Button();
+            btnManageCategories = new Button();
+            btnManageSupplierDebts = new Button();
+            btnManageCustomerDebts = new Button();
+            btnManageProducts = new Button();
+            btnManageOrders = new Button();
             btnLogout = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
-            // 
-            // lblWelcome
-            // 
-            lblWelcome.AutoSize = true;
-            lblWelcome.Location = new Point(20, 20);
-            lblWelcome.Name = "lblWelcome";
-            lblWelcome.Size = new Size(151, 25);
-            lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "Welcome, Owner!";
-            // 
-            // dataGridView
-            // 
-            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Location = new Point(20, 60);
-            dataGridView.Name = "dataGridView";
-            dataGridView.RowHeadersWidth = 62;
-            dataGridView.Size = new Size(776, 420);
-            dataGridView.TabIndex = 1;
-            // 
-            // btnViewCategories
-            // 
-            btnViewCategories.Location = new Point(650, 60);
-            btnViewCategories.Name = "btnViewCategories";
-            btnViewCategories.Size = new Size(75, 23);
-            btnViewCategories.TabIndex = 2;
-            btnViewCategories.Text = "View Categories";
-            btnViewCategories.Click += btnViewCategories_Click;
-            // 
-            // btnViewProducts
-            // 
-            btnViewProducts.Location = new Point(650, 100);
-            btnViewProducts.Name = "btnViewProducts";
-            btnViewProducts.Size = new Size(75, 23);
-            btnViewProducts.TabIndex = 3;
-            btnViewProducts.Text = "View Products";
-            btnViewProducts.Click += btnViewProducts_Click;
-            // 
-            // btnViewCustomers
-            // 
-            btnViewCustomers.Location = new Point(650, 140);
-            btnViewCustomers.Name = "btnViewCustomers";
-            btnViewCustomers.Size = new Size(75, 23);
-            btnViewCustomers.TabIndex = 4;
-            btnViewCustomers.Text = "View Customers";
-            btnViewCustomers.Click += btnViewCustomers_Click;
             // 
             // btnManageStaff
             // 
-            btnManageStaff.Location = new Point(650, 180);
+            btnManageStaff.BackColor = Color.LightBlue;
+            btnManageStaff.Location = new Point(30, 30);
             btnManageStaff.Name = "btnManageStaff";
-            btnManageStaff.Size = new Size(75, 23);
-            btnManageStaff.TabIndex = 5;
+            btnManageStaff.Size = new Size(180, 50);
+            btnManageStaff.TabIndex = 0;
             btnManageStaff.Text = "Manage Staff";
+            btnManageStaff.UseVisualStyleBackColor = false;
             btnManageStaff.Click += btnManageStaff_Click;
             // 
-            // btnViewOrderDetail
+            // btnManageCategories
             // 
-            btnViewOrderDetail.Location = new Point(650, 220);
-            btnViewOrderDetail.Name = "btnViewOrderDetail";
-            btnViewOrderDetail.Size = new Size(75, 23);
-            btnViewOrderDetail.TabIndex = 6;
-            btnViewOrderDetail.Text = "View Orders";
-            btnViewOrderDetail.Click += btnViewOrderDetail_Click;
+            btnManageCategories.BackColor = Color.LightGreen;
+            btnManageCategories.Location = new Point(220, 30);
+            btnManageCategories.Name = "btnManageCategories";
+            btnManageCategories.Size = new Size(180, 50);
+            btnManageCategories.TabIndex = 1;
+            btnManageCategories.Text = "Manage Categories";
+            btnManageCategories.UseVisualStyleBackColor = false;
+            btnManageCategories.Click += btnManageCategories_Click;
+            // 
+            // btnManageSupplierDebts
+            // 
+            btnManageSupplierDebts.BackColor = Color.LightCoral;
+            btnManageSupplierDebts.Location = new Point(410, 30);
+            btnManageSupplierDebts.Name = "btnManageSupplierDebts";
+            btnManageSupplierDebts.Size = new Size(180, 50);
+            btnManageSupplierDebts.TabIndex = 2;
+            btnManageSupplierDebts.Text = "Manage Supplier Debts";
+            btnManageSupplierDebts.UseVisualStyleBackColor = false;
+            btnManageSupplierDebts.Click += btnManageSupplierDebts_Click;
+            // 
+            // btnManageCustomerDebts
+            // 
+            btnManageCustomerDebts.BackColor = Color.LightPink;
+            btnManageCustomerDebts.Location = new Point(30, 100);
+            btnManageCustomerDebts.Name = "btnManageCustomerDebts";
+            btnManageCustomerDebts.Size = new Size(180, 50);
+            btnManageCustomerDebts.TabIndex = 3;
+            btnManageCustomerDebts.Text = "Manage Customer Debts";
+            btnManageCustomerDebts.UseVisualStyleBackColor = false;
+            btnManageCustomerDebts.Click += btnManageCustomerDebts_Click;
+            // 
+            // btnManageProducts
+            // 
+            btnManageProducts.BackColor = Color.LightYellow;
+            btnManageProducts.Location = new Point(220, 100);
+            btnManageProducts.Name = "btnManageProducts";
+            btnManageProducts.Size = new Size(180, 50);
+            btnManageProducts.TabIndex = 4;
+            btnManageProducts.Text = "View Products";
+            btnManageProducts.UseVisualStyleBackColor = false;
+            btnManageProducts.Click += btnManageProducts_Click;
+            // 
+            // btnManageOrders
+            // 
+            btnManageOrders.BackColor = Color.LightGray;
+            btnManageOrders.Location = new Point(410, 100);
+            btnManageOrders.Name = "btnManageOrders";
+            btnManageOrders.Size = new Size(180, 50);
+            btnManageOrders.TabIndex = 5;
+            btnManageOrders.Text = "View Orders";
+            btnManageOrders.UseVisualStyleBackColor = false;
+            btnManageOrders.Click += btnManageOrders_Click;
             // 
             // btnLogout
             // 
-            btnLogout.Location = new Point(650, 260);
+            btnLogout.BackColor = Color.IndianRed;
+            btnLogout.Location = new Point(220, 170);
             btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(75, 23);
-            btnLogout.TabIndex = 7;
+            btnLogout.Size = new Size(180, 50);
+            btnLogout.TabIndex = 6;
             btnLogout.Text = "Logout";
+            btnLogout.UseVisualStyleBackColor = false;
             btnLogout.Click += btnLogout_Click;
             // 
-            // Form2
+            // OwnerForm
             // 
-            ClientSize = new Size(1157, 607);
-            Controls.Add(lblWelcome);
-            Controls.Add(dataGridView);
-            Controls.Add(btnViewCategories);
-            Controls.Add(btnViewProducts);
-            Controls.Add(btnViewCustomers);
+            ClientSize = new Size(1198, 486);
             Controls.Add(btnManageStaff);
-            Controls.Add(btnViewOrderDetail);
+            Controls.Add(btnManageCategories);
+            Controls.Add(btnManageSupplierDebts);
+            Controls.Add(btnManageCustomerDebts);
+            Controls.Add(btnManageProducts);
+            Controls.Add(btnManageOrders);
             Controls.Add(btnLogout);
-            Name = "Form2";
-            Text = "Owner Dashboard";
-            Load += Form2_Load;
-            ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
+            Name = "OwnerForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Load += OwnerForm_Load;
             ResumeLayout(false);
-            PerformLayout();
         }
-        #endregion
 
-        #region Windows Form Fields
-        private System.Windows.Forms.Label lblWelcome;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.Button btnViewCategories;
-        private System.Windows.Forms.Button btnViewProducts;
-        private System.Windows.Forms.Button btnViewCustomers;
         private System.Windows.Forms.Button btnManageStaff;
-        private System.Windows.Forms.Button btnViewOrderDetail;
+        private System.Windows.Forms.Button btnManageCategories;
+        private System.Windows.Forms.Button btnManageSupplierDebts;
+        private System.Windows.Forms.Button btnManageCustomerDebts;
+        private System.Windows.Forms.Button btnManageProducts;
+        private System.Windows.Forms.Button btnManageOrders;
         private System.Windows.Forms.Button btnLogout;
-        #endregion
     }
 }

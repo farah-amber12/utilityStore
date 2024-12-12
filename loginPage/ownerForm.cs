@@ -2,56 +2,117 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Windows.Forms;
-using System.Collections.Generic;
 using loginPage;
 
 namespace UtilityStoreApp
 {
-    public partial class Form2 : Form
+    public partial class OwnerForm : Form
     {
-        private readonly SqlConnection dbConnection;
+        private readonly SqlConnection connection;
 
-        public Form2()
+        public OwnerForm()
         {
             InitializeComponent();
-            dbConnection = new SqlConnection(loginForm.connectionString);
+            connection = new SqlConnection(loginForm.connectionString);
+
+            // Set up the DataGridView dynamically
+            InitializeDataGridView();
         }
 
-        private void Form2_Load(object sender, EventArgs e)
+        #region UI Initialization
+        private DataGridView dataGridView;
+
+        private void InitializeDataGridView()
         {
-            lblWelcome.Text = "Welcome, Owner!";
-        }
+            dataGridView = new DataGridView
+            {
+                Dock = DockStyle.Bottom,
+                Height = 300
+            };
 
-        private void LoadTableData(string tableName)
+            this.Controls.Add(dataGridView);
+        }
+        #endregion
+
+        #region Database Query Execution
+        private DataTable ExecuteQuery(string query)
         {
             try
             {
-                dbConnection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT * FROM {tableName}", dbConnection);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                dataGridView.DataSource = dt;
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    return dataTable;
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading {tableName}: {ex.Message}");
+                MessageBox.Show("Error: " + ex.Message);
+                return new DataTable();
             }
             finally
             {
-                if (dbConnection.State == System.Data.ConnectionState.Open) dbConnection.Close();
+                if (connection.State == ConnectionState.Open)
+                    connection.Close();
             }
         }
+        #endregion
 
-        private void btnViewCategories_Click(object sender, EventArgs e) => LoadTableData("Categories");
-        private void btnViewProducts_Click(object sender, EventArgs e) => LoadTableData("Products");
-        private void btnViewCustomers_Click(object sender, EventArgs e) => LoadTableData("Customers");
-        private void btnManageStaff_Click(object sender, EventArgs e) => LoadTableData("Staff");
-        private void btnViewOrderDetail_Click(object sender, EventArgs e) => LoadTableData("OrderDetail");
+        #region Event Handlers
+        private void btnManageStaff_Click(object sender, EventArgs e)
+        {
+            var data = ExecuteQuery("SELECT * FROM Staff");
+            LoadDataToGrid(data);
+        }
+
+        private void btnManageCategories_Click(object sender, EventArgs e)
+        {
+            var data = ExecuteQuery("SELECT * FROM Categories");
+            LoadDataToGrid(data);
+        }
+
+        private void btnManageSupplierDebts_Click(object sender, EventArgs e)
+        {
+            var data = ExecuteQuery("SELECT * FROM SupplierDebts");
+            LoadDataToGrid(data);
+        }
+
+        private void btnManageCustomerDebts_Click(object sender, EventArgs e)
+        {
+            var data = ExecuteQuery("SELECT * FROM CustomerDebts");
+            LoadDataToGrid(data);
+        }
+
+        private void btnManageProducts_Click(object sender, EventArgs e)
+        {
+            var data = ExecuteQuery("SELECT * FROM Products");
+            LoadDataToGrid(data);
+        }
+
+        private void btnManageOrders_Click(object sender, EventArgs e)
+        {
+            var data = ExecuteQuery("SELECT * FROM Orders");
+            LoadDataToGrid(data);
+        }
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("You are logged out!");
-            Application.Exit();
+            MessageBox.Show("You have successfully logged out.");
+            this.Close();
+        }
+        #endregion
+
+        private void LoadDataToGrid(DataTable data)
+        {
+            dataGridView.DataSource = data;
+        }
+
+        private void OwnerForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

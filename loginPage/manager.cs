@@ -7,14 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Data.SqlClient;
+using loginPage;// Import this namespace for database connection
 
 namespace loginPage
 {
     public partial class manager : Form
     {
+        private readonly SqlConnection managerdbconnection;
+
         public manager()
         {
             InitializeComponent();
+            managerdbconnection = new SqlConnection(loginForm.connectionString);
         }
 
         private void orderPicture_Click(object sender, EventArgs e)
@@ -44,6 +49,11 @@ namespace loginPage
             Categories categories = new Categories();
             categories.Show();
             this.Hide();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

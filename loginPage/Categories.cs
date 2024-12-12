@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
+using loginPage;
 
 namespace loginPage
 {
@@ -17,15 +18,12 @@ namespace loginPage
         {
             InitializeComponent();
         }
-        static string frhconnect = "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=UtilityStore;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
-        static string equcoonect = "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Trust Server Certificate=True";
-
-        public static string connectionString = frhconnect;
 
         private void Categories_Load(object sender, EventArgs e)
         {
-            RefreshCategoryGrid(new SqlConnection(connectionString));
+            RefreshCategoryGrid();
         }
+
         private void button2_Click(object sender, EventArgs e)
         {
             string categoryName = categoryfield.Text.Trim();
@@ -38,24 +36,24 @@ namespace loginPage
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection catagoriesConnection = new SqlConnection(loginForm.connectionString))
                 {
                     string query = "INSERT INTO Categories (CategoryName) VALUES (@CategoryName)";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@CategoryName", categoryName);
-
-                    connection.Open();
-                    int result = command.ExecuteNonQuery();
-
-                    if (result > 0)
+                    using (SqlCommand command = new SqlCommand(query, catagoriesConnection))
                     {
-                        //MessageBox.Show("Category added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);\
-                        RefreshCategoryGrid(connection);
-                        categoryfield.Clear();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to add the category.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        command.Parameters.AddWithValue("@CategoryName", categoryName);
+                        catagoriesConnection.Open();
+                        int result = command.ExecuteNonQuery();
+
+                        if (result > 0)
+                        {
+                            RefreshCategoryGrid();
+                            categoryfield.Clear();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to add the category.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
@@ -64,46 +62,43 @@ namespace loginPage
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void RefreshCategoryGrid(SqlConnection connection)
+
+        private void RefreshCategoryGrid()
         {
             try
             {
-                // Query to retrieve category data
-                string query = @"
-        SELECT 
-            CategoryID, 
-            CategoryName
-        FROM Categories;";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection catagoriesConnection = new SqlConnection(loginForm.connectionString))
                 {
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    string query = @"
+                    SELECT 
+                        CategoryID, 
+                        CategoryName
+                    FROM Categories;";
 
-                    DataTable dataTable = new DataTable();
+                    using (SqlCommand command = new SqlCommand(query, catagoriesConnection))
+                    {
+                        catagoriesConnection.Open();
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
 
-                    adapter.Fill(dataTable);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
 
-                    // Bind data to the DataGridView
-                    dgvCategory.DataSource = dataTable;
+                        dgvCategory.DataSource = dataTable;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred while refreshing the category grid: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            // Check if a row is selected
             if (dgvCategory.SelectedRows.Count > 0)
             {
-                // Get the selected row's CategoryID
                 int selectedCategoryId = Convert.ToInt32(dgvCategory.SelectedRows[0].Cells["CategoryID"].Value);
 
-                // Confirm deletion
                 var confirmResult = MessageBox.Show(
                     "Are you sure you want to delete this category?",
                     "Confirm Delete",
@@ -112,31 +107,22 @@ namespace loginPage
 
                 if (confirmResult == DialogResult.Yes)
                 {
-                    // Perform deletion
                     try
                     {
-                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        using (SqlConnection catagoriesConnection = new SqlConnection(loginForm.connectionString))
                         {
-                            connection.Open();
-
-                            // Query to delete the category
                             string query = "DELETE FROM Categories WHERE CategoryID = @CategoryID";
 
-                            using (SqlCommand command = new SqlCommand(query, connection))
+                            using (SqlCommand command = new SqlCommand(query, catagoriesConnection))
                             {
-                                // Add parameter for the CategoryID
                                 command.Parameters.AddWithValue("@CategoryID", selectedCategoryId);
-
-                                // Execute the delete command
+                                catagoriesConnection.Open();
                                 int rowsAffected = command.ExecuteNonQuery();
 
                                 if (rowsAffected > 0)
                                 {
                                     MessageBox.Show("Category deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                    // Refresh the grid to reflect changes
-                                    RefreshCategoryGrid(connection);
-
+                                    RefreshCategoryGrid();
                                 }
                                 else
                                 {
@@ -149,57 +135,13 @@ namespace loginPage
                     {
                         MessageBox.Show($"An error occurred while deleting the category: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-
-
                 }
             }
         }
 
-
-
         private void button3_Click(object sender, EventArgs e)
         {
-            /*   try
-               {
-                   // Get the edited row
-                   DataGridViewRow row = dgvCategory.Rows[e.RowIndex];
-
-                   // Extract data from the row
-                   int categoryId = Convert.ToInt32(row.Cells["CategoryID"].Value);
-                   string categoryName = row.Cells["CategoryName"].Value.ToString();
-
-                   // Update the database
-                   using (SqlConnection connection = new SqlConnection(connectionString))
-                   {
-                       connection.Open();
-                       string query = @"
-                   UPDATE Categories
-                   SET CategoryName = @CategoryName
-                   WHERE CategoryID = @CategoryID";
-
-                       using (SqlCommand command = new SqlCommand(query, connection))
-                       {
-                           // Add parameters
-                           command.Parameters.AddWithValue("@CategoryID", categoryId);
-                           command.Parameters.AddWithValue("@CategoryName", categoryName);
-
-                           // Execute the update
-                           command.ExecuteNonQuery();
-                       }
-                   }
-
-                   MessageBox.Show("Category updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-               }
-               catch (Exception ex)
-               {
-                   MessageBox.Show($"An error occurred while updating the category: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-               }
-
-             */
+            // Placeholder for potential edit logic.
         }
-
     }
 }
-
-
-

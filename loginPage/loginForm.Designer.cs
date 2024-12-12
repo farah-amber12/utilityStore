@@ -115,6 +115,7 @@ namespace loginPage
             label2.Size = new Size(367, 36);
             label2.TabIndex = 0;
             label2.Text = "Karma Wala Utility Store";
+            label2.Click += label2_Click;
             // 
             // comboBoxRole
             // 
