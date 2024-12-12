@@ -13,7 +13,7 @@ namespace UtilityStoreApp
         public Form2()
         {
             InitializeComponent();
-            dbConnection = new SqlConnection(Form1.connectionString);
+            dbConnection = new SqlConnection(loginForm.connectionString);
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -45,7 +45,7 @@ namespace UtilityStoreApp
         private void btnViewProducts_Click(object sender, EventArgs e) => LoadTableData("Products");
         private void btnViewCustomers_Click(object sender, EventArgs e) => LoadTableData("Customers");
         private void btnManageStaff_Click(object sender, EventArgs e) => LoadTableData("Staff");
-        private void btnViewOrders_Click(object sender, EventArgs e) => LoadTableData("Orders");
+        private void btnViewOrderDetail_Click(object sender, EventArgs e) => LoadTableData("OrderDetail");
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
