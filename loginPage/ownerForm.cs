@@ -1,6 +1,7 @@
 ﻿using loginPage;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 
 
 
@@ -26,12 +27,16 @@ namespace UtilityStoreApp
         {
             dataGridView = new DataGridView
             {
-                Dock = DockStyle.Bottom,
-                Height = 300
+                Location = new Point(this.ClientSize.Width - 800, 10), // Adjust to place it on the right side
+                Size = new Size(700, this.ClientSize.Height - 100), // Adjust width and height as needed
+                Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom, // Makes it responsive
+                BorderStyle = BorderStyle.Fixed3D,
+                BackgroundColor = Color.White
             };
 
             this.Controls.Add(dataGridView);
         }
+
         #endregion
 
         #region Database Query Execution
@@ -152,6 +157,9 @@ namespace UtilityStoreApp
 
         }
 
-        
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
