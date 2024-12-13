@@ -1,8 +1,8 @@
-﻿using System;
+﻿using loginPage;
 using System.Data;
 using Microsoft.Data.SqlClient;
-using System.Windows.Forms;
-using loginPage;
+
+
 
 namespace UtilityStoreApp
 {
@@ -74,17 +74,44 @@ namespace UtilityStoreApp
             LoadDataToGrid(data);
         }
 
-        private void btnManageSupplierDebts_Click(object sender, EventArgs e)
+        #region Event Handlers
+        private void btnManageSupplierDebt_Click(object sender, EventArgs e)
         {
-            var data = ExecuteQuery("SELECT * FROM SupplierDebts");
+            string query = @"
+        SELECT 
+            SupplierDebt.SupplierDebtID, 
+            Supplier.SupplierName, 
+            Supplier.ContactNumber, 
+            Supplier.Address, 
+            SupplierDebt.DebtAmount, 
+            SupplierDebt.PaymentDueDate
+        FROM 
+            SupplierDebt
+        INNER JOIN 
+            Supplier ON SupplierDebt.SupplierID = Supplier.SupplierID";
+
+            var data = ExecuteQuery(query);
             LoadDataToGrid(data);
         }
 
-        private void btnManageCustomerDebts_Click(object sender, EventArgs e)
+        private void btnManageCustomerDebt_Click(object sender, EventArgs e)
         {
-            var data = ExecuteQuery("SELECT * FROM CustomerDebts");
+            string query = @"
+        SELECT 
+            CustomerDebt.CustomerDebtID, 
+            Customers.FirstName + ' ' + Customers.LastName AS CustomerName, 
+            Customers.Phone, 
+            CustomerDebt.DebtAmount, 
+            CustomerDebt.DueDate
+        FROM 
+            CustomerDebt
+        INNER JOIN 
+            Customers ON CustomerDebt.CustomerID = Customers.CustomerID";
+
+            var data = ExecuteQuery(query);
             LoadDataToGrid(data);
         }
+        #endregion
 
         private void btnManageProducts_Click(object sender, EventArgs e)
         {
@@ -114,5 +141,17 @@ namespace UtilityStoreApp
         {
 
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }
