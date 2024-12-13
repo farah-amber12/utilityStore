@@ -15,6 +15,8 @@
         private System.Windows.Forms.Label lblPaymentDueDate;
         private System.Windows.Forms.DateTimePicker dateTimePickerPaymentDueDate;
         private System.Windows.Forms.Button btnAddSupplier;
+        private System.Windows.Forms.Button btnDeleteSupplier;
+        private System.Windows.Forms.Button btnUpdateSupplier;
         private System.Windows.Forms.DataGridView dataGridViewSuppliers;
 
         /// <summary>
@@ -48,9 +50,12 @@
             lblPaymentDueDate = new Label();
             dateTimePickerPaymentDueDate = new DateTimePicker();
             btnAddSupplier = new Button();
+            btnDeleteSupplier = new Button();
+            btnUpdateSupplier = new Button();
             dataGridViewSuppliers = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dataGridViewSuppliers).BeginInit();
             SuspendLayout();
+
             // 
             // lblSupplierName
             // 
@@ -60,6 +65,7 @@
             lblSupplierName.Size = new Size(133, 25);
             lblSupplierName.TabIndex = 0;
             lblSupplierName.Text = "Supplier Name:";
+
             // 
             // txtSupplierName
             // 
@@ -67,6 +73,7 @@
             txtSupplierName.Name = "txtSupplierName";
             txtSupplierName.Size = new Size(273, 31);
             txtSupplierName.TabIndex = 1;
+
             // 
             // lblContactNumber
             // 
@@ -76,6 +83,7 @@
             lblContactNumber.Size = new Size(147, 25);
             lblContactNumber.TabIndex = 2;
             lblContactNumber.Text = "Contact Number:";
+
             // 
             // txtContactNumber
             // 
@@ -83,6 +91,7 @@
             txtContactNumber.Name = "txtContactNumber";
             txtContactNumber.Size = new Size(273, 31);
             txtContactNumber.TabIndex = 3;
+
             // 
             // lblAddress
             // 
@@ -92,6 +101,7 @@
             lblAddress.Size = new Size(81, 25);
             lblAddress.TabIndex = 4;
             lblAddress.Text = "Address:";
+
             // 
             // txtAddress
             // 
@@ -99,6 +109,7 @@
             txtAddress.Name = "txtAddress";
             txtAddress.Size = new Size(273, 31);
             txtAddress.TabIndex = 5;
+
             // 
             // lblDebtAmount
             // 
@@ -108,6 +119,7 @@
             lblDebtAmount.Size = new Size(125, 25);
             lblDebtAmount.TabIndex = 6;
             lblDebtAmount.Text = "Debt Amount:";
+
             // 
             // txtDebtAmount
             // 
@@ -115,6 +127,7 @@
             txtDebtAmount.Name = "txtDebtAmount";
             txtDebtAmount.Size = new Size(273, 31);
             txtDebtAmount.TabIndex = 7;
+
             // 
             // lblPaymentDueDate
             // 
@@ -124,7 +137,7 @@
             lblPaymentDueDate.Size = new Size(163, 25);
             lblPaymentDueDate.TabIndex = 8;
             lblPaymentDueDate.Text = "Payment Due Date:";
-            lblPaymentDueDate.Click += lblPaymentDueDate_Click;
+
             // 
             // dateTimePickerPaymentDueDate
             // 
@@ -132,16 +145,29 @@
             dateTimePickerPaymentDueDate.Name = "dateTimePickerPaymentDueDate";
             dateTimePickerPaymentDueDate.Size = new Size(273, 31);
             dateTimePickerPaymentDueDate.TabIndex = 9;
+
             // 
             // btnAddSupplier
             // 
-            btnAddSupplier.Location = new Point(150, 288);
+            btnAddSupplier.Location = new Point(50, 288);
             btnAddSupplier.Name = "btnAddSupplier";
             btnAddSupplier.Size = new Size(183, 36);
             btnAddSupplier.TabIndex = 10;
             btnAddSupplier.Text = "Add Supplier";
             btnAddSupplier.UseVisualStyleBackColor = true;
             btnAddSupplier.Click += btnAddSupplier_Click;
+
+            // 
+            // btnDeleteSupplier
+            // 
+            btnDeleteSupplier.Location = new Point(280, 288);
+            btnDeleteSupplier.Name = "btnDeleteSupplier";
+            btnDeleteSupplier.Size = new Size(183, 36);
+            btnDeleteSupplier.TabIndex = 11;
+            btnDeleteSupplier.Text = "Delete Supplier";
+            btnDeleteSupplier.UseVisualStyleBackColor = true;
+            btnDeleteSupplier.Click += btnDeleteSupplier_Click;
+
             // 
             // dataGridViewSuppliers
             // 
@@ -150,12 +176,28 @@
             dataGridViewSuppliers.Name = "dataGridViewSuppliers";
             dataGridViewSuppliers.RowHeadersWidth = 62;
             dataGridViewSuppliers.Size = new Size(780, 527);
-            dataGridViewSuppliers.TabIndex = 11;
-            dataGridViewSuppliers.CellContentClick += dataGridViewSuppliers_CellContentClick;
+            dataGridViewSuppliers.TabIndex = 12;
+
+            // Update Supplier Button
+           
+            btnUpdateSupplier.Location = new Point(450, 288);
+            btnUpdateSupplier.Name = "btnUpdateSupplier";
+            btnUpdateSupplier.Size = new Size(183, 36);
+            btnUpdateSupplier.TabIndex = 13;
+            btnUpdateSupplier.Text = "Update Supplier";
+            btnUpdateSupplier.UseVisualStyleBackColor = true;
+            btnUpdateSupplier.Click += btnUpdateSupplier_Click;
+
+          
+
+
+
             // 
             // SupplierForm
             // 
+            
             ClientSize = new Size(1312, 596);
+            Controls.Add(btnUpdateSupplier);
             Controls.Add(lblSupplierName);
             Controls.Add(txtSupplierName);
             Controls.Add(lblContactNumber);
@@ -167,6 +209,7 @@
             Controls.Add(lblPaymentDueDate);
             Controls.Add(dateTimePickerPaymentDueDate);
             Controls.Add(btnAddSupplier);
+            Controls.Add(btnDeleteSupplier);
             Controls.Add(dataGridViewSuppliers);
             Name = "SupplierForm";
             Text = "Supplier Management";

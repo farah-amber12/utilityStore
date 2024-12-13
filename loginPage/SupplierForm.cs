@@ -1,125 +1,210 @@
 ﻿using System;
 using System.Data;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
+using System.Windows.Forms;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace loginPage
 {
     public partial class SupplierForm : Form
     {
-        private readonly string connectionString = loginForm.connectionString;
-
         public SupplierForm()
         {
             InitializeComponent();
         }
 
-        // Load data when the form opens
         private void SupplierForm_Load(object sender, EventArgs e)
         {
             RefreshSupplierData();
         }
 
-        private void btnAddSupplier_Click(object sender, EventArgs e)
-        {
-            string supplierName = txtSupplierName.Text.Trim();
-            string contactNumber = txtContactNumber.Text.Trim();
-            string address = txtAddress.Text.Trim();
-            if (!decimal.TryParse(txtDebtAmount.Text.Trim(), out decimal debtAmount) || debtAmount < 0)
-            {
-                MessageBox.Show("Debt amount should be a positive number", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            DateTime paymentDueDate = dateTimePickerPaymentDueDate.Value;
-
-            // Validate contact number
-            if (!Regex.IsMatch(contactNumber, @"^(03[0-9]{2}-[0-9]{7}|[0-9]{3}-[0-9]{7})$"))
-            {
-                MessageBox.Show("Invalid contact number. Should match mobile (e.g., 0300-XXXXXXX) or landline (e.g., 042-XXXXXXX)",
-                                "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            try
-            {
-                // Use `using` for automatic disposal
-                using (SqlConnection sconnection = new SqlConnection(connectionString))
-                {
-                    sconnection.Open();
-
-                    // Insert supplier data
-                    string supplierInsertQuery = "INSERT INTO Supplier (SupplierName, ContactNumber, Address) OUTPUT INSERTED.SupplierID VALUES (@SupplierName, @ContactNumber, @Address)";
-                    SqlCommand supplierCommand = new SqlCommand(supplierInsertQuery, sconnection);
-                    supplierCommand.Parameters.AddWithValue("@SupplierName", supplierName);
-                    supplierCommand.Parameters.AddWithValue("@ContactNumber", contactNumber);
-                    supplierCommand.Parameters.AddWithValue("@Address", address);
-
-                    int supplierId = (int)supplierCommand.ExecuteScalar();
-
-                    // Insert debt data
-                    string debtInsertQuery = "INSERT INTO SupplierDebt (SupplierID, DebtAmount, PaymentDueDate) VALUES (@SupplierID, @DebtAmount, @PaymentDueDate)";
-                    SqlCommand debtCommand = new SqlCommand(debtInsertQuery, sconnection);
-                    debtCommand.Parameters.AddWithValue("@SupplierID", supplierId);
-                    debtCommand.Parameters.AddWithValue("@DebtAmount", debtAmount);
-                    debtCommand.Parameters.AddWithValue("@PaymentDueDate", paymentDueDate);
-
-                    debtCommand.ExecuteNonQuery();
-
-                    MessageBox.Show("Supplier and debt info successfully added!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Refresh data and clear UI
-                    RefreshSupplierData();
-                    ClearInputs();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
+        /// <summary>
+        /// Refresh data grid with supplier and debt information.
+        /// </summary>
         private void RefreshSupplierData()
         {
             try
             {
-                using (SqlConnection sconnection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(loginForm.connectionString))
                 {
-                    sconnection.Open();
-                    string query = "SELECT s.SupplierID, s.SupplierName, s.ContactNumber, s.Address, sd.DebtAmount, sd.PaymentDueDate FROM Supplier s LEFT JOIN SupplierDebt sd ON s.SupplierID = sd.SupplierID";
-                    SqlDataAdapter adapter = new SqlDataAdapter(query, sconnection);
+                    connection.Open();
+                    string query = @"
+                        SELECT 
+                            s.SupplierID, 
+                            s.SupplierName, 
+                            s.ContactNumber, 
+                            s.Address, 
+                            sd.DebtAmount, 
+                            sd.PaymentDueDate
+                        FROM Supplier s
+                        LEFT JOIN SupplierDebt sd ON s.SupplierID = sd.SupplierID";
 
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
 
-                    dataGridViewSuppliers.DataSource = table;
-                    dataGridViewSuppliers.ReadOnly = true; // Make it read-only for security
+                    dataGridViewSuppliers.DataSource = dataTable;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading supplier data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error loading data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void ClearInputs()
+        /// <summary>
+        /// Add supplier along with debt information.
+        /// </summary>
+        private void btnAddSupplier_Click(object sender, EventArgs e)
         {
-            txtSupplierName.Clear();
-            txtContactNumber.Clear();
-            txtAddress.Clear();
-            txtDebtAmount.Clear();
-            dateTimePickerPaymentDueDate.Value = DateTime.Today;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(loginForm.connectionString))
+                {
+                    connection.Open();
+
+                    // Insert into the Supplier table
+                    string insertSupplierQuery = "INSERT INTO Supplier (SupplierName, ContactNumber, Address) VALUES (@Name, @Contact, @Address); SELECT SCOPE_IDENTITY();";
+                    SqlCommand command = new SqlCommand(insertSupplierQuery, connection);
+
+                    command.Parameters.AddWithValue("@Name", txtSupplierName.Text);
+                    command.Parameters.AddWithValue("@Contact", txtContactNumber.Text);
+                    command.Parameters.AddWithValue("@Address", txtAddress.Text);
+
+                    int newSupplierID = Convert.ToInt32(command.ExecuteScalar());
+
+                    // Insert into the SupplierDebt table with the corresponding SupplierID
+                    string insertDebtQuery = "INSERT INTO SupplierDebt (SupplierID, DebtAmount, PaymentDueDate) VALUES (@SupplierID, @Debt, @DueDate)";
+                    SqlCommand debtCommand = new SqlCommand(insertDebtQuery, connection);
+
+                    debtCommand.Parameters.AddWithValue("@SupplierID", newSupplierID);
+                    debtCommand.Parameters.AddWithValue("@Debt", decimal.Parse(txtDebtAmount.Text));
+                    debtCommand.Parameters.AddWithValue("@DueDate", dateTimePickerPaymentDueDate.Value);
+
+                    debtCommand.ExecuteNonQuery();
+
+                    MessageBox.Show("Supplier and debt added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RefreshSupplierData();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error adding supplier: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void dataGridViewSuppliers_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        /// <summary>
+        /// Delete supplier and its associated debt
+        /// </summary>
+        private void btnDeleteSupplier_Click(object sender, EventArgs e)
         {
-            // Handle clicks if necessary
+            if (dataGridViewSuppliers.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a supplier to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow selectedRow = dataGridViewSuppliers.SelectedRows[0];
+            int supplierId = Convert.ToInt32(selectedRow.Cells["SupplierID"].Value);
+
+            DialogResult confirmResult = MessageBox.Show(
+                "Are you sure you want to delete this supplier and its associated debt?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirmResult == DialogResult.Yes)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(loginForm.connectionString))
+                    {
+                        connection.Open();
+                        // Delete debt first
+                        SqlCommand deleteDebt = new SqlCommand("DELETE FROM SupplierDebt WHERE SupplierID = @SupplierID", connection);
+                        deleteDebt.Parameters.AddWithValue("@SupplierID", supplierId);
+                        deleteDebt.ExecuteNonQuery();
+
+                        // Delete supplier
+                        SqlCommand deleteSupplier = new SqlCommand("DELETE FROM Supplier WHERE SupplierID = @SupplierID", connection);
+                        deleteSupplier.Parameters.AddWithValue("@SupplierID", supplierId);
+                        deleteSupplier.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show("Supplier and associated debt deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RefreshSupplierData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting supplier: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
-        private void lblPaymentDueDate_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Dynamically update the supplier debt data.
+        /// </summary>
+        private void btnUpdateSupplier_Click(object sender, EventArgs e)
         {
+            if (dataGridViewSuppliers.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a supplier to update.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            DataGridViewRow selectedRow = dataGridViewSuppliers.SelectedRows[0];
+            int supplierId = Convert.ToInt32(selectedRow.Cells["SupplierID"].Value);
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(loginForm.connectionString))
+                {
+                    connection.Open();
+                    List<string> setClauses = new List<string>();
+                    SqlCommand command = new SqlCommand();
+                    command.Connection = connection;
+
+                    if (!string.IsNullOrWhiteSpace(txtDebtAmount.Text))
+                    {
+                        setClauses.Add("DebtAmount = @Debt");
+                        command.Parameters.AddWithValue("@Debt", decimal.Parse(txtDebtAmount.Text));
+                    }
+
+                    if (dateTimePickerPaymentDueDate.Value != DateTime.MinValue)
+                    {
+                        setClauses.Add("PaymentDueDate = @DueDate");
+                        command.Parameters.AddWithValue("@DueDate", dateTimePickerPaymentDueDate.Value);
+                    }
+
+                    if (setClauses.Count == 0)
+                    {
+                        MessageBox.Show("No valid fields provided to update.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    string setClauseString = string.Join(", ", setClauses);
+                    string query = $"UPDATE SupplierDebt SET {setClauseString} WHERE SupplierID = @SupplierID";
+
+                    command.CommandText = query;
+                    command.Parameters.AddWithValue("@SupplierID", supplierId);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Supplier debt updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshSupplierData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No changes made to the supplier debt.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating supplier debt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
