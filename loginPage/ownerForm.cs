@@ -2,6 +2,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 
 
@@ -69,34 +70,29 @@ namespace UtilityStoreApp
         #region Event Handlers
         private void btnManageStaff_Click(object sender, EventArgs e)
         {
-            var data = ExecuteQuery("SELECT * FROM Staff");
-            LoadDataToGrid(data);
+           SupplierForm staffForm = new SupplierForm();
+            this.Hide();
+            staffForm.ShowDialog();
+            staffForm.Show();
+            
         }
+            
 
         private void btnManageCategories_Click(object sender, EventArgs e)
         {
             var data = ExecuteQuery("SELECT * FROM Categories");
             LoadDataToGrid(data);
+
         }
 
         #region Event Handlers
         private void btnManageSupplierDebt_Click(object sender, EventArgs e)
         {
-            string query = @"
-        SELECT 
-            SupplierDebt.SupplierDebtID, 
-            Supplier.SupplierName, 
-            Supplier.ContactNumber, 
-            Supplier.Address, 
-            SupplierDebt.DebtAmount, 
-            SupplierDebt.PaymentDueDate
-        FROM 
-            SupplierDebt
-        INNER JOIN 
-            Supplier ON SupplierDebt.SupplierID = Supplier.SupplierID";
-
-            var data = ExecuteQuery(query);
-            LoadDataToGrid(data);
+            SupplierForm supplierForm = new SupplierForm();
+            this.Hide();
+            supplierForm.ShowDialog();
+            supplierForm.Show();
+         
         }
 
         private void btnManageCustomerDebt_Click(object sender, EventArgs e)
