@@ -23,7 +23,8 @@ namespace loginPage
 
         private void OrderPicture_Click(object sender, EventArgs e)
         {
-
+            Order order = new Order();
+            order.Show();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
