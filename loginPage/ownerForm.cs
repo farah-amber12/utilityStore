@@ -70,7 +70,7 @@ namespace UtilityStoreApp
         #region Event Handlers
         private void btnManageStaff_Click(object sender, EventArgs e)
         {
-           SupplierForm staffForm = new SupplierForm();
+           StaffForm staffForm = new StaffForm();
             this.Hide();
             staffForm.ShowDialog();
             staffForm.Show();

@@ -123,8 +123,17 @@ namespace loginPage
         }
 
         private void Form1_Load(object sender, EventArgs e)
+
         {
-            comboBoxRole.SelectedIndex = 0;
+            comboBoxRole.Items.Add("Owner");
+            comboBoxRole.Items.Add("Manager");
+            comboBoxRole.Items.Add("Cashier");
+
+            if (comboBoxRole.Items.Count > 0)
+            {
+                comboBoxRole.SelectedIndex = 0;
+            }
+
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)

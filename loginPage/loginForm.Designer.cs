@@ -121,7 +121,7 @@ namespace loginPage
             // comboBoxRole
             // 
             comboBoxRole.FormattingEnabled = true;
-            comboBoxRole.Items.AddRange(new object[] { "Select Role", "Owner", "Cashier", "Manager" });
+           
             comboBoxRole.Location = new Point(573, 119);
             comboBoxRole.Name = "comboBoxRole";
             comboBoxRole.Size = new Size(185, 33);
