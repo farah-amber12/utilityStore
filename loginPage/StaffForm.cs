@@ -18,6 +18,10 @@ namespace loginPage
             InitializeComponent();
             LoadRoles();
             LoadStaffData();
+            LoadRolesSearch();
+            LoadFilterTypeDropdown();
+
+
         }
 
         /// <summary>
@@ -30,6 +34,7 @@ namespace loginPage
             cmbRole.Items.Add("Manager");
             cmbRole.Items.Add("Helper");
             cmbRole.Items.Add("Organizer");
+            cmbRole.Items.Add("Cashier");
         }
 
         /// <summary>
@@ -159,6 +164,15 @@ namespace loginPage
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
                     dgvStaff.DataSource = dt;
+                    dgvStaff.ReadOnly = false;
+                    dgvStaff.SelectionChanged += dgvStaff_SelectionChanged;
+                }
+
+
+                if (dgvStaff.Columns.Contains("StaffID"))
+                {
+                    dgvStaff.Columns["StaffID"].ReadOnly = true;
+
                 }
             }
             catch (Exception ex)
@@ -241,5 +255,306 @@ namespace loginPage
         }
 
 
+
+
+        private bool CheckUsernameExistsForUpdate(string username, int staffID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(loginForm.connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM Staff WHERE Username = @Username AND StaffID != @StaffID";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    cmd.Parameters.AddWithValue("@StaffID", staffID);
+
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0; // True if another user with the same username exists
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Database error: {ex.Message}");
+                return true; // Return true to prevent update in case of error
+            }
+        }
+
+        private void BtnUpdateStaff_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvStaff.SelectedRows.Count == 0)
+                {
+                    MessageBox.Show("Please select a staff member to update.");
+                    return;
+                }
+
+                int staffID = Convert.ToInt32(dgvStaff.SelectedRows[0].Cells["StaffID"].Value);
+
+                // Compare current data with the selected row's original values
+                string originalFirstName = dgvStaff.SelectedRows[0].Cells["FirstName"].Value.ToString();
+                string originalLastName = dgvStaff.SelectedRows[0].Cells["LastName"].Value.ToString();
+                string originalRole = dgvStaff.SelectedRows[0].Cells["Role"].Value.ToString();
+                string originalSalary = dgvStaff.SelectedRows[0].Cells["Salary"].Value.ToString();
+                string originalUsername = dgvStaff.SelectedRows[0].Cells["Username"].Value.ToString();
+
+                bool isChangeDetected =
+                    txtFirstName.Text.Trim() != originalFirstName ||
+                    txtLastName.Text.Trim() != originalLastName ||
+                    cmbRole.SelectedItem?.ToString() != originalRole ||
+                    txtSalary.Text.Trim() != originalSalary ||
+                    txtUsername.Text.Trim() != originalUsername;
+
+                if (!isChangeDetected)
+                {
+                    MessageBox.Show("No changes detected. Please modify some details before updating.");
+                    return;
+                }
+
+                if (!ValidateInputs()) return;
+
+                if (CheckUsernameExistsForUpdate(txtUsername.Text.Trim(), staffID))
+                {
+                    MessageBox.Show("Username already exists for another user.");
+                    return;
+                }
+
+                using (SqlConnection conn = new SqlConnection(loginForm.connectionString))
+                {
+                    conn.Open();
+                    string query = @"UPDATE Staff 
+                       SET FirstName = @FirstName, 
+                           LastName = @LastName, 
+                           Role = @Role, 
+                           Salary = @Salary, 
+                           Username = @Username, 
+                           UserPassword = @UserPassword, 
+                           ContactNumber = @ContactNumber, 
+                           Address = @Address
+                       WHERE StaffID = @StaffID";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    // Binding parameters
+                    cmd.Parameters.AddWithValue("@StaffID", staffID);
+                    cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text.Trim());
+                    cmd.Parameters.AddWithValue("@LastName", txtLastName.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Role", cmbRole.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("@Salary", decimal.Parse(txtSalary.Text));
+                    cmd.Parameters.AddWithValue("@Username", txtUsername.Text.Trim());
+                    cmd.Parameters.AddWithValue("@UserPassword", txtPassword.Text.Trim());
+                    cmd.Parameters.AddWithValue("@ContactNumber", txtContactNumber.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim());
+
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Staff updated successfully!");
+                    LoadStaffData();
+                    ClearFields();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+
+
+        private void dgvStaff_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvStaff.SelectedRows.Count > 0)
+            {
+                txtFirstName.Text = dgvStaff.SelectedRows[0].Cells["FirstName"].Value.ToString();
+                txtLastName.Text = dgvStaff.SelectedRows[0].Cells["LastName"].Value.ToString();
+                cmbRole.SelectedItem = dgvStaff.SelectedRows[0].Cells["Role"].Value.ToString();
+                txtSalary.Text = dgvStaff.SelectedRows[0].Cells["Salary"].Value.ToString();
+                txtUsername.Text = dgvStaff.SelectedRows[0].Cells["Username"].Value.ToString();
+                txtContactNumber.Text = dgvStaff.SelectedRows[0].Cells["ContactNumber"].Value.ToString();
+                txtAddress.Text = dgvStaff.SelectedRows[0].Cells["Address"].Value.ToString();
+            }
+        }
+
+
+
+
+
+        private void LoadRolesSearch()
+        {
+            cmbSearchRole.Items.Clear();
+            cmbSearchRole.Items.Add("Owner");
+            cmbSearchRole.Items.Add("Manager");
+            cmbSearchRole.Items.Add("Helper");
+            cmbSearchRole.Items.Add("Organizer");
+            cmbSearchRole.Items.Add("Cashier");
+
+            cmbSearchRole.Visible = true; // Hidden initially
+        }
+
+        private void LoadFilterTypeDropdown()
+        {
+            cmbFilterType.Items.Clear();
+            cmbFilterType.Items.Add("Name");
+            cmbFilterType.Items.Add("Role");
+            cmbFilterType.Items.Add("Salary");
+            cmbFilterType.Visible = true;
+
+            cmbFilterType.SelectedIndex = 0; // Default to "Name"
+                                             // Ensure visibility
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!ValidateInputSearch())
+                {
+                    return; // Stop execution if validation fails
+                }
+
+                using (SqlConnection conn = new SqlConnection(loginForm.connectionString))
+                {
+                    conn.Open();
+                    string query = "";
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+
+                    switch (cmbFilterType.SelectedItem?.ToString())
+                    {
+                        case "Name":
+                            string nameFilter = txtSearchName.Text.Trim();
+                            string sortOrder = rbtnSortAZ.Checked ? "ASC" : "DESC";
+                            query = @"
+                    SELECT * 
+                    FROM Staff 
+                    WHERE FirstName LIKE @NameFilter OR LastName LIKE @NameFilter
+                    ORDER BY FirstName " + sortOrder;
+                            cmd.Parameters.AddWithValue("@NameFilter", $"%{nameFilter}%");
+                            break;
+
+                        case "Role":
+                            string roleFilter = cmbSearchRole.SelectedItem?.ToString();
+                            query = @"
+                    SELECT * 
+                    FROM Staff 
+                    WHERE Role = @RoleFilter";
+                            cmd.Parameters.AddWithValue("@RoleFilter", roleFilter);
+                            break;
+
+                        case "Salary":
+                            decimal minSalary = decimal.Parse(txtMinSalary.Text);
+                            decimal maxSalary = decimal.Parse(txtMaxSalary.Text);
+                            query = @"
+                    SELECT * 
+                    FROM Staff 
+                    WHERE Salary >= @MinSalary AND Salary <= @MaxSalary";
+                            cmd.Parameters.AddWithValue("@MinSalary", minSalary);
+                            cmd.Parameters.AddWithValue("@MaxSalary", maxSalary);
+                            break;
+
+                        default:
+                            MessageBox.Show("Please select a valid filter option.");
+                            return;
+                    }
+
+                    cmd.CommandText = query;
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    dgvStaff.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Search failed: {ex.Message}");
+            }
+        }
+
+        private bool ValidateInputSearch()
+        {
+            string filterType = cmbFilterType.SelectedItem?.ToString();
+
+            switch (filterType)
+            {
+                case "Name":
+                    if (!Regex.IsMatch(txtSearchName.Text, @"^[a-zA-Z\s]+$"))
+                    {
+                        MessageBox.Show("Please enter valid name (letters only).");
+                        return false;
+                    }
+                    break;
+
+                case "Role":
+                    if (!cmbSearchRole.Items.Contains(cmbSearchRole.SelectedItem))
+                    {
+                        MessageBox.Show("Invalid role selected.");
+                        return false;
+                    }
+                    break;
+
+                case "Salary":
+                    if (!decimal.TryParse(txtMinSalary.Text, out decimal minSalary) ||
+                        !decimal.TryParse(txtMaxSalary.Text, out decimal maxSalary))
+                    {
+                        MessageBox.Show("Please enter valid numbers for salary range.");
+                        return false;
+                    }
+
+                    if (minSalary > maxSalary)
+                    {
+                        MessageBox.Show("Minimum salary cannot be greater than maximum salary.");
+                        return false;
+                    }
+                    break;
+            }
+
+            return true; // Input is valid
+        }
+
+        private void cmbFilterType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string filterType = cmbFilterType.SelectedItem?.ToString();
+
+            // Hide all filter-related UI components by default
+            txtSearchName.Visible = false;
+            cmbSearchRole.Visible = false;
+            txtMinSalary.Visible = false;
+            txtMaxSalary.Visible = false;
+            rbtnSortAZ.Visible = false;
+            rbtnSortZA.Visible = false;
+            label4.Visible = false;
+            label2.Visible = false;
+            label3.Visible = false;
+
+            switch (filterType)
+            {
+                case "Name":
+                    txtSearchName.Visible = true;
+                    rbtnSortAZ.Visible = true;
+                    rbtnSortZA.Visible = true;
+                    break;
+
+                case "Role":
+
+                    label4.Visible = true;
+                    txtSearchName.Visible = true;
+                    cmbSearchRole.Visible = true;
+                    break;
+
+                case "Salary":
+                    txtSearchName.Visible = true;
+                    label2.Visible = true;
+                    label3.Visible = true;
+                    txtMinSalary.Visible = true;
+                    txtMaxSalary.Visible = true;
+                    break;
+            }
+        }
+
+
+
+        private void ClrBtn_Click(object sender, EventArgs e)
+        {
+            ClearFields();
+        }
     }
 }

@@ -62,17 +62,17 @@ namespace loginPage
                         {
                             string userRole = reader["Role"].ToString();
 
-                            if (userRole == "manager")
+                            if (userRole == "Manager")
                             {
                                 manager managerForm = new manager();
                                 managerForm.Show();
                             }
-                            else if (userRole == "owner")
+                            else if (userRole == "Owner")
                             {
                                 OwnerForm owner = new OwnerForm();
                                 owner.Show();
                             }
-                            else if (userRole == "cashier")
+                            else if (userRole == "Cashier")
                             {
                                 cashier cashierForm = new cashier();
                                 cashierForm.Show();

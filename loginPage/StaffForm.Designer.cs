@@ -23,126 +23,324 @@
 
         private void InitializeComponent()
         {
-            this.txtFirstName = new System.Windows.Forms.TextBox();
-            this.txtLastName = new System.Windows.Forms.TextBox();
-            this.cmbRole = new System.Windows.Forms.ComboBox();
-            this.txtSalary = new System.Windows.Forms.TextBox();
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.txtContactNumber = new System.Windows.Forms.TextBox();
-            this.txtAddress = new System.Windows.Forms.TextBox();
-            this.btnAddStaff = new System.Windows.Forms.Button();
-            this.btnDeleteStaff = new System.Windows.Forms.Button();
-            this.dgvStaff = new System.Windows.Forms.DataGridView();
-
-            ((System.ComponentModel.ISupportInitialize)(this.dgvStaff)).BeginInit();
-            this.SuspendLayout();
-
+            txtFirstName = new TextBox();
+            txtLastName = new TextBox();
+            cmbRole = new ComboBox();
+            txtSalary = new TextBox();
+            txtUsername = new TextBox();
+            txtPassword = new TextBox();
+            txtContactNumber = new TextBox();
+            txtAddress = new TextBox();
+            btnAddStaff = new Button();
+            btnUpdateStaff = new Button();
+            btnDeleteStaff = new Button();
+            dgvStaff = new DataGridView();
+            txtSearchName = new TextBox();
+            txtMinSalary = new TextBox();
+            txtMaxSalary = new TextBox();
+            cmbSearchRole = new ComboBox();
+            btnSearch = new Button();
+            rbtnSortAZ = new RadioButton();
+            rbtnSortZA = new RadioButton();
+            cmbFilterType = new ComboBox();
+            lblSearch = new Label();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            button1 = new Button();
+            ((System.ComponentModel.ISupportInitialize)dgvStaff).BeginInit();
+            SuspendLayout();
+            // 
             // txtFirstName
-            this.txtFirstName.Location = new System.Drawing.Point(30, 30);
-            this.txtFirstName.Name = "txtFirstName";
-            this.txtFirstName.Size = new System.Drawing.Size(200, 22);
-            this.txtFirstName.TabIndex = 0;
-            this.txtFirstName.PlaceholderText = "First Name";
-
+            // 
+            txtFirstName.Location = new Point(38, 63);
+            txtFirstName.Margin = new Padding(4, 5, 4, 5);
+            txtFirstName.Name = "txtFirstName";
+            txtFirstName.PlaceholderText = "First Name";
+            txtFirstName.Size = new Size(249, 31);
+            txtFirstName.TabIndex = 0;
+            // 
             // txtLastName
-            this.txtLastName.Location = new System.Drawing.Point(250, 30);
-            this.txtLastName.Name = "txtLastName";
-            this.txtLastName.Size = new System.Drawing.Size(200, 22);
-            this.txtLastName.TabIndex = 1;
-            this.txtLastName.PlaceholderText = "Last Name";
-
+            // 
+            txtLastName.Location = new Point(312, 55);
+            txtLastName.Margin = new Padding(4, 5, 4, 5);
+            txtLastName.Name = "txtLastName";
+            txtLastName.PlaceholderText = "Last Name";
+            txtLastName.Size = new Size(249, 31);
+            txtLastName.TabIndex = 1;
+            // 
             // cmbRole
-            this.cmbRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbRole.FormattingEnabled = true;
-            this.cmbRole.Location = new System.Drawing.Point(30, 70);
-            this.cmbRole.Name = "cmbRole";
-            this.cmbRole.Size = new System.Drawing.Size(200, 24);
-            this.cmbRole.TabIndex = 2;
-            this.cmbRole.Items.AddRange(new object[] { "Owner", "Inventory Manager", "Helpers", "Organizer" });
-            this.cmbRole.SelectedIndex = -1;
-
+            // 
+            cmbRole.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbRole.FormattingEnabled = true;
+            cmbRole.Items.AddRange(new object[] { "Owner", "Inventory Manager", "Helpers", "Organizer", "Cashier" });
+            cmbRole.Location = new Point(38, 232);
+            cmbRole.Margin = new Padding(4, 5, 4, 5);
+            cmbRole.Name = "cmbRole";
+            cmbRole.Size = new Size(249, 33);
+            cmbRole.TabIndex = 2;
+            // 
             // txtSalary
-            this.txtSalary.Location = new System.Drawing.Point(250, 70);
-            this.txtSalary.Name = "txtSalary";
-            this.txtSalary.Size = new System.Drawing.Size(200, 22);
-            this.txtSalary.TabIndex = 3;
-            this.txtSalary.PlaceholderText = "Salary";
-
+            // 
+            txtSalary.Location = new Point(312, 109);
+            txtSalary.Margin = new Padding(4, 5, 4, 5);
+            txtSalary.Name = "txtSalary";
+            txtSalary.PlaceholderText = "Salary";
+            txtSalary.Size = new Size(249, 31);
+            txtSalary.TabIndex = 3;
+            // 
             // txtUsername
-            this.txtUsername.Location = new System.Drawing.Point(30, 110);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(200, 22);
-            this.txtUsername.TabIndex = 4;
-            this.txtUsername.PlaceholderText = "Username";
-
+            // 
+            txtUsername.Location = new Point(38, 172);
+            txtUsername.Margin = new Padding(4, 5, 4, 5);
+            txtUsername.Name = "txtUsername";
+            txtUsername.PlaceholderText = "Username";
+            txtUsername.Size = new Size(249, 31);
+            txtUsername.TabIndex = 4;
+            // 
             // txtPassword
-            this.txtPassword.Location = new System.Drawing.Point(250, 110);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(200, 22);
-            this.txtPassword.TabIndex = 5;
-            this.txtPassword.UseSystemPasswordChar = true;
-            this.txtPassword.PlaceholderText = "Password";
-
+            // 
+            txtPassword.Location = new Point(312, 172);
+            txtPassword.Margin = new Padding(4, 5, 4, 5);
+            txtPassword.Name = "txtPassword";
+            txtPassword.PlaceholderText = "Password";
+            txtPassword.Size = new Size(249, 31);
+            txtPassword.TabIndex = 5;
+            txtPassword.UseSystemPasswordChar = true;
+            // 
             // txtContactNumber
-            this.txtContactNumber.Location = new System.Drawing.Point(30, 150);
-            this.txtContactNumber.Name = "txtContactNumber";
-            this.txtContactNumber.Size = new System.Drawing.Size(200, 22);
-            this.txtContactNumber.TabIndex = 6;
-            this.txtContactNumber.PlaceholderText = "Contact Number";
-
+            // 
+            txtContactNumber.Location = new Point(38, 111);
+            txtContactNumber.Margin = new Padding(4, 5, 4, 5);
+            txtContactNumber.Name = "txtContactNumber";
+            txtContactNumber.PlaceholderText = "Contact Number";
+            txtContactNumber.Size = new Size(249, 31);
+            txtContactNumber.TabIndex = 6;
+            // 
             // txtAddress
-            this.txtAddress.Location = new System.Drawing.Point(250, 150);
-            this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(200, 22);
-            this.txtAddress.TabIndex = 7;
-            this.txtAddress.PlaceholderText = "Address";
-
+            // 
+            txtAddress.Location = new Point(312, 234);
+            txtAddress.Margin = new Padding(4, 5, 4, 5);
+            txtAddress.Name = "txtAddress";
+            txtAddress.PlaceholderText = "Address";
+            txtAddress.Size = new Size(249, 31);
+            txtAddress.TabIndex = 7;
+            // 
             // btnAddStaff
-            this.btnAddStaff.Location = new System.Drawing.Point(30, 190);
-            this.btnAddStaff.Name = "btnAddStaff";
-            this.btnAddStaff.Size = new System.Drawing.Size(200, 30);
-            this.btnAddStaff.TabIndex = 8;
-            this.btnAddStaff.Text = "Add Staff Member";
-            this.btnAddStaff.UseVisualStyleBackColor = true;
-            this.btnAddStaff.Click += new System.EventHandler(this.BtnAddStaff_Click);
-
+            // 
+            btnAddStaff.Location = new Point(38, 297);
+            btnAddStaff.Margin = new Padding(4, 5, 4, 5);
+            btnAddStaff.Name = "btnAddStaff";
+            btnAddStaff.Size = new Size(188, 47);
+            btnAddStaff.TabIndex = 8;
+            btnAddStaff.Text = "Add Staff Member";
+            btnAddStaff.UseVisualStyleBackColor = true;
+            btnAddStaff.Click += BtnAddStaff_Click;
+            // 
+            // btnUpdateStaff
+            // 
+            btnUpdateStaff.Location = new Point(238, 297);
+            btnUpdateStaff.Margin = new Padding(4, 5, 4, 5);
+            btnUpdateStaff.Name = "btnUpdateStaff";
+            btnUpdateStaff.Size = new Size(210, 47);
+            btnUpdateStaff.TabIndex = 9;
+            btnUpdateStaff.Text = "Update Staff Member";
+            btnUpdateStaff.UseVisualStyleBackColor = true;
+            btnUpdateStaff.Click += BtnUpdateStaff_Click;
+            // 
             // btnDeleteStaff
-            this.btnDeleteStaff.Location = new System.Drawing.Point(250, 190);
-            this.btnDeleteStaff.Name = "btnDeleteStaff";
-            this.btnDeleteStaff.Size = new System.Drawing.Size(200, 30);
-            this.btnDeleteStaff.TabIndex = 9;
-            this.btnDeleteStaff.Text = "Delete Selected Staff";
-            this.btnDeleteStaff.UseVisualStyleBackColor = true;
-            this.btnDeleteStaff.Click += new System.EventHandler(this.btnDeleteStaff_Click);
-
+            // 
+            btnDeleteStaff.Location = new Point(472, 297);
+            btnDeleteStaff.Margin = new Padding(4, 5, 4, 5);
+            btnDeleteStaff.Name = "btnDeleteStaff";
+            btnDeleteStaff.Size = new Size(188, 47);
+            btnDeleteStaff.TabIndex = 10;
+            btnDeleteStaff.Text = "Delete Selected Staff";
+            btnDeleteStaff.UseVisualStyleBackColor = true;
+            btnDeleteStaff.Click += btnDeleteStaff_Click;
+            // 
             // dgvStaff
-            this.dgvStaff.Location = new System.Drawing.Point(30, 230);
-            this.dgvStaff.Size = new System.Drawing.Size(700, 300);
-            this.dgvStaff.TabIndex = 10;
-            this.dgvStaff.AllowUserToAddRows = false;
-            this.dgvStaff.ReadOnly = true;
-
+            // 
+            dgvStaff.AllowUserToAddRows = false;
+            dgvStaff.ColumnHeadersHeight = 34;
+            dgvStaff.Location = new Point(38, 364);
+            dgvStaff.Margin = new Padding(4, 5, 4, 5);
+            dgvStaff.Name = "dgvStaff";
+            dgvStaff.ReadOnly = true;
+            dgvStaff.RowHeadersWidth = 62;
+            dgvStaff.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvStaff.Size = new Size(1449, 620);
+            dgvStaff.TabIndex = 11;
+            // 
+            // txtSearchName
+            // 
+            txtSearchName.Location = new Point(888, 66);
+            txtSearchName.Name = "txtSearchName";
+            txtSearchName.Size = new Size(200, 31);
+            txtSearchName.TabIndex = 0;
+            // 
+            // txtMinSalary
+            // 
+            txtMinSalary.Location = new Point(1084, 144);
+            txtMinSalary.Name = "txtMinSalary";
+            txtMinSalary.Size = new Size(149, 31);
+            txtMinSalary.TabIndex = 1;
+            // 
+            // txtMaxSalary
+            // 
+            txtMaxSalary.Location = new Point(1268, 144);
+            txtMaxSalary.Name = "txtMaxSalary";
+            txtMaxSalary.Size = new Size(140, 31);
+            txtMaxSalary.TabIndex = 2;
+            // 
+            // cmbSearchRole
+            // 
+            cmbSearchRole.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbSearchRole.FormattingEnabled = true;
+            cmbSearchRole.Location = new Point(888, 198);
+            cmbSearchRole.Name = "cmbSearchRole";
+            cmbSearchRole.Size = new Size(200, 33);
+            cmbSearchRole.TabIndex = 4;
+            cmbSearchRole.Visible = false;
+            // 
+            // btnSearch
+            // 
+            btnSearch.Location = new Point(1133, 64);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(100, 30);
+            btnSearch.TabIndex = 5;
+            btnSearch.Text = "Search";
+            btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
+            // 
+            // rbtnSortAZ
+            // 
+            rbtnSortAZ.AutoSize = true;
+            rbtnSortAZ.Location = new Point(1084, 140);
+            rbtnSortAZ.Name = "rbtnSortAZ";
+            rbtnSortAZ.Size = new Size(66, 29);
+            rbtnSortAZ.TabIndex = 2;
+            rbtnSortAZ.Text = "A-Z";
+            rbtnSortAZ.UseVisualStyleBackColor = true;
+            rbtnSortAZ.Visible = false;
+            // 
+            // rbtnSortZA
+            // 
+            rbtnSortZA.AutoSize = true;
+            rbtnSortZA.Location = new Point(1179, 138);
+            rbtnSortZA.Name = "rbtnSortZA";
+            rbtnSortZA.Size = new Size(66, 29);
+            rbtnSortZA.TabIndex = 3;
+            rbtnSortZA.Text = "Z-A";
+            rbtnSortZA.UseVisualStyleBackColor = true;
+            rbtnSortZA.Visible = false;
+            // 
+            // cmbFilterType
+            // 
+            cmbFilterType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFilterType.FormattingEnabled = true;
+            cmbFilterType.Items.AddRange(new object[] { "Select Filter", "Name", "Role", "Salary" });
+            cmbFilterType.Location = new Point(888, 142);
+            cmbFilterType.Name = "cmbFilterType";
+            cmbFilterType.Size = new Size(150, 33);
+            cmbFilterType.TabIndex = 0;
+            cmbFilterType.SelectedIndexChanged += cmbFilterType_SelectedIndexChanged;
+            // 
+            // lblSearch
+            // 
+            lblSearch.AutoSize = true;
+            lblSearch.Location = new Point(775, 66);
+            lblSearch.Name = "lblSearch";
+            lblSearch.Size = new Size(73, 25);
+            lblSearch.TabIndex = 7;
+            lblSearch.Text = "Search :";
+            lblSearch.Click += btnSearch_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(765, 142);
+            label1.Name = "label1";
+            label1.Size = new Size(83, 25);
+            label1.TabIndex = 12;
+            label1.Text = "Filter By :";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(1084, 109);
+            label2.Name = "label2";
+            label2.Size = new Size(103, 25);
+            label2.TabIndex = 13;
+            label2.Text = "Min Salary: ";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(1234, 110);
+            label3.Name = "label3";
+            label3.Size = new Size(105, 25);
+            label3.TabIndex = 14;
+            label3.Text = "Max. Salary:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(757, 201);
+            label4.Name = "label4";
+            label4.Size = new Size(101, 25);
+            label4.TabIndex = 15;
+            label4.Text = "Select Role:";
+            // 
+            // button1
+            // 
+            button1.Location = new Point(690, 303);
+            button1.Name = "button1";
+            button1.Size = new Size(112, 34);
+            button1.TabIndex = 16;
+            button1.Text = "Clear Fields";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += ClrBtn_Click;
+            // 
             // StaffForm
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 550);
-            this.Controls.Add(this.dgvStaff);
-            this.Controls.Add(this.btnAddStaff);
-            this.Controls.Add(this.btnDeleteStaff);
-            this.Controls.Add(this.txtAddress);
-            this.Controls.Add(this.txtContactNumber);
-            this.Controls.Add(this.txtPassword);
-            this.Controls.Add(this.txtUsername);
-            this.Controls.Add(this.txtSalary);
-            this.Controls.Add(this.cmbRole);
-            this.Controls.Add(this.txtLastName);
-            this.Controls.Add(this.txtFirstName);
-            this.Name = "StaffForm";
-            this.Text = "Staff Management Form";
-            ((System.ComponentModel.ISupportInitialize)(this.dgvStaff)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // 
+            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1557, 1016);
+            Controls.Add(button1);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(dgvStaff);
+            Controls.Add(btnAddStaff);
+            Controls.Add(btnUpdateStaff);
+            Controls.Add(btnDeleteStaff);
+            Controls.Add(txtAddress);
+            Controls.Add(txtContactNumber);
+            Controls.Add(txtPassword);
+            Controls.Add(txtUsername);
+            Controls.Add(txtSalary);
+            Controls.Add(cmbRole);
+            Controls.Add(txtLastName);
+            Controls.Add(txtFirstName);
+            Controls.Add(btnSearch);
+            Controls.Add(cmbSearchRole);
+            Controls.Add(cmbFilterType);
+            Controls.Add(txtMaxSalary);
+            Controls.Add(txtMinSalary);
+            Controls.Add(txtSearchName);
+            Controls.Add(lblSearch);
+            Controls.Add(rbtnSortAZ);
+            Controls.Add(rbtnSortZA);
+            Margin = new Padding(4, 5, 4, 5);
+            Name = "StaffForm";
+            Text = "Staff Management Form";
+            WindowState = FormWindowState.Maximized;
+            ((System.ComponentModel.ISupportInitialize)dgvStaff).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -156,7 +354,24 @@
         private System.Windows.Forms.TextBox txtContactNumber;
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.Button btnAddStaff;
+        private System.Windows.Forms.Button btnUpdateStaff;
         private System.Windows.Forms.Button btnDeleteStaff;
         private System.Windows.Forms.DataGridView dgvStaff;
+        private System.Windows.Forms.TextBox txtSearchName;
+        private System.Windows.Forms.TextBox txtMinSalary;
+        private System.Windows.Forms.TextBox txtMaxSalary;
+        private System.Windows.Forms.ComboBox cmbSearchRole;
+        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Label lblSearch;
+        private System.Windows.Forms.Label lblMinSalary;
+        private System.Windows.Forms.Label lblMaxSalary;
+        private System.Windows.Forms.ComboBox cmbFilterType;
+        private System.Windows.Forms.RadioButton rbtnSortAZ;
+        private System.Windows.Forms.RadioButton rbtnSortZA;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private Button button1;
     }
 }
