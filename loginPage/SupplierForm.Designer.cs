@@ -129,7 +129,7 @@
             lblDebtAmount.Size = new Size(125, 25);
             lblDebtAmount.TabIndex = 6;
             lblDebtAmount.Text = "Debt Amount:";
-            lblDebtAmount.Click += lblDebtAmount_Click;
+          
             // 
             // txtDebtAmount
             // 
@@ -251,7 +251,7 @@
             label1.Size = new Size(78, 25);
             label1.TabIndex = 17;
             label1.Text = "Filter By:";
-            label1.Click += label1_Click;
+           
             // 
             // label2
             // 
@@ -265,7 +265,7 @@
             label2.Size = new Size(257, 25);
             label2.TabIndex = 18;
             label2.Text = "Enter Details of Supplier :";
-            label2.Click += label2_Click;
+           
             // 
             // SupplierForm
             // 

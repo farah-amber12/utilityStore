@@ -42,7 +42,7 @@
             // 
             btnManageStaff.BackColor = Color.DodgerBlue;
             btnManageStaff.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnManageStaff.ForeColor = Color.Black;
+            btnManageStaff.ForeColor = Color.White;
             btnManageStaff.Location = new Point(84, 55);
             btnManageStaff.Name = "btnManageStaff";
             btnManageStaff.Size = new Size(222, 50);

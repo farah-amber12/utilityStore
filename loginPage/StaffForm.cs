@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using loginPage;
+using UtilityStoreApp;
 
 namespace loginPage
 {
@@ -393,6 +394,7 @@ namespace loginPage
         private void LoadFilterTypeDropdown()
         {
             cmbFilterType.Items.Clear();
+            cmbFilterType.Items.Add("All");
             cmbFilterType.Items.Add("Name");
             cmbFilterType.Items.Add("Role");
             cmbFilterType.Items.Add("Salary");
@@ -420,6 +422,21 @@ namespace loginPage
 
                     switch (cmbFilterType.SelectedItem?.ToString())
                     {
+                        case "All":
+                          
+                            query = @"
+                            SELECT * 
+                            FROM Staff 
+                            WHERE FirstName LIKE @SearchText 
+                                OR LastName LIKE @SearchText
+                                OR Role LIKE @SearchText
+                                OR Username LIKE @SearchText
+                                OR Username LIKE @SearchText
+                                OR CAST(Salary AS VARCHAR) LIKE @SearchText";
+                                cmd.Parameters.AddWithValue("@SearchText", $"%{txtSearchName.Text.Trim()}%");
+                            
+
+                            break;
                         case "Name":
                             string nameFilter = txtSearchName.Text.Trim();
                             string sortOrder = rbtnSortAZ.Checked ? "ASC" : "DESC";
@@ -475,6 +492,9 @@ namespace loginPage
 
             switch (filterType)
             {
+                case "All":
+                    // No specific validation needed
+                    break;
                 case "Name":
                     if (!Regex.IsMatch(txtSearchName.Text, @"^[a-zA-Z\s]+$"))
                     {
@@ -527,6 +547,10 @@ namespace loginPage
 
             switch (filterType)
             {
+                case "All":
+                    txtSearchName.Visible = true;
+                    break;
+
                 case "Name":
                     txtSearchName.Visible = true;
                     rbtnSortAZ.Visible = true;
@@ -556,5 +580,20 @@ namespace loginPage
         {
             ClearFields();
         }
+
+
+        private void goback_Click(object sender, EventArgs e)
+        {
+            OwnerForm ownerForm = new OwnerForm();
+            this.Close();
+            ownerForm.ShowDialog();
+            ownerForm.Show();
+            
+
+
+        }
+
+
+
     }
 }

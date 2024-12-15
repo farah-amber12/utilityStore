@@ -49,12 +49,13 @@
             label3 = new Label();
             label4 = new Label();
             button1 = new Button();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvStaff).BeginInit();
             SuspendLayout();
             // 
             // txtFirstName
             // 
-            txtFirstName.Location = new Point(38, 63);
+            txtFirstName.Location = new Point(38, 55);
             txtFirstName.Margin = new Padding(4, 5, 4, 5);
             txtFirstName.Name = "txtFirstName";
             txtFirstName.PlaceholderText = "First Name";
@@ -111,7 +112,7 @@
             // 
             // txtContactNumber
             // 
-            txtContactNumber.Location = new Point(38, 111);
+            txtContactNumber.Location = new Point(38, 109);
             txtContactNumber.Margin = new Padding(4, 5, 4, 5);
             txtContactNumber.Name = "txtContactNumber";
             txtContactNumber.PlaceholderText = "Contact Number";
@@ -240,7 +241,7 @@
             // 
             cmbFilterType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFilterType.FormattingEnabled = true;
-            cmbFilterType.Items.AddRange(new object[] { "Select Filter", "Name", "Role", "Salary" });
+            cmbFilterType.Items.AddRange(new object[] { "Select Filter", "All","Name", "Role", "Salary" });
             cmbFilterType.Location = new Point(888, 142);
             cmbFilterType.Name = "cmbFilterType";
             cmbFilterType.Size = new Size(150, 33);
@@ -295,19 +296,32 @@
             // 
             // button1
             // 
-            button1.Location = new Point(690, 303);
+            button1.Location = new Point(682, 248);
             button1.Name = "button1";
-            button1.Size = new Size(112, 34);
+            button1.Size = new Size(125, 35);
             button1.TabIndex = 16;
             button1.Text = "Clear Fields";
             button1.UseVisualStyleBackColor = true;
             button1.Click += ClrBtn_Click;
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.Crimson;
+            button2.ForeColor = Color.White;
+            button2.Location = new Point(723, 310);
+            button2.Name = "button2";
+            button2.Size = new Size(112, 34);
+            button2.TabIndex = 17;
+            button2.Text = "Go Back";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += goback_Click;
             // 
             // StaffForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1557, 1016);
+            Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -373,5 +387,6 @@
         private Label label3;
         private Label label4;
         private Button button1;
+        private Button button2;
     }
 }

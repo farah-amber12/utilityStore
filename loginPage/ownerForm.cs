@@ -71,10 +71,11 @@ namespace UtilityStoreApp
         private void btnManageStaff_Click(object sender, EventArgs e)
         {
            StaffForm staffForm = new StaffForm();
-            this.Hide();
+            this.Close();
             staffForm.ShowDialog();
             staffForm.Show();
             
+
         }
             
 
@@ -89,10 +90,11 @@ namespace UtilityStoreApp
         private void btnManageSupplierDebt_Click(object sender, EventArgs e)
         {
             SupplierForm supplierForm = new SupplierForm();
-            this.Hide();
+            this.Close();
             supplierForm.ShowDialog();
             supplierForm.Show();
-         
+            
+
         }
 
         private void btnManageCustomerDebt_Click(object sender, EventArgs e)
