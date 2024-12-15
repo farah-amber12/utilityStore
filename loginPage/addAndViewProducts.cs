@@ -34,16 +34,76 @@ namespace loginPage
         }
 
         private void addAndViewProducts_Load(object sender, EventArgs e)
+
         {
+            RefreshProductGrid();
             LoadSuppliers();
             LoadCategories();
-            RefreshProductGrid();
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            // Check if a row is selected
+            if (productsGridView.SelectedRows.Count > 0)
+            {
+                // Get the selected row's ProductID
+                int selectedProductId = Convert.ToInt32(productsGridView.SelectedRows[0].Cells["ProductID"].Value);
 
+                // Confirm deletion
+                var confirmResult = MessageBox.Show(
+                    "Are you sure you want to delete this product?",
+                    "Confirm Delete",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (confirmResult == DialogResult.Yes)
+                {
+                    // Perform deletion
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(loginForm.connectionString))
+                        {
+                            connection.Open();
+
+                            // Query to delete the product
+                            string query = "DELETE FROM Products WHERE ProductID = @ProductID";
+
+                            using (SqlCommand command = new SqlCommand(query, connection))
+                            {
+                                // Add parameter for the ProductID
+                                command.Parameters.AddWithValue("@ProductID", selectedProductId);
+
+                                // Execute the delete command
+                                int rowsAffected = command.ExecuteNonQuery();
+
+                                if (rowsAffected > 0)
+                                {
+                                    MessageBox.Show("Product deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                    // Refresh the grid to reflect changes
+                                    RefreshProductGrid();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Deletion failed. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"An error occurred while deleting the product: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a row to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -72,8 +132,10 @@ namespace loginPage
 
             try
             {
-                ProductsConnection.Open();
-                string query = @"
+                using (SqlConnection catagoriesConnection = new SqlConnection(loginForm.connectionString))
+                {
+                    catagoriesConnection.Open();
+                    string query = @"
               INSERT INTO Products (
                   ProductName,
                   CategoryID,
@@ -97,21 +159,22 @@ namespace loginPage
                   (SELECT SupplierID FROM Supplier WHERE SupplierName = @SupplierName)
               );";
 
-                using (SqlCommand command = new SqlCommand(query, ProductsConnection))
-                {
-                    command.Parameters.AddWithValue("@ProductName", productName);
-                    command.Parameters.AddWithValue("@CategoryName", categoryName);
-                    command.Parameters.AddWithValue("@SupplierName", supplierName);
-                    command.Parameters.AddWithValue("@BrandName", brandName);
-                    command.Parameters.AddWithValue("@StockLevel", stockLevel);
-                    command.Parameters.AddWithValue("@Unit", unit);
-                    command.Parameters.AddWithValue("@PurchasePrice", purchasePrice);
-                    command.Parameters.AddWithValue("@SellingPrice", sellingPrice);
-                    command.Parameters.AddWithValue("@ExpiryDate", expiryDate);
+                    using (SqlCommand command = new SqlCommand(query, catagoriesConnection))
+                    {
+                        command.Parameters.AddWithValue("@ProductName", productName);
+                        command.Parameters.AddWithValue("@CategoryName", categoryName);
+                        command.Parameters.AddWithValue("@SupplierName", supplierName);
+                        command.Parameters.AddWithValue("@BrandName", brandName);
+                        command.Parameters.AddWithValue("@StockLevel", stockLevel);
+                        command.Parameters.AddWithValue("@Unit", unit);
+                        command.Parameters.AddWithValue("@PurchasePrice", purchasePrice);
+                        command.Parameters.AddWithValue("@SellingPrice", sellingPrice);
+                        command.Parameters.AddWithValue("@ExpiryDate", expiryDate);
 
-                    command.ExecuteNonQuery();
-                    RefreshProductGrid();
-                    ClearFields();
+                        command.ExecuteNonQuery();
+                        RefreshProductGrid();
+                        ClearFields();
+                    }
                 }
             }
 
@@ -119,10 +182,7 @@ namespace loginPage
             {
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            finally
-            {
-                ProductsConnection.Close();
-            }
+
         }
         private void ClearFields()
         {
@@ -192,8 +252,11 @@ namespace loginPage
         {
             try
             {
-                ProductsConnection.Open();
-                string query = @"
+
+                using (SqlConnection catagoriesConnection = new SqlConnection(loginForm.connectionString))
+                {
+                    catagoriesConnection.Open();
+                    string query = @"
                     SELECT 
                         p.ProductID, 
                         p.ProductName,
@@ -208,22 +271,34 @@ namespace loginPage
                     JOIN Categories c ON p.CategoryID = c.CategoryID
                     JOIN Supplier s ON p.SupplierID = s.SupplierID;";
 
-                using (SqlCommand command = new SqlCommand(query, ProductsConnection))
-                {
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-                    productsGridView.DataSource = dataTable;
+
+                    using (SqlCommand command = new SqlCommand(query, catagoriesConnection))
+                    {
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        productsGridView.DataSource = dataTable;
+                    }
                 }
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred while refreshing the grid: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            finally
-            {
-                ProductsConnection.Close();
-            }
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            manager manager = new manager();
+            manager.Show();
+        }
+
+        private void productsGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

@@ -53,6 +53,7 @@
             button2 = new Button();
             button3 = new Button();
             productsGridView = new DataGridView();
+            button4 = new Button();
             ((System.ComponentModel.ISupportInitialize)productsGridView).BeginInit();
             SuspendLayout();
             // 
@@ -275,12 +276,24 @@
             productsGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             productsGridView.Size = new Size(1378, 435);
             productsGridView.TabIndex = 30;
+            productsGridView.CellContentClick += productsGridView_CellContentClick;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(1140, 853);
+            button4.Name = "button4";
+            button4.Size = new Size(112, 34);
+            button4.TabIndex = 31;
+            button4.Text = "back";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // Products
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1627, 783);
+            ClientSize = new Size(1385, 905);
+            Controls.Add(button4);
             Controls.Add(productsGridView);
             Controls.Add(button3);
             Controls.Add(button2);
@@ -340,5 +353,6 @@
         private Button button2;
         private Button button3;
         private DataGridView productsGridView;
+        private Button button4;
     }
 }

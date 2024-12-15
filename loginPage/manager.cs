@@ -55,5 +55,12 @@ namespace loginPage
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            loginForm loginForm = new loginForm();
+            this.Hide();
+            loginForm.Show();
+        }
     }
 }

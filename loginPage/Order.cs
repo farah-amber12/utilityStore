@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 using loginPage;
 using Microsoft.Data.SqlClient; // Import this namespace for database connection
@@ -22,6 +24,8 @@ namespace loginPage
             orderdbconnection = new SqlConnection(loginForm.connectionString);
             LoadCategories();
             PopulateStaffDropdown();
+            InitializeCart();
+
         }
 
         private void Order_Load(object sender, EventArgs e)
@@ -138,7 +142,7 @@ namespace loginPage
                     if (reader.Read())
                     {
                         // Read StockLevel as a decimal
-                        decimal stockLevel = reader.GetDecimal(0);
+                        decimal stockLevel = Convert.ToDecimal(reader.GetValue(0));
                         DateTime? expiryDate = reader.IsDBNull(1) ? null : reader.GetDateTime(1);
 
                         if (stockLevel == 0)
@@ -149,10 +153,10 @@ namespace loginPage
                         {
                             MessageBox.Show("This product has expired.");
                         }
-                        else
-                        {
-                            MessageBox.Show("This product is available for ordering.");
-                        }
+                        /* else
+                         {
+                             MessageBox.Show("This product is available for ordering.");
+                         }*/
                     }
                     else
                     {
@@ -171,73 +175,6 @@ namespace loginPage
 
             return productId; // Return the ProductID (or -1 if an issue occurred)
         }
-
-        /* private void ValidateProductSelection(string productName)
-         {
-             try
-             {
-                 orderdbconnection.Open();
-
-                 // First, retrieve the ProductID for the given ProductName
-                 int productId = -1;
-
-                 using (SqlCommand idCommand = new SqlCommand("SELECT ProductID FROM Products WHERE ProductName = @ProductName", orderdbconnection))
-                 {
-                     idCommand.Parameters.AddWithValue("@ProductName", productName);
-
-                     object result = idCommand.ExecuteScalar();
-                     if (result != null)
-                     {
-                         productId = Convert.ToInt32(result);
-                     }
-                     else
-                     {
-                         MessageBox.Show("Product not found in the database.");
-                         return;
-                     }
-                 }
-
-                 // Now validate the stock level and expiry for the retrieved ProductID
-                 using (SqlCommand validationCommand = new SqlCommand("SELECT StockLevel, ExpiryDate FROM Products WHERE ProductID = @ProductID", orderdbconnection))
-                 {
-                     validationCommand.Parameters.AddWithValue("@ProductID", productId);
-
-                     SqlDataReader reader = validationCommand.ExecuteReader();
-
-                     if (reader.Read())
-                     {
-                         // Read StockLevel as a decimal
-                         decimal stockLevel = reader.GetDecimal(0);
-                         DateTime? expiryDate = reader.IsDBNull(1) ? null : reader.GetDateTime(1);
-
-                         if (stockLevel == 0)
-                         {
-                             MessageBox.Show("This product is out of stock.");
-                         }
-                         else if (expiryDate.HasValue && expiryDate <= DateTime.Now)
-                         {
-                             MessageBox.Show("This product has expired.");
-                         }
-                         else
-                         {
-                             MessageBox.Show("This product is available for ordering.");
-                         }
-                     }
-                     else
-                     {
-                         MessageBox.Show("Failed to retrieve product details.");
-                     }
-                 }
-             }
-             catch (Exception ex)
-             {
-                 MessageBox.Show($"Error validating product: {ex.Message}");
-             }
-             finally
-             {
-                 orderdbconnection.Close();
-             }
-         }*/
 
 
         private void productselection_SelectedIndexChanged(object sender, EventArgs e)
@@ -322,11 +259,11 @@ namespace loginPage
                                 MessageBox.Show($"Error: Requested quantity exceeds available stock. Total stock level is {stockLevel}.",
                                     "Quantity Exceeded", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
-                            else
-                            {
-                                MessageBox.Show("Quantity is valid. You can proceed.", "Quantity Valid", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                // Additional logic to proceed with the order can be added here
-                            }
+                            /* else
+                             {
+                                 MessageBox.Show("Quantity is valid. You can proceed.", "Quantity Valid", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                 // Additional logic to proceed with the order can be added here
+                             }*/
                         }
                         else
                         {
@@ -620,88 +557,213 @@ namespace loginPage
                   orderdbconnection.Close();
               }
           }*/
-        private void PlaceOrder(int customerId, int staffId, int productId, int quantity, decimal recievedAmount, DateTime dueDate)
+        /*  private void PlaceOrder(int customerId, int staffId, int productId, int quantity, decimal recievedAmount, DateTime dueDate)
+          {
+              SqlTransaction transaction = null;
+              try
+              {
+                  orderdbconnection.Open();
+
+                  // Start a transaction
+                  transaction = orderdbconnection.BeginTransaction();
+
+
+                  // Fetch the selling price of the product using the product ID
+                  decimal sellingPrice = 0;
+                  using (SqlCommand priceCommand = new SqlCommand("SELECT SellingPrice FROM Products WHERE ProductID = @ProductID", orderdbconnection, transaction))
+                  {
+                      priceCommand.Parameters.AddWithValue("@ProductID", productId);
+                      object result = priceCommand.ExecuteScalar();
+
+                      if (result != null)
+                      {
+                          sellingPrice = Convert.ToDecimal(result);
+                      }
+                      else
+                      {
+                          MessageBox.Show("Product not found.");
+                          transaction.Rollback(); // Rollback if product is not found
+                          return;
+                      }
+                  }
+
+                  // Calculate the subtotal (Quantity * SellingPrice)
+                  decimal subtotal = quantity * sellingPrice;
+                  txtSubtotal.Text = subtotal.ToString("F2");
+
+                  // Insert into the Orders table
+                  int orderId = 0;
+                  using (SqlCommand orderCommand = new SqlCommand("INSERT INTO Orders (OrderDate, CustomerID, StaffID) OUTPUT INSERTED.OrderID VALUES (@OrderDate, @CustomerID, @StaffID)", orderdbconnection, transaction))
+                  {
+                      orderCommand.Parameters.AddWithValue("@OrderDate", DateTime.Now);
+                      orderCommand.Parameters.AddWithValue("@CustomerID", customerId);
+                      orderCommand.Parameters.AddWithValue("@StaffID", staffId);
+
+                      orderId = (int)orderCommand.ExecuteScalar(); // Get the OrderID from the inserted record
+                  }
+
+                  // Insert into the OrderDetails table
+                  using (SqlCommand orderDetailsCommand = new SqlCommand("INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Subtotal, recievedAmount) VALUES (@OrderID, @ProductID, @Quantity, @Subtotal, @recievedAmount)", orderdbconnection, transaction))
+                  {
+                      orderDetailsCommand.Parameters.AddWithValue("@OrderID", orderId);
+                      orderDetailsCommand.Parameters.AddWithValue("@ProductID", productId);
+                      orderDetailsCommand.Parameters.AddWithValue("@Quantity", quantity);
+                      orderDetailsCommand.Parameters.AddWithValue("@Subtotal", subtotal);
+                      orderDetailsCommand.Parameters.AddWithValue("@recievedAmount", recievedAmount);
+                      orderDetailsCommand.ExecuteNonQuery(); // Insert order details
+                  }
+
+                  // Handle customer debt if received amount is less than subtotal
+                  if (recievedAmount < subtotal)
+                  {
+                      decimal debtAmount = subtotal - recievedAmount;
+
+                      // Insert into the CustomerDebt table
+                      using (SqlCommand debtCommand = new SqlCommand("INSERT INTO CustomerDebt (CustomerID, DebtAmount, DueDate) VALUES (@CustomerID, @DebtAmount,  @DueDate)", orderdbconnection, transaction))
+                      {
+                          debtCommand.Parameters.AddWithValue("@CustomerID", customerId);
+                          debtCommand.Parameters.AddWithValue("@DebtAmount", debtAmount);
+                          debtCommand.Parameters.AddWithValue("@DueDate", dueDate);
+                          debtCommand.ExecuteNonQuery(); // Insert debt record
+                      }
+
+                      //  MessageBox.Show($"Debt of {debtAmount:C} has been recorded. Due date: {dueDate.ToShortDateString()}");
+                  }
+
+                  // Commit the transaction
+                  transaction.Commit();
+
+                  // Show a success message
+                  MessageBox.Show("Order placed successfully!");
+              }
+              catch (Exception ex)
+              {
+                  // Rollback if there is any error
+                  transaction?.Rollback();
+                  MessageBox.Show($"Error placing order: {ex.Message}");
+              }
+              finally
+              {
+                  orderdbconnection.Close();
+              }
+          }
+
+
+          private void button1_Click(object sender, EventArgs e)
+          {
+              try
+              {
+                  //Retrieve values from form controls
+                  int customerId = AddNewCustomer(); // Customer ID entered by cashier
+                  int quantity = int.Parse(quantityTextBox.Text);     // Quantity entered
+                  string staffUsername = staffcombo.SelectedItem.ToString(); // Selected staff username
+                  string productName = productselection.SelectedItem.ToString(); // Selected product name
+
+                  // Get StaffID based on username
+                  int staffId = GetStaffIDByUsername(staffUsername); // Method to fetch StaffID
+
+                  // Get ProductID based on product name
+                  int productId = ValidateProductSelection(productName); // Method to fetch ProductID
+                  int recievedAmount = int.Parse(rcvdamount.Text);
+                  DateTime selectedDate = DateTime.Now;
+
+                  // Call the PlaceOrder method
+                  PlaceOrder(customerId, staffId, productId, quantity, recievedAmount, selectedDate);
+              }
+              catch (Exception ex)
+              {
+                  MessageBox.Show($"Error: {ex.Message}");
+              }
+          }*/
+        private void PlaceOrder(int customerId, int staffId, List<(int productId, int quantity)> cart, decimal receivedAmount, DateTime dueDate)
         {
             SqlTransaction transaction = null;
+
             try
             {
                 orderdbconnection.Open();
-
-                // Start a transaction
                 transaction = orderdbconnection.BeginTransaction();
 
-
-                // Fetch the selling price of the product using the product ID
-                decimal sellingPrice = 0;
-                using (SqlCommand priceCommand = new SqlCommand("SELECT SellingPrice FROM Products WHERE ProductID = @ProductID", orderdbconnection, transaction))
-                {
-                    priceCommand.Parameters.AddWithValue("@ProductID", productId);
-                    object result = priceCommand.ExecuteScalar();
-
-                    if (result != null)
-                    {
-                        sellingPrice = Convert.ToDecimal(result);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Product not found.");
-                        transaction.Rollback(); // Rollback if product is not found
-                        return;
-                    }
-                }
-
-                // Calculate the subtotal (Quantity * SellingPrice)
-                decimal subtotal = quantity * sellingPrice;
-                txtSubtotal.Text = subtotal.ToString("F2");
-
-                // Insert into the Orders table
+                // Step 1: Insert into Orders table and get OrderID
                 int orderId = 0;
-                using (SqlCommand orderCommand = new SqlCommand("INSERT INTO Orders (OrderDate, CustomerID, StaffID) OUTPUT INSERTED.OrderID VALUES (@OrderDate, @CustomerID, @StaffID)", orderdbconnection, transaction))
+                using (SqlCommand orderCommand = new SqlCommand(
+                    "INSERT INTO Orders (OrderDate, CustomerID, StaffID) OUTPUT INSERTED.OrderID VALUES (@OrderDate, @CustomerID, @StaffID)",
+                    orderdbconnection, transaction))
                 {
                     orderCommand.Parameters.AddWithValue("@OrderDate", DateTime.Now);
                     orderCommand.Parameters.AddWithValue("@CustomerID", customerId);
                     orderCommand.Parameters.AddWithValue("@StaffID", staffId);
 
-                    orderId = (int)orderCommand.ExecuteScalar(); // Get the OrderID from the inserted record
+                    orderId = (int)orderCommand.ExecuteScalar();
                 }
 
-                // Insert into the OrderDetails table
-                using (SqlCommand orderDetailsCommand = new SqlCommand("INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Subtotal, recievedAmount) VALUES (@OrderID, @ProductID, @Quantity, @Subtotal, @recievedAmount)", orderdbconnection, transaction))
+                // Step 2: Process each product in the cart
+                decimal totalSubtotal = 0; // Total cost for the order
+                foreach (var (productId, quantity) in cart)
                 {
-                    orderDetailsCommand.Parameters.AddWithValue("@OrderID", orderId);
-                    orderDetailsCommand.Parameters.AddWithValue("@ProductID", productId);
-                    orderDetailsCommand.Parameters.AddWithValue("@Quantity", quantity);
-                    orderDetailsCommand.Parameters.AddWithValue("@Subtotal", subtotal);
-                    orderDetailsCommand.Parameters.AddWithValue("@recievedAmount", recievedAmount);
-                    orderDetailsCommand.ExecuteNonQuery(); // Insert order details
+                    // Fetch the selling price of the product
+                    decimal sellingPrice = 0;
+                    using (SqlCommand priceCommand = new SqlCommand(
+                        "SELECT SellingPrice FROM Products WHERE ProductID = @ProductID",
+                        orderdbconnection, transaction))
+                    {
+                        priceCommand.Parameters.AddWithValue("@ProductID", productId);
+                        object result = priceCommand.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            sellingPrice = Convert.ToDecimal(result);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Product with ID {productId} not found.");
+                            transaction.Rollback();
+                            return;
+                        }
+                    }
+
+                    // Calculate subtotal for this product
+                    decimal subtotal = quantity * sellingPrice;
+                    totalSubtotal += subtotal;
+
+                    // Insert into OrderDetails
+                    using (SqlCommand orderDetailsCommand = new SqlCommand(
+                        "INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Subtotal, recievedAmount) VALUES (@OrderID, @ProductID, @Quantity, @Subtotal, @recievedAmount)",
+                        orderdbconnection, transaction))
+                    {
+                        orderDetailsCommand.Parameters.AddWithValue("@OrderID", orderId);
+                        orderDetailsCommand.Parameters.AddWithValue("@ProductID", productId);
+                        orderDetailsCommand.Parameters.AddWithValue("@Quantity", quantity);
+                        orderDetailsCommand.Parameters.AddWithValue("@Subtotal", subtotal);
+                        orderDetailsCommand.Parameters.AddWithValue("@recievedAmount", receivedAmount);
+
+                        orderDetailsCommand.ExecuteNonQuery();
+                    }
                 }
 
-                // Handle customer debt if received amount is less than subtotal
-                if (recievedAmount < subtotal)
+                // Step 3: Handle customer debt if totalSubtotal > receivedAmount
+                if (receivedAmount < totalSubtotal)
                 {
-                    decimal debtAmount = subtotal - recievedAmount;
+                    decimal debtAmount = totalSubtotal - receivedAmount;
 
-                    // Insert into the CustomerDebt table
-                    using (SqlCommand debtCommand = new SqlCommand("INSERT INTO CustomerDebt (CustomerID, DebtAmount, DueDate) VALUES (@CustomerID, @DebtAmount,  @DueDate)", orderdbconnection, transaction))
+                    using (SqlCommand debtCommand = new SqlCommand(
+                        "INSERT INTO CustomerDebt (CustomerID, DebtAmount, DueDate) VALUES (@CustomerID, @DebtAmount, @DueDate)",
+                        orderdbconnection, transaction))
                     {
                         debtCommand.Parameters.AddWithValue("@CustomerID", customerId);
                         debtCommand.Parameters.AddWithValue("@DebtAmount", debtAmount);
                         debtCommand.Parameters.AddWithValue("@DueDate", dueDate);
-                        debtCommand.ExecuteNonQuery(); // Insert debt record
-                    }
 
-                    //  MessageBox.Show($"Debt of {debtAmount:C} has been recorded. Due date: {dueDate.ToShortDateString()}");
+                        debtCommand.ExecuteNonQuery();
+                    }
                 }
 
-                // Commit the transaction
+                // Commit transaction
                 transaction.Commit();
-
-                // Show a success message
                 MessageBox.Show("Order placed successfully!");
             }
             catch (Exception ex)
             {
-                // Rollback if there is any error
                 transaction?.Rollback();
                 MessageBox.Show($"Error placing order: {ex.Message}");
             }
@@ -712,26 +774,353 @@ namespace loginPage
         }
 
 
-        private void button1_Click(object sender, EventArgs e)
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            cashier cashier = new cashier();
+            cashier.Show();
+        }
+
+        DataTable cartTable = new DataTable();
+        decimal totalAmount = 0;
+        private void InitializeCart()
+        {
+
+            // Initialize the cart table structure
+            cartTable.Columns.Add("ProductID", typeof(int));
+            cartTable.Columns.Add("ProductName", typeof(string));
+            cartTable.Columns.Add("Quantity", typeof(int));
+            cartTable.Columns.Add("Price", typeof(decimal));
+            cartTable.Columns.Add("Subtotal", typeof(decimal));
+
+            cartGridView.DataSource = cartTable;
+            lblTotalAmount.Text = "0";
+            DataGridViewButtonColumn removeButton = new DataGridViewButtonColumn();
+            removeButton.Name = "Remove";
+            removeButton.Text = "Remove";
+            removeButton.UseColumnTextForButtonValue = true; // Display "Remove" text in the button
+
+            if (!cartGridView.Columns.Contains("Remove"))
+            {
+                cartGridView.Columns.Add(removeButton);
+            }
+
+            // Add a handler for the button click event
+            cartGridView.CellClick += CartGridView_CellClick;
+            cartGridView.Columns["Quantity"].ReadOnly = false;
+        }
+
+
+
+        private void AddProductToCart(int productID, string productName, int quantity, decimal price)
+        {
+            // Calculate subtotal for the product
+            decimal subtotal = quantity * price;
+
+            // Add row to the cart table
+            cartTable.Rows.Add(productID, productName, quantity, price, subtotal);
+
+            // Update the total amount
+            totalAmount += subtotal;
+            lblTotalAmount.Text = totalAmount.ToString("F2"); // Format as currency
+        }
+
+        private void button2_Click(object sender, EventArgs e)
         {
             try
             {
-                //Retrieve values from form controls
-                int customerId = AddNewCustomer(); // Customer ID entered by cashier
-                int quantity = int.Parse(quantityTextBox.Text);     // Quantity entered
-                string staffUsername = staffcombo.SelectedItem.ToString(); // Selected staff username
-                string productName = productselection.SelectedItem.ToString(); // Selected product name
+                decimal sellingPrice = 0;
 
-                // Get StaffID based on username
-                int staffId = GetStaffIDByUsername(staffUsername); // Method to fetch StaffID
+                //Retrieve values from form controls
+                // int customerId = AddNewCustomer(); // Customer ID entered by cashier
+                int quantity = int.Parse(quantityTextBox.Text);     // Quantity entered
+                string productName = productselection.SelectedItem.ToString(); // Selected product name
 
                 // Get ProductID based on product name
                 int productId = ValidateProductSelection(productName); // Method to fetch ProductID
-                int recievedAmount = int.Parse(rcvdamount.Text);
-                DateTime selectedDate = DateTime.Now;
+                orderdbconnection.Open();
+                using (SqlCommand priceCommand = new SqlCommand(
+                   "SELECT SellingPrice FROM Products WHERE ProductID = @ProductID", orderdbconnection))
+                {
+                    priceCommand.Parameters.AddWithValue("@ProductID", productId);
 
-                // Call the PlaceOrder method
-                PlaceOrder(customerId, staffId, productId, quantity, recievedAmount, selectedDate);
+                    object result = priceCommand.ExecuteScalar();
+                    if (result != null)
+                    {
+                        sellingPrice = Convert.ToDecimal(result);
+                    }
+                    else
+                    {
+                        throw new Exception($"Failed to retrieve SellingPrice for ProductID {productId}.");
+                    }
+                    // Call the PlaceOrder method
+                    AddProductToCart(productId, productName, quantity, sellingPrice);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+            finally
+            {
+                orderdbconnection.Close();
+            }
+
+        }
+        private void CartGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Check if the click was on the "Remove" button column
+            if (e.RowIndex >= 0 && cartGridView.Columns[e.ColumnIndex].Name == "Remove")
+            {
+                // Get the price and quantity of the product being removed
+                decimal productSubtotal = Convert.ToDecimal(cartGridView.Rows[e.RowIndex].Cells["Subtotal"].Value);
+
+                // Remove the row from the cart
+                cartGridView.Rows.RemoveAt(e.RowIndex);
+
+                // Update the total amount after removing the product
+                UpdateTotalAmount(productSubtotal);
+            }
+        }
+
+        private void UpdateTotalAmount(decimal change)
+        {
+            // Get the current total
+            decimal currentTotal = string.IsNullOrEmpty(lblTotalAmount.Text)
+                ? 0
+                : Convert.ToDecimal(lblTotalAmount.Text);
+
+            // Update the total
+            currentTotal -= change;
+
+            // Display the updated total
+            lblTotalAmount.Text = currentTotal.ToString("F2");
+        }
+
+        /*  private void cartGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+          {
+              try
+              {
+                  // Check if the edited cell belongs to the Quantity column
+                  if (e.ColumnIndex == cartGridView.Columns["Quantity"].Index)
+                  {
+                      // Get the updated Quantity and Unit Price
+                      int quantity = Convert.ToInt32(cartGridView.Rows[e.RowIndex].Cells["Quantity"].Value);
+                      decimal unitPrice = Convert.ToDecimal(cartGridView.Rows[e.RowIndex].Cells["UnitPrice"].Value);
+
+                      // Validate Quantity (optional)
+                      if (quantity <= 0)
+                      {
+                          MessageBox.Show("Quantity must be greater than 0.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                          cartGridView.Rows[e.RowIndex].Cells["Quantity"].Value = 1; // Reset to default value
+                          quantity = 1;
+                      }
+
+                      // Recalculate Subtotal for this row
+                      decimal newSubtotal = quantity * unitPrice;
+                      cartGridView.Rows[e.RowIndex].Cells["Subtotal"].Value = newSubtotal;
+                     // cartGridView.CellEndEdit += cartGridView_CellEndEdit;
+
+                      // Recalculate Total Amount for the cart
+                      RecalculateTotalAmount();
+                  }
+              }
+              catch (Exception ex)
+              {
+                  MessageBox.Show($"Error updating quantity: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+              }
+          }
+          private void RecalculateTotalAmount()
+          {
+              decimal totalAmount = 0;
+
+              foreach (DataGridViewRow row in cartGridView.Rows)
+              {
+                  // Skip empty or invalid rows
+                  if (row.Cells["Subtotal"].Value != null)
+                  {
+                      totalAmount += Convert.ToDecimal(row.Cells["Subtotal"].Value);
+                  }
+              }
+
+              // Update the Total Amount Label
+              lblTotalAmount.Text = totalAmount.ToString("F2");
+          }*/
+
+        private void PlaceOrder(int customerId, int staffId, List<(int productId, int quantity)> cart, decimal recievedAmount)
+        {
+            SqlTransaction transaction = null;
+
+            try
+            {
+                orderdbconnection.Open();
+                transaction = orderdbconnection.BeginTransaction();
+
+                // Step 1: Insert into Orders table and get OrderID
+                int orderId = 0;
+                using (SqlCommand orderCommand = new SqlCommand(
+                    "INSERT INTO Orders (OrderDate, CustomerID, StaffID) OUTPUT INSERTED.OrderID VALUES (@OrderDate, @CustomerID, @StaffID)",
+                    orderdbconnection, transaction))
+                {
+                    orderCommand.Parameters.AddWithValue("@OrderDate", DateTime.Now);
+                    orderCommand.Parameters.AddWithValue("@CustomerID", customerId);
+                    orderCommand.Parameters.AddWithValue("@StaffID", staffId);
+
+                    orderId = (int)orderCommand.ExecuteScalar();
+                }
+
+                // Step 2: Process each product in the cart
+                decimal totalSubtotal = 0; // Total cost for the order
+                foreach (var (productId, quantity) in cart)
+                {
+                    // Fetch the selling price of the product
+                    decimal sellingPrice = 0;
+                    using (SqlCommand priceCommand = new SqlCommand(
+                        "SELECT SellingPrice FROM Products WHERE ProductID = @ProductID",
+                        orderdbconnection, transaction))
+                    {
+                        priceCommand.Parameters.AddWithValue("@ProductID", productId);
+                        object result = priceCommand.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            sellingPrice = Convert.ToDecimal(result);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Product with ID {productId} not found.");
+                            transaction.Rollback();
+                            return;
+                        }
+                    }
+
+                    // Calculate subtotal for this product
+                    decimal subtotal = quantity * sellingPrice;
+                    totalSubtotal += subtotal;
+
+                    // Insert into OrderDetails
+                    using (SqlCommand orderDetailsCommand = new SqlCommand(
+                        "INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Subtotal, recievedAmount) VALUES (@OrderID, @ProductID, @Quantity, @Subtotal, @recievedAmount)",
+                        orderdbconnection, transaction))
+                    {
+                        orderDetailsCommand.Parameters.AddWithValue("@OrderID", orderId);
+                        orderDetailsCommand.Parameters.AddWithValue("@ProductID", productId);
+                        orderDetailsCommand.Parameters.AddWithValue("@Quantity", quantity);
+                        orderDetailsCommand.Parameters.AddWithValue("@Subtotal", subtotal);
+                        orderDetailsCommand.Parameters.AddWithValue("@recievedAmount", recievedAmount);
+
+                        orderDetailsCommand.ExecuteNonQuery();
+                    }
+                }
+
+                // Step 3: Handle customer debt only if there is any
+                if (recievedAmount < totalSubtotal)
+                {
+                    decimal debtAmount = totalSubtotal - recievedAmount;
+
+                    // Calculate due date (e.g., 30 days from now)
+                    DateTime dueDate = DateTime.Now.AddDays(30);
+                  //  debtDueDateLabel.Visible = true;
+                    //debtDueDatePicker.Visible = true;
+
+                //    MessageBox.Show("Received amount is less than the total. Please select a due date.");
+
+
+                    // Insert into the CustomerDebt table
+                    using (SqlCommand debtCommand = new SqlCommand(
+                        "INSERT INTO CustomerDebt (CustomerID, DebtAmount, DueDate) VALUES (@CustomerID, @DebtAmount, @DueDate)",
+                        orderdbconnection, transaction))
+                    {
+                        debtCommand.Parameters.AddWithValue("@CustomerID", customerId);
+                        debtCommand.Parameters.AddWithValue("@DebtAmount", debtAmount);
+                        debtCommand.Parameters.AddWithValue("@DueDate", dueDate);
+
+                        debtCommand.ExecuteNonQuery();
+                    }
+
+                    // Inform the cashier about the debt
+                    MessageBox.Show($"Debt of {debtAmount:C} has been recorded for Customer ID: {customerId}. Due date: {dueDate.ToShortDateString()}");
+                }
+//                else
+  //              {
+    //                // Hide the controls if no debt
+      //              debtDueDateLabel.Visible = false;
+        //            debtDueDatePicker.Visible = false;
+          //      }
+
+                // Commit transaction
+                transaction.Commit();
+                MessageBox.Show("Order placed successfully!");
+            }
+            catch (Exception ex)
+            {
+                transaction?.Rollback();
+                MessageBox.Show($"Error placing order: {ex.Message}");
+            }
+            finally
+            {
+                orderdbconnection.Close();
+            }
+        }
+
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+            try
+            {
+                // Step 1: Add new customer
+                int customerId = AddNewCustomer();
+                if (customerId == -1) return;
+
+                // Step 2: Fetch StaffID
+                int staffId = GetStaffIDByUsername(staffcombo.SelectedItem.ToString());
+                if (staffId == -1) return;
+
+                // Step 3: Create cart (list of product IDs and quantities)
+                List<(int productId, int quantity)> cart = new List<(int, int)>();
+
+                foreach (DataGridViewRow row in cartGridView.Rows)
+                {
+                    if (!row.IsNewRow && row.Cells["ProductName"] != null && row.Cells["ProductName"].Value != null)
+                    {
+                        string productName = row.Cells["ProductName"].Value.ToString();
+                        if (!string.IsNullOrWhiteSpace(productName))
+                        {
+                            int productId = ValidateProductSelection(productName);
+                            int quantity = Convert.ToInt32(row.Cells["Quantity"].Value);
+
+                            if (productId != -1 && quantity > 0)
+                            {
+                                cart.Add((productId, quantity));
+                            }
+                            else
+                            {
+                                MessageBox.Show("Invalid product or quantity. Please check the cart.");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Product name cannot be empty. Please check the cart.");
+                        }
+                    }
+                }
+
+                // Step 4: Validate received amount
+                decimal receivedAmount = decimal.Parse(rcvdamount.Text);
+                if (receivedAmount < 0) throw new Exception("Received amount cannot be negative.");
+
+                // Step 5: Call PlaceOrder
+                PlaceOrder(customerId, staffId, cart, receivedAmount);
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Please ensure all numeric fields are valid.");
             }
             catch (Exception ex)
             {
@@ -739,9 +1128,11 @@ namespace loginPage
             }
         }
 
-        private void label4_Click(object sender, EventArgs e)
+        private void label8_Click(object sender, EventArgs e)
         {
 
         }
     }
+
 }
+    

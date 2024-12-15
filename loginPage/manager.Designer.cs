@@ -35,6 +35,7 @@
             textBox3 = new TextBox();
             pictureBox1 = new PictureBox();
             label1 = new Label();
+            button1 = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)viewAddProducts).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -65,7 +66,7 @@
             // 
             viewAddProducts.Cursor = Cursors.Hand;
             viewAddProducts.Image = (Image)resources.GetObject("viewAddProducts.Image");
-            viewAddProducts.Location = new Point(832, 245);
+            viewAddProducts.Location = new Point(708, 245);
             viewAddProducts.Name = "viewAddProducts";
             viewAddProducts.Size = new Size(257, 266);
             viewAddProducts.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -77,7 +78,7 @@
             // 
             textBox3.BorderStyle = BorderStyle.None;
             textBox3.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox3.Location = new Point(832, 182);
+            textBox3.Location = new Point(708, 180);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(257, 28);
             textBox3.TabIndex = 4;
@@ -87,7 +88,7 @@
             // 
             pictureBox1.Cursor = Cursors.Hand;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(73, 245);
+            pictureBox1.Location = new Point(245, 245);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(238, 266);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -99,11 +100,21 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(116, 182);
+            label1.Location = new Point(277, 182);
             label1.Name = "label1";
             label1.Size = new Size(167, 26);
             label1.TabIndex = 6;
             label1.Text = "CATEGORIES";
+            // 
+            // button1
+            // 
+            button1.Location = new Point(1062, 586);
+            button1.Name = "button1";
+            button1.Size = new Size(112, 34);
+            button1.TabIndex = 7;
+            button1.Text = "back";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // manager
             // 
@@ -111,6 +122,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1211, 647);
+            Controls.Add(button1);
             Controls.Add(label1);
             Controls.Add(pictureBox1);
             Controls.Add(textBox3);
@@ -135,5 +147,6 @@
         private TextBox textBox3;
         private PictureBox pictureBox1;
         private Label label1;
+        private Button button1;
     }
 }

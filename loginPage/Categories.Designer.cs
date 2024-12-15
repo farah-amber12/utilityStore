@@ -35,6 +35,7 @@
             button1 = new Button();
             button3 = new Button();
             dgvCategory = new DataGridView();
+            button4 = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvCategory).BeginInit();
             SuspendLayout();
             // 
@@ -100,14 +101,25 @@
             dgvCategory.Name = "dgvCategory";
             dgvCategory.RowHeadersWidth = 62;
             dgvCategory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCategory.Size = new Size(633, 379);
+            dgvCategory.Size = new Size(774, 379);
             dgvCategory.TabIndex = 19;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(669, 167);
+            button4.Name = "button4";
+            button4.Size = new Size(112, 34);
+            button4.TabIndex = 20;
+            button4.Text = "back";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // Categories
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(737, 628);
+            ClientSize = new Size(898, 628);
+            Controls.Add(button4);
             Controls.Add(dgvCategory);
             Controls.Add(button3);
             Controls.Add(button1);
@@ -132,5 +144,6 @@
         private Button button1;
         private Button button3;
         private DataGridView dgvCategory;
+        private Button button4;
     }
 }

@@ -35,6 +35,7 @@
             label1 = new Label();
             pictureBox1 = new PictureBox();
             label2 = new Label();
+            button1 = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)OrderPicture).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -102,11 +103,22 @@
             label2.TabIndex = 5;
             label2.Text = "VIEW ORDERS";
             // 
+            // button1
+            // 
+            button1.Location = new Point(671, 578);
+            button1.Name = "button1";
+            button1.Size = new Size(112, 34);
+            button1.TabIndex = 6;
+            button1.Text = "back";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // cashier
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1216, 624);
+            Controls.Add(button1);
             Controls.Add(label2);
             Controls.Add(pictureBox1);
             Controls.Add(label1);
@@ -132,5 +144,6 @@
         private Label label1;
         private PictureBox pictureBox1;
         private Label label2;
+        private Button button1;
     }
 }
