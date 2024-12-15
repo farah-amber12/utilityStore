@@ -20,8 +20,14 @@
         private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.ComboBox comboBoxFilter;
         private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.DateTimePicker dateTimePickerDebtDue;
         private System.Windows.Forms.Button btnGoBack;
+        private System.Windows.Forms.TextBox textBoxDebtFrom;
+        private System.Windows.Forms.TextBox textBoxDebtTo;
+        private System.Windows.Forms.DateTimePicker dateTimePickerFrom;
+        private System.Windows.Forms.DateTimePicker dateTimePickerTo;
+        private System.Windows.Forms.DateTimePicker dateTimePickerSingle;
+        private System.Windows.Forms.RadioButton radioButtonAZ;
+        private System.Windows.Forms.RadioButton radioButtonZA;
 
 
 
@@ -62,10 +68,19 @@
             textBoxSearch = new TextBox();
             comboBoxFilter = new ComboBox();
             btnSearch = new Button();
-            dateTimePickerDebtDue = new DateTimePicker();
             btnGoBack = new Button();
             label1 = new Label();
             label2 = new Label();
+            textBoxDebtFrom = new TextBox();
+            textBoxDebtTo = new TextBox();
+            dateTimePickerFrom = new DateTimePicker();
+            dateTimePickerTo = new DateTimePicker();
+            dateTimePickerSingle = new DateTimePicker();
+            radioButtonAZ = new RadioButton();
+            radioButtonZA = new RadioButton();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridViewSuppliers).BeginInit();
             SuspendLayout();
             // 
@@ -129,7 +144,6 @@
             lblDebtAmount.Size = new Size(125, 25);
             lblDebtAmount.TabIndex = 6;
             lblDebtAmount.Text = "Debt Amount:";
-          
             // 
             // txtDebtAmount
             // 
@@ -157,7 +171,7 @@
             // 
             // btnAddSupplier
             // 
-            btnAddSupplier.Location = new Point(20, 328);
+            btnAddSupplier.Location = new Point(16, 328);
             btnAddSupplier.Name = "btnAddSupplier";
             btnAddSupplier.Size = new Size(183, 36);
             btnAddSupplier.TabIndex = 10;
@@ -167,7 +181,7 @@
             // 
             // btnDeleteSupplier
             // 
-            btnDeleteSupplier.Location = new Point(155, 397);
+            btnDeleteSupplier.Location = new Point(16, 380);
             btnDeleteSupplier.Name = "btnDeleteSupplier";
             btnDeleteSupplier.Size = new Size(183, 36);
             btnDeleteSupplier.TabIndex = 11;
@@ -177,7 +191,7 @@
             // 
             // btnUpdateSupplier
             // 
-            btnUpdateSupplier.Location = new Point(279, 328);
+            btnUpdateSupplier.Location = new Point(261, 328);
             btnUpdateSupplier.Name = "btnUpdateSupplier";
             btnUpdateSupplier.Size = new Size(183, 36);
             btnUpdateSupplier.TabIndex = 13;
@@ -189,15 +203,15 @@
             // 
             dataGridViewSuppliers.BackgroundColor = Color.White;
             dataGridViewSuppliers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewSuppliers.Location = new Point(585, 34);
+            dataGridViewSuppliers.Location = new Point(573, 34);
             dataGridViewSuppliers.Name = "dataGridViewSuppliers";
             dataGridViewSuppliers.RowHeadersWidth = 62;
-            dataGridViewSuppliers.Size = new Size(1086, 511);
+            dataGridViewSuppliers.Size = new Size(1098, 573);
             dataGridViewSuppliers.TabIndex = 12;
             // 
             // textBoxSearch
             // 
-            textBoxSearch.Location = new Point(63, 527);
+            textBoxSearch.Location = new Point(104, 433);
             textBoxSearch.Name = "textBoxSearch";
             textBoxSearch.Size = new Size(264, 31);
             textBoxSearch.TabIndex = 0;
@@ -205,15 +219,18 @@
             // comboBoxFilter
             // 
             comboBoxFilter.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxFilter.Location = new Point(116, 466);
+            comboBoxFilter.FormattingEnabled = true;
+            comboBoxFilter.Items.AddRange(new object[] { "All", "Filter by Name", "Filter by City", "With Debt", "Without Debt", "Filter by Date" });
+            comboBoxFilter.Location = new Point(123, 480);
             comboBoxFilter.Name = "comboBoxFilter";
-            comboBoxFilter.Size = new Size(200, 33);
-            comboBoxFilter.TabIndex = 14;
+            comboBoxFilter.Size = new Size(150, 33);
+            comboBoxFilter.TabIndex = 0;
+            comboBoxFilter.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
             // 
             // btnSearch
             // 
             btnSearch.BackColor = Color.White;
-            btnSearch.Location = new Point(376, 521);
+            btnSearch.Location = new Point(400, 425);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(109, 43);
             btnSearch.TabIndex = 1;
@@ -221,22 +238,13 @@
             btnSearch.UseVisualStyleBackColor = false;
             btnSearch.Click += btnSearch_Click;
             // 
-            // dateTimePickerDebtDue
-            // 
-            dateTimePickerDebtDue.Format = DateTimePickerFormat.Short;
-            dateTimePickerDebtDue.Location = new Point(365, 467);
-            dateTimePickerDebtDue.Name = "dateTimePickerDebtDue";
-            dateTimePickerDebtDue.Size = new Size(120, 31);
-            dateTimePickerDebtDue.TabIndex = 4;
-            dateTimePickerDebtDue.Visible = false;
-            // 
             // btnGoBack
             // 
             btnGoBack.BackColor = Color.DarkRed;
             btnGoBack.ForeColor = Color.FloralWhite;
-            btnGoBack.Location = new Point(385, 588);
+            btnGoBack.Location = new Point(294, 380);
             btnGoBack.Name = "btnGoBack";
-            btnGoBack.Size = new Size(100, 40);
+            btnGoBack.Size = new Size(150, 36);
             btnGoBack.TabIndex = 5;
             btnGoBack.Text = "Go Back";
             btnGoBack.UseVisualStyleBackColor = false;
@@ -246,12 +254,11 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.White;
-            label1.Location = new Point(12, 472);
+            label1.Location = new Point(16, 480);
             label1.Name = "label1";
             label1.Size = new Size(78, 25);
             label1.TabIndex = 17;
             label1.Text = "Filter By:";
-           
             // 
             // label2
             // 
@@ -260,17 +267,112 @@
             label2.Cursor = Cursors.IBeam;
             label2.Font = new Font("Arial", 11F);
             label2.ForeColor = Color.White;
-            label2.Location = new Point(12, 12);
+            label2.Location = new Point(16, 9);
             label2.Name = "label2";
             label2.Size = new Size(257, 25);
             label2.TabIndex = 18;
             label2.Text = "Enter Details of Supplier :";
-           
+            // 
+            // textBoxDebtFrom
+            // 
+            textBoxDebtFrom.Location = new Point(333, 543);
+            textBoxDebtFrom.Name = "textBoxDebtFrom";
+            textBoxDebtFrom.Size = new Size(213, 31);
+            textBoxDebtFrom.TabIndex = 19;
+            textBoxDebtFrom.Visible = false;
+            // 
+            // textBoxDebtTo
+            // 
+            textBoxDebtTo.Location = new Point(73, 543);
+            textBoxDebtTo.Name = "textBoxDebtTo";
+            textBoxDebtTo.Size = new Size(200, 31);
+            textBoxDebtTo.TabIndex = 20;
+            textBoxDebtTo.Visible = false;
+            // 
+            // dateTimePickerFrom
+            // 
+            dateTimePickerFrom.Location = new Point(73, 541);
+            dateTimePickerFrom.Name = "dateTimePickerFrom";
+            dateTimePickerFrom.Size = new Size(200, 31);
+            dateTimePickerFrom.TabIndex = 21;
+            dateTimePickerFrom.Visible = false;
+            // 
+            // dateTimePickerTo
+            // 
+            dateTimePickerTo.Location = new Point(333, 541);
+            dateTimePickerTo.Name = "dateTimePickerTo";
+            dateTimePickerTo.Size = new Size(213, 31);
+            dateTimePickerTo.TabIndex = 22;
+            dateTimePickerTo.Visible = false;
+            // 
+            // dateTimePickerSingle
+            // 
+            dateTimePickerSingle.Location = new Point(123, 431);
+            dateTimePickerSingle.Name = "dateTimePickerSingle";
+            dateTimePickerSingle.Size = new Size(245, 31);
+            dateTimePickerSingle.TabIndex = 22;
+            dateTimePickerSingle.Visible = false;
+            // 
+            // radioButtonAZ
+            // 
+            radioButtonAZ.Location = new Point(306, 489);
+            radioButtonAZ.Name = "radioButtonAZ";
+            radioButtonAZ.Size = new Size(104, 24);
+            radioButtonAZ.TabIndex = 23;
+            radioButtonAZ.Text = "Sort A-Z";
+            radioButtonAZ.Visible = false;
+            // 
+            // radioButtonZA
+            // 
+            radioButtonZA.Location = new Point(426, 489);
+            radioButtonZA.Name = "radioButtonZA";
+            radioButtonZA.Size = new Size(104, 24);
+            radioButtonZA.TabIndex = 24;
+            radioButtonZA.Text = "Sort Z-A";
+            radioButtonZA.Visible = false;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Arial", 10F);
+            label3.ForeColor = Color.White;
+            label3.Location = new Point(294, 547);
+            label3.Name = "label3";
+            label3.Size = new Size(31, 23);
+            label3.TabIndex = 25;
+            label3.Text = "To";
+            label3.Visible = false;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Arial", 10F);
+            label4.ForeColor = Color.White;
+            label4.Location = new Point(2, 541);
+            label4.Name = "label4";
+            label4.Size = new Size(56, 23);
+            label4.TabIndex = 0;
+            label4.Text = "From";
+            label4.Visible = false;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Microsoft Sans Serif", 11F);
+            label5.ForeColor = Color.White;
+            label5.Location = new Point(16, 431);
+            label5.Name = "label5";
+            label5.Size = new Size(93, 26);
+            label5.TabIndex = 26;
+            label5.Text = "Search :";
             // 
             // SupplierForm
             // 
             BackColor = Color.DarkSeaGreen;
             ClientSize = new Size(1793, 752);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(btnGoBack);
@@ -290,11 +392,16 @@
             Controls.Add(textBoxSearch);
             Controls.Add(comboBoxFilter);
             Controls.Add(btnSearch);
-            Controls.Add(dateTimePickerDebtDue);
             Controls.Add(dataGridViewSuppliers);
+            Controls.Add(textBoxDebtFrom);
+            Controls.Add(textBoxDebtTo);
+            Controls.Add(dateTimePickerFrom);
+            Controls.Add(dateTimePickerTo);
+            Controls.Add(dateTimePickerSingle);
+            Controls.Add(radioButtonAZ);
+            Controls.Add(radioButtonZA);
             Name = "SupplierForm";
             Text = "Supplier Management";
-            Load += SupplierForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewSuppliers).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -304,5 +411,8 @@
 
         private Label label1;
         private Label label2;
+        private Label label3;
+        private Label label4;
+        private Label label5;
     }
 }

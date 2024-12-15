@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Globalization;
 using UtilityStoreApp;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace loginPage
 {
@@ -17,26 +18,7 @@ namespace loginPage
             InitializeComponent();
         }
 
-        public void SupplierForm_Load(object sender, EventArgs e)
-
-        {
-            comboBoxFilter.Items.AddRange(new object[] {
-            "All",
-            "With Debt",
-            "Without Debt",
-            "Filter by Date",
-            "Filter by Name",
-            "Filter by City"
-        });
-
-            comboBoxFilter.SelectedIndex = 0;
-            comboBoxFilter.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
-
-
-            RefreshSupplierData();
-
-        }
-
+      
         /// <summary>
         /// Refresh data grid with supplier and debt information.
         /// </summary>
@@ -396,17 +378,87 @@ namespace loginPage
 
         private void comboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBoxFilter.SelectedItem?.ToString() == "Filter by Date")
+            string selectedFilter = comboBoxFilter.SelectedItem?.ToString();
+
+            // Hide all additional inputs by default
+            textBoxDebtFrom.Visible = false;
+            textBoxDebtTo.Visible = false;
+            dateTimePickerFrom.Visible = false;
+            dateTimePickerTo.Visible = false;
+            radioButtonAZ.Visible = false;
+            radioButtonZA.Visible = false;
+            label3.Visible = false;
+            label4.Visible = false;
+            dateTimePickerSingle.Visible = false;
+
+
+            if (selectedFilter == "With Debt")
             {
-                dateTimePickerDebtDue.Visible = true;
+                dateTimePickerSingle.Visible = false;
+                textBoxSearch.Visible = true;
+                textBoxDebtFrom.Visible = true;
+                textBoxDebtTo.Visible = true;
+                dateTimePickerFrom.Visible = false;
+                dateTimePickerTo.Visible = false;
+                radioButtonAZ.Visible = false;
+                radioButtonZA.Visible = false;
+                label3.Visible = true;
+                label4.Visible = true;
             }
-            else
+            else if (selectedFilter == "Without Debt")
             {
-                dateTimePickerDebtDue.Visible = false;
+                dateTimePickerSingle.Visible = false;
+                textBoxSearch.Visible = true;
+                textBoxDebtFrom.Visible = false;
+                textBoxDebtTo.Visible = false;
+                dateTimePickerFrom.Visible = false;
+                dateTimePickerTo.Visible = false;
+                radioButtonAZ.Visible = false;
+                radioButtonZA.Visible = false;
+                label3.Visible = false;
+                label4.Visible = false;
+            }
+            else if (selectedFilter == "Filter by City")
+            {
+                dateTimePickerSingle.Visible = false;
+                textBoxSearch.Visible = true;
+                textBoxDebtFrom.Visible = false;
+                textBoxDebtTo.Visible = false;
+                dateTimePickerFrom.Visible = false;
+                dateTimePickerTo.Visible = false;
+                radioButtonAZ.Visible = false;
+                radioButtonZA.Visible = false;
+                label3.Visible = false;
+                label4.Visible = false;
+            }
+            else if (selectedFilter == "Filter by Date")
+            {
+                dateTimePickerSingle.Visible = false;
+                textBoxSearch.Visible = false;
+                dateTimePickerSingle.Visible = true;
+                dateTimePickerFrom.Visible = true;
+                dateTimePickerTo.Visible = true;
+                radioButtonAZ.Visible = false;
+                radioButtonZA.Visible = false;
+                textBoxDebtFrom.Visible = false;
+                textBoxDebtTo.Visible = false;
+                label3.Visible = true;
+                label4.Visible = true;
+            }
+            else if (selectedFilter == "Filter by Name")
+
+            {
+                textBoxSearch.Visible = true;
+                radioButtonAZ.Visible = true;
+                radioButtonZA.Visible = true;
+                textBoxDebtFrom.Visible = false;
+                textBoxDebtTo.Visible = false;
+                dateTimePickerFrom.Visible = false;
+                dateTimePickerTo.Visible = false;
+                label3.Visible = false;
+                label4.Visible = false;
             }
         }
-
-
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -423,14 +475,22 @@ namespace loginPage
                     if (selectedFilter == "Filter by Name")
                     {
                         query = "SELECT * FROM Supplier WHERE SupplierName LIKE @SearchText";
+                        if (radioButtonAZ.Checked)
+                        {
+                            query += " ORDER BY SupplierName ASC";
+                        }
+                        else if (radioButtonZA.Checked)
+                        {
+                            query += " ORDER BY SupplierName DESC";
+                        }
                     }
-                    else if (selectedFilter == "Filter by City")
+                    else if (selectedFilter == "Filter by Address")
                     {
-                        query = "SELECT * FROM Supplier WHERE City LIKE @SearchText";
+                        query = "SELECT * FROM Supplier WHERE Address LIKE @SearchText";
                     }
                     else if (selectedFilter == "With Debt")
                     {
-                        query = "SELECT sd.*, s.SupplierName FROM SupplierDebt sd INNER JOIN Supplier s ON sd.SupplierID = s.SupplierID WHERE sd.DebtAmount > 0";
+                        query = "SELECT sd.*, s.SupplierName FROM SupplierDebt sd INNER JOIN Supplier s ON sd.SupplierID = s.SupplierID WHERE sd.DebtAmount BETWEEN @DebtFrom AND @DebtTo";
                     }
                     else if (selectedFilter == "Without Debt")
                     {
@@ -438,32 +498,39 @@ namespace loginPage
                     }
                     else if (selectedFilter == "Filter by Date")
                     {
-                        if (dateTimePickerDebtDue.Visible && dateTimePickerDebtDue.Value != null)
+                        if (dateTimePickerFrom.Value != null && dateTimePickerTo.Value != null)
                         {
                             query = @"
-                        SELECT sd.*, s.SupplierName 
-                        FROM SupplierDebt sd 
-                        INNER JOIN Supplier s ON sd.SupplierID = s.SupplierID
-                        WHERE sd.PaymentDueDate = @Date";
+                    SELECT sd.*, s.SupplierName 
+                    FROM SupplierDebt sd 
+                    INNER JOIN Supplier s ON sd.SupplierID = s.SupplierID
+                    WHERE sd.PaymentDueDate BETWEEN @DateFrom AND @DateTo";
                         }
                         else
                         {
-                            MessageBox.Show("Please select a valid date for the search.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Please select a valid date range for the search.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
                     }
 
                     SqlCommand cmd = new SqlCommand(query, connection);
 
-                    // Set parameters safely for all filters
+                    // Bind parameters safely
                     if (selectedFilter == "Filter by Name" || selectedFilter == "Filter by City")
                     {
                         cmd.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
                     }
 
+                    if (selectedFilter == "With Debt")
+                    {
+                        cmd.Parameters.AddWithValue("@DebtFrom", decimal.Parse(textBoxDebtFrom.Text));
+                        cmd.Parameters.AddWithValue("@DebtTo", decimal.Parse(textBoxDebtTo.Text));
+                    }
+
                     if (selectedFilter == "Filter by Date")
                     {
-                        cmd.Parameters.AddWithValue("@Date", dateTimePickerDebtDue.Value.Date);
+                        cmd.Parameters.AddWithValue("@DateFrom", dateTimePickerFrom.Value.Date);
+                        cmd.Parameters.AddWithValue("@DateTo", dateTimePickerTo.Value.Date);
                     }
 
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
@@ -475,7 +542,7 @@ namespace loginPage
                         MessageBox.Show("No data found for the selected search criteria.", "No Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
-                    dataGridViewSuppliers.DataSource = dt; // Bind the results to the DataGridView
+                    dataGridViewSuppliers.DataSource = dt;
                 }
             }
             catch (Exception ex)
@@ -496,6 +563,6 @@ namespace loginPage
             ownerForm.Show(); // Show the owner form
         }
 
-       
+      
     }
 }
