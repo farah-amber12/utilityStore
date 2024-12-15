@@ -1,23 +1,26 @@
 ﻿namespace loginPage
 {
-    partial class SupplierForm
+    partial class CustomerForm
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label lblSupplierName;
-        private System.Windows.Forms.TextBox txtSupplierName;
+
+
         private System.Windows.Forms.Label lblContactNumber;
         private System.Windows.Forms.TextBox txtContactNumber;
+        private System.Windows.Forms.Label lblFirstName;
+        private System.Windows.Forms.TextBox txtFirstName;
+        private System.Windows.Forms.Label lblLastName;
+        private System.Windows.Forms.TextBox txtLastName;
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.Label lblDebtAmount;
         private System.Windows.Forms.TextBox txtDebtAmount;
-        private System.Windows.Forms.Label lblPaymentDueDate;
+        private System.Windows.Forms.Label lblDueDate;
         private System.Windows.Forms.DateTimePicker dateTimePickerPaymentDueDate;
-        private System.Windows.Forms.Button btnAddSupplier;
-        private System.Windows.Forms.Button btnDeleteSupplier;
-        private System.Windows.Forms.Button btnUpdateSupplier;
+        private System.Windows.Forms.Button btnDeleteCustomer;
+        private System.Windows.Forms.Button btnUpdateCustomer;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridView dataGridViewSuppliers;
+        private System.Windows.Forms.DataGridView dataGridViewCustomers;
         private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.ComboBox comboBoxFilter;
         private System.Windows.Forms.Button btnSearch;
@@ -57,20 +60,22 @@
         /// </summary>
         private void InitializeComponent(Button button1)
         {
-            lblSupplierName = new Label();
-            txtSupplierName = new TextBox();
+            
             lblContactNumber = new Label();
             txtContactNumber = new TextBox();
             lblAddress = new Label();
             txtAddress = new TextBox();
             lblDebtAmount = new Label();
             txtDebtAmount = new TextBox();
-            lblPaymentDueDate = new Label();
+            lblDueDate = new Label();
             dateTimePickerPaymentDueDate = new DateTimePicker();
-            btnAddSupplier = new Button();
-            btnDeleteSupplier = new Button();
-            btnUpdateSupplier = new Button();
-            dataGridViewSuppliers = new DataGridView();
+            lblFirstName = new Label();
+            txtFirstName = new TextBox();
+            lblLastName = new Label();
+            txtLastName = new TextBox();
+            btnDeleteCustomer = new Button();
+            btnUpdateCustomer = new Button();
+            dataGridViewCustomers = new DataGridView();
             textBoxSearch = new TextBox();
             comboBoxFilter = new ComboBox();
             btnSearch = new Button();
@@ -88,26 +93,39 @@
             label4 = new Label();
             label5 = new Label();
             button1 = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewSuppliers).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewCustomers).BeginInit();
             SuspendLayout();
-            // 
-            // lblSupplierName
-            // 
-            lblSupplierName.AutoSize = true;
-            lblSupplierName.BackColor = Color.White;
-            lblSupplierName.Location = new Point(12, 55);
-            lblSupplierName.Name = "lblSupplierName";
-            lblSupplierName.Size = new Size(133, 25);
-            lblSupplierName.TabIndex = 0;
-            lblSupplierName.Text = "Supplier Name:";
-            // 
-            // txtSupplierName
-            // 
-            txtSupplierName.Location = new Point(212, 49);
-            txtSupplierName.Name = "txtSupplierName";
-            txtSupplierName.Size = new Size(273, 31);
-            txtSupplierName.TabIndex = 1;
-            // 
+
+            // First Name Label
+            lblFirstName.AutoSize = true;
+            lblFirstName.BackColor = Color.White;
+            lblFirstName.Location = new Point(12, 55);
+            lblFirstName.Name = "lblFirstName";
+            lblFirstName.Size = new Size(100, 25);
+            lblFirstName.TabIndex = 0;
+            lblFirstName.Text = "First Name:";
+
+            // First Name TextBox
+            txtFirstName.Location = new Point(212, 49);
+            txtFirstName.Name = "txtFirstName";
+            txtFirstName.Size = new Size(273, 31);
+            txtFirstName.TabIndex = 1;
+
+            // Last Name Label
+            lblLastName.AutoSize = true;
+            lblLastName.BackColor = Color.White;
+            lblLastName.Location = new Point(12, 107);
+            lblLastName.Name = "lblLastName";
+            lblLastName.Size = new Size(100, 25);
+            lblLastName.TabIndex = 2;
+            lblLastName.Text = "Last Name:";
+
+            // Last Name TextBox
+            txtLastName.Location = new Point(212, 101);
+            txtLastName.Name = "txtLastName";
+            txtLastName.Size = new Size(273, 31);
+            txtLastName.TabIndex = 3;
+
             // lblContactNumber
             // 
             lblContactNumber.AutoSize = true;
@@ -161,13 +179,13 @@
             // 
             // lblPaymentDueDate
             // 
-            lblPaymentDueDate.AutoSize = true;
-            lblPaymentDueDate.BackColor = Color.White;
-            lblPaymentDueDate.Location = new Point(20, 271);
-            lblPaymentDueDate.Name = "lblPaymentDueDate";
-            lblPaymentDueDate.Size = new Size(163, 25);
-            lblPaymentDueDate.TabIndex = 8;
-            lblPaymentDueDate.Text = "Payment Due Date:";
+            lblDueDate.AutoSize = true;
+            lblDueDate.BackColor = Color.White;
+            lblDueDate.Location = new Point(20, 271);
+            lblDueDate.Name = "lblPaymentDueDate";
+            lblDueDate.Size = new Size(163, 25);
+            lblDueDate.TabIndex = 8;
+            lblDueDate.Text = "Payment Due Date:";
             // 
             // dateTimePickerPaymentDueDate
             // 
@@ -175,46 +193,36 @@
             dateTimePickerPaymentDueDate.Name = "dateTimePickerPaymentDueDate";
             dateTimePickerPaymentDueDate.Size = new Size(273, 31);
             dateTimePickerPaymentDueDate.TabIndex = 9;
+            
+            // btnDeleteCustomer
             // 
-            // btnAddSupplier
-            // 
-            btnAddSupplier.Location = new Point(16, 328);
-            btnAddSupplier.Name = "btnAddSupplier";
-            btnAddSupplier.Size = new Size(183, 36);
-            btnAddSupplier.TabIndex = 10;
-            btnAddSupplier.Text = "Add Supplier";
-            btnAddSupplier.UseVisualStyleBackColor = true;
-            btnAddSupplier.Click += btnAddSupplier_Click;
-            // 
-            // btnDeleteSupplier
-            // 
-            btnDeleteSupplier.Location = new Point(16, 380);
-            btnDeleteSupplier.Name = "btnDeleteSupplier";
-            btnDeleteSupplier.Size = new Size(183, 36);
-            btnDeleteSupplier.TabIndex = 11;
-            btnDeleteSupplier.Text = "Delete Supplier";
-            btnDeleteSupplier.UseVisualStyleBackColor = true;
-            btnDeleteSupplier.Click += btnDeleteSupplier_Click;
+            btnDeleteCustomer.Location = new Point(16, 380);
+            btnDeleteCustomer.Name = "btnDeleteCustomer";
+            btnDeleteCustomer.Size = new Size(183, 36);
+            btnDeleteCustomer.TabIndex = 11;
+            btnDeleteCustomer.Text = "Delete Customer";
+            btnDeleteCustomer.UseVisualStyleBackColor = true;
+            btnDeleteCustomer.Click += btnDeleteCustomer_Click;
             // 
             // btnUpdateSupplier
             // 
-            btnUpdateSupplier.Location = new Point(261, 328);
-            btnUpdateSupplier.Name = "btnUpdateSupplier";
-            btnUpdateSupplier.Size = new Size(183, 36);
-            btnUpdateSupplier.TabIndex = 13;
-            btnUpdateSupplier.Text = "Update Supplier";
-            btnUpdateSupplier.UseVisualStyleBackColor = true;
-            btnUpdateSupplier.Click += btnUpdateSupplier_Click;
+            btnUpdateCustomer.Location = new Point(261, 328);
+            btnUpdateCustomer.Name = "btnUpdateCustomer";
+            btnUpdateCustomer.Size = new Size(183, 36);
+            btnUpdateCustomer.TabIndex = 13;
+            btnUpdateCustomer.Text = "Update Supplier";
+            btnUpdateCustomer.UseVisualStyleBackColor = true;
+            btnUpdateCustomer.Click += btnUpdateCustomer_Click;
             // 
             // dataGridViewSuppliers
             // 
-            dataGridViewSuppliers.BackgroundColor = Color.White;
-            dataGridViewSuppliers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewSuppliers.Location = new Point(573, 34);
-            dataGridViewSuppliers.Name = "dataGridViewSuppliers";
-            dataGridViewSuppliers.RowHeadersWidth = 62;
-            dataGridViewSuppliers.Size = new Size(1098, 573);
-            dataGridViewSuppliers.TabIndex = 12;
+            dataGridViewCustomers.BackgroundColor = Color.White;
+            dataGridViewCustomers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCustomers.Location = new Point(573, 34);
+            dataGridViewCustomers.Name = "dataGridViewCustomers";
+            dataGridViewCustomers.RowHeadersWidth = 62;
+            dataGridViewCustomers.Size = new Size(1098, 573);
+            dataGridViewCustomers.TabIndex = 12;
             // 
             // textBoxSearch
             // 
@@ -383,7 +391,7 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += refresh_Click;
             // 
-            // SupplierForm
+            // CustomerForm
             // 
             BackColor = Color.DarkSeaGreen;
             ClientSize = new Size(1793, 752);
@@ -394,23 +402,25 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(btnGoBack);
-            Controls.Add(btnUpdateSupplier);
-            Controls.Add(lblSupplierName);
-            Controls.Add(txtSupplierName);
+            Controls.Add(btnUpdateCustomer);
+            Controls.Add(lblFirstName);
+            Controls.Add(txtFirstName);
+            Controls.Add(lblLastName);
+            Controls.Add(txtLastName);
             Controls.Add(lblContactNumber);
             Controls.Add(txtContactNumber);
             Controls.Add(lblAddress);
             Controls.Add(txtAddress);
             Controls.Add(lblDebtAmount);
             Controls.Add(txtDebtAmount);
-            Controls.Add(lblPaymentDueDate);
+            Controls.Add(lblDueDate);
             Controls.Add(dateTimePickerPaymentDueDate);
-            Controls.Add(btnAddSupplier);
-            Controls.Add(btnDeleteSupplier);
+       
+            Controls.Add(btnDeleteCustomer);
             Controls.Add(textBoxSearch);
             Controls.Add(comboBoxFilter);
             Controls.Add(btnSearch);
-            Controls.Add(dataGridViewSuppliers);
+            Controls.Add(dataGridViewCustomers);
             Controls.Add(textBoxDebtFrom);
             Controls.Add(textBoxDebtTo);
             Controls.Add(dateTimePickerFrom);
@@ -420,7 +430,7 @@
             Controls.Add(radioButtonZA);
             Name = "SupplierForm";
             Text = "Supplier Management";
-            ((System.ComponentModel.ISupportInitialize)dataGridViewSuppliers).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewCustomers).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -432,6 +442,6 @@
         private Label label3;
         private Label label4;
         private Label label5;
-       
+
     }
 }

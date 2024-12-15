@@ -11,13 +11,13 @@ using System.Diagnostics.Eventing.Reader;
 
 namespace loginPage
 {
-    public partial class SupplierForm : Form
+    public partial class CustomerForm : Form
     {
-        public SupplierForm()
+        public CustomerForm()
 
         {
             InitializeComponent(GetButton1());
-            RefreshSupplierData();
+            RefreshCustomerData();
         }
 
 
@@ -29,102 +29,6 @@ namespace loginPage
         /// <summary>
         /// Add supplier along with debt information
         /// </summary>
-        private void btnAddSupplier_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Validate supplier name - only alphabets and not empty
-                if (string.IsNullOrWhiteSpace(txtSupplierName.Text))
-                {
-                    MessageBox.Show("Please enter the supplier name.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (!System.Text.RegularExpressions.Regex.IsMatch(txtSupplierName.Text, @"^[A-Za-z\s]+$"))
-                {
-                    MessageBox.Show("Supplier name should only contain alphabets.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                // Validate contact number
-                if (string.IsNullOrWhiteSpace(txtContactNumber.Text))
-                {
-                    MessageBox.Show("Please enter the contact number.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (!System.Text.RegularExpressions.Regex.IsMatch(txtContactNumber.Text, @"^(03\d{2}-\d{7}|042-\d{8})$"))
-                {
-                    MessageBox.Show("Invalid contact number format. Use 03XX-XXXXXXXX or 042-XXXXXXXX.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(txtAddress.Text))
-                {
-                    MessageBox.Show("Please enter the supplier address.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                using (SqlConnection connection = new SqlConnection(loginForm.connectionString))
-                {
-                    connection.Open();
-
-                    // Validate debt conditions only when debt amount is entered
-                    if (!string.IsNullOrWhiteSpace(txtDebtAmount.Text))
-                    {
-                        if (dateTimePickerPaymentDueDate.Value == DateTime.MinValue) // No date selected
-                        {
-                            MessageBox.Show("Please select a payment due date.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-
-                        if (dateTimePickerPaymentDueDate.Value.Date <= DateTime.Today) // Invalid date
-                        {
-                            MessageBox.Show("The payment due date must be greater than today's date.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-                    }
-
-                    // Only proceed if debt is either valid or optional debt case
-                    string insertSupplierQuery = "INSERT INTO Supplier (SupplierName, ContactNumber, Address) VALUES (@Name, @Contact, @Address); SELECT SCOPE_IDENTITY();";
-                    SqlCommand command = new SqlCommand(insertSupplierQuery, connection);
-
-                    command.Parameters.AddWithValue("@Name", txtSupplierName.Text);
-                    command.Parameters.AddWithValue("@Contact", txtContactNumber.Text);
-                    command.Parameters.AddWithValue("@Address", txtAddress.Text);
-
-                    // Insert supplier only if debt validation is either passed or debt is optional
-                    int newSupplierID = Convert.ToInt32(command.ExecuteScalar());
-
-                    if (!string.IsNullOrWhiteSpace(txtDebtAmount.Text)) // Handle debt validation only if debt entered
-                    {
-                        string insertDebtQuery = "INSERT INTO SupplierDebt (SupplierID, DebtAmount, PaymentDueDate) VALUES (@SupplierID, @Debt, @DueDate)";
-                        SqlCommand debtCommand = new SqlCommand(insertDebtQuery, connection);
-
-                        debtCommand.Parameters.AddWithValue("@SupplierID", newSupplierID);
-                        debtCommand.Parameters.AddWithValue("@Debt", decimal.Parse(txtDebtAmount.Text));
-                        debtCommand.Parameters.AddWithValue("@DueDate", dateTimePickerPaymentDueDate.Value);
-
-                        debtCommand.ExecuteNonQuery();
-                        MessageBox.Show("Supplier and debt added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Supplier added successfully without debt.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-
-                    RefreshSupplierData();
-                }
-            }
-            catch (FormatException)
-            {
-                MessageBox.Show("Please enter a valid debt amount.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error adding supplier: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
 
 
@@ -132,19 +36,19 @@ namespace loginPage
         /// <summary>
         /// Delete supplier and its associated debt
         /// </summary>
-        private void btnDeleteSupplier_Click(object sender, EventArgs e)
+        private void btnDeleteCustomer_Click(object sender, EventArgs e)
         {
-            if (dataGridViewSuppliers.SelectedRows.Count == 0)
+            if (dataGridViewCustomers.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select a supplier to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select a customer to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            DataGridViewRow selectedRow = dataGridViewSuppliers.SelectedRows[0];
-            int supplierId = Convert.ToInt32(selectedRow.Cells["SupplierID"].Value);
+            DataGridViewRow selectedRow = dataGridViewCustomers.SelectedRows[0];
+            int customerId = Convert.ToInt32(selectedRow.Cells["CustomerID"].Value);
 
             DialogResult confirmResult = MessageBox.Show(
-                "Are you sure you want to delete this supplier and its associated debt?",
+                "Are you sure you want to delete this customer and their associated debt?",
                 "Confirm Delete",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
@@ -156,33 +60,32 @@ namespace loginPage
                     using (SqlConnection connection = new SqlConnection(loginForm.connectionString))
                     {
                         connection.Open();
-                        // Delete debt first
-                        SqlCommand deleteDebt = new SqlCommand("DELETE FROM SupplierDebt WHERE SupplierID = @SupplierID", connection);
-                        deleteDebt.Parameters.AddWithValue("@SupplierID", supplierId);
-                        deleteDebt.ExecuteNonQuery();
 
-                        // Delete supplier
-                        SqlCommand deleteSupplier = new SqlCommand("DELETE FROM Supplier WHERE SupplierID = @SupplierID", connection);
-                        deleteSupplier.Parameters.AddWithValue("@SupplierID", supplierId);
-                        deleteSupplier.ExecuteNonQuery();
+                        // Delete associated debt first
+                        SqlCommand deleteCustomerDebt = new SqlCommand("DELETE FROM CustomerDebt WHERE CustomerID = @CustomerID", connection);
+                        deleteCustomerDebt.Parameters.AddWithValue("@CustomerID", customerId);
+                        deleteCustomerDebt.ExecuteNonQuery();
+
+                        // Delete the customer
+                        SqlCommand deleteCustomer = new SqlCommand("DELETE FROM Customers WHERE CustomerID = @CustomerID", connection);
+                        deleteCustomer.Parameters.AddWithValue("@CustomerID", customerId);
+                        deleteCustomer.ExecuteNonQuery();
                     }
 
-                    MessageBox.Show("Supplier and associated debt deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RefreshSupplierData();
+                    MessageBox.Show("Customer and their associated debt deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RefreshCustomerData();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error deleting supplier: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error deleting customer: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-
         /// <summary>
-        /// Handles both Add and Update logic for supplier and debt data.
+        /// Handles both Add and Update logic for customer and debt data.
         /// </summary>
-
-        private void RefreshSupplierData()
+        private void RefreshCustomerData()
         {
             try
             {
@@ -190,27 +93,26 @@ namespace loginPage
                 {
                     connection.Open();
                     string query = @"
-                        SELECT 
-                            s.SupplierID, 
-                            s.SupplierName, 
-                            s.ContactNumber, 
-                            s.Address, 
-                            sd.DebtAmount, 
-                            sd.PaymentDueDate
-                        FROM Supplier s
-                        LEFT JOIN SupplierDebt sd ON s.SupplierID = sd.SupplierID";
+                SELECT 
+                    c.CustomerID, 
+                    c.FirstName, 
+                    c.LastName, 
+                    c.Phone, 
+                    cd.DebtAmount, 
+                    cd.DueDate
+                FROM Customers c
+                LEFT JOIN CustomerDebt cd ON c.CustomerID = cd.CustomerID";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
 
-                    dataGridViewSuppliers.DataSource = dataTable;
+                    dataGridViewCustomers.DataSource = dataTable;
 
-                    if (dataGridViewSuppliers.Columns["SupplierID"] != null)
+                    if (dataGridViewCustomers.Columns["CustomerID"] != null)
                     {
-                        dataGridViewSuppliers.Columns["SupplierID"].ReadOnly = true;
+                        dataGridViewCustomers.Columns["CustomerID"].ReadOnly = true;
                     }
-
                 }
             }
             catch (Exception ex)
@@ -220,22 +122,28 @@ namespace loginPage
         }
 
 
-
-
         // Input validation method
         private bool ValidateInputs(DataGridViewRow selectedRow)
         {
-            // Validate Supplier Name (Only letters allowed)
-            if (selectedRow.Cells["SupplierName"]?.Value != null &&
-                !Regex.IsMatch(selectedRow.Cells["SupplierName"].Value.ToString(), @"^[a-zA-Z\s]+$"))
+            // Validate First Name (Only letters allowed)
+            if (selectedRow.Cells["FirstName"]?.Value != null &&
+                !Regex.IsMatch(selectedRow.Cells["FirstName"].Value.ToString(), @"^[a-zA-Z\s]+$"))
             {
-                MessageBox.Show("Supplier Name should only contain letters.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("First Name should only contain letters.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
-            // Validate Contact Number (specific format for Pakistani numbers)
-            if (selectedRow.Cells["ContactNumber"]?.Value != null &&
-                !Regex.IsMatch(selectedRow.Cells["ContactNumber"].Value.ToString(), @"^(03\d{2}-\d{7}|04\d-\d{7})$"))
+            // Validate Last Name (Only letters allowed)
+            if (selectedRow.Cells["LastName"]?.Value != null &&
+                !Regex.IsMatch(selectedRow.Cells["LastName"].Value.ToString(), @"^[a-zA-Z\s]+$"))
+            {
+                MessageBox.Show("Last Name should only contain letters.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // Validate Phone Number (specific format for Pakistani numbers)
+            if (selectedRow.Cells["Phone"]?.Value != null &&
+                !Regex.IsMatch(selectedRow.Cells["Phone"].Value.ToString(), @"^(03\d{2}-\d{7}|04\d-\d{7})$"))
             {
                 MessageBox.Show("Invalid Contact Number. It must be in the format 03XX-XXXXXXX or 04X-XXXXXXXX.",
                     "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -253,23 +161,21 @@ namespace loginPage
 
             return true; // Return true only if all inputs are valid
         }
-
-
         /// <summary>
-        /// Handles the supplier update logic upon button click.
+        /// Handles the customer update logic upon button click.
         /// </summary>
-        private void btnUpdateSupplier_Click(object sender, EventArgs e)
+        private void btnUpdateCustomer_Click(object sender, EventArgs e)
         {
             try
             {
-                // Ensure a supplier row is selected
-                if (dataGridViewSuppliers.SelectedRows.Count == 0)
+                // Ensure a customer row is selected
+                if (dataGridViewCustomers.SelectedRows.Count == 0)
                 {
-                    MessageBox.Show("Please select a supplier row to edit.", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please select a customer row to edit.", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                DataGridViewRow selectedRow = dataGridViewSuppliers.SelectedRows[0];
+                DataGridViewRow selectedRow = dataGridViewCustomers.SelectedRows[0];
 
                 // Validate Inputs
                 if (!ValidateInputs(selectedRow))
@@ -282,41 +188,41 @@ namespace loginPage
                 {
                     connection.Open();
 
-                    bool isSupplierUpdated = false;
+                    bool isCustomerUpdated = false;
                     bool isDebtUpdated = false;
 
-                    // Update supplier information
-                    SqlCommand updateSupplierCommand = new SqlCommand
+                    // Update customer information
+                    SqlCommand updateCustomerCommand = new SqlCommand
                     {
                         Connection = connection
                     };
-                    List<string> supplierSetClauses = new List<string>();
+                    List<string> customerSetClauses = new List<string>();
 
-                    if (!string.IsNullOrWhiteSpace(selectedRow.Cells["SupplierName"].Value?.ToString()))
+                    if (!string.IsNullOrWhiteSpace(selectedRow.Cells["FirstName"]?.Value?.ToString()))
                     {
-                        supplierSetClauses.Add("SupplierName = @Name");
-                        updateSupplierCommand.Parameters.AddWithValue("@Name", selectedRow.Cells["SupplierName"].Value.ToString());
+                        customerSetClauses.Add("FirstName = @FirstName");
+                        updateCustomerCommand.Parameters.AddWithValue("@FirstName", selectedRow.Cells["FirstName"].Value.ToString());
                     }
 
-                    if (!string.IsNullOrWhiteSpace(selectedRow.Cells["ContactNumber"].Value?.ToString()))
+                    if (!string.IsNullOrWhiteSpace(selectedRow.Cells["LastName"]?.Value?.ToString()))
                     {
-                        supplierSetClauses.Add("ContactNumber = @Contact");
-                        updateSupplierCommand.Parameters.AddWithValue("@Contact", selectedRow.Cells["ContactNumber"].Value.ToString());
+                        customerSetClauses.Add("LastName = @LastName");
+                        updateCustomerCommand.Parameters.AddWithValue("@LastName", selectedRow.Cells["LastName"].Value.ToString());
                     }
 
-                    if (!string.IsNullOrWhiteSpace(selectedRow.Cells["Address"].Value?.ToString()))
+                    if (!string.IsNullOrWhiteSpace(selectedRow.Cells["Phone"]?.Value?.ToString()))
                     {
-                        supplierSetClauses.Add("Address = @Address");
-                        updateSupplierCommand.Parameters.AddWithValue("@Address", selectedRow.Cells["Address"].Value.ToString());
+                        customerSetClauses.Add("Phone = @Phone");
+                        updateCustomerCommand.Parameters.AddWithValue("@Phone", selectedRow.Cells["Phone"].Value.ToString());
                     }
 
-                    if (supplierSetClauses.Count > 0)
+                    if (customerSetClauses.Count > 0)
                     {
-                        string updateSupplierQuery = $"UPDATE Supplier SET {string.Join(", ", supplierSetClauses)} WHERE SupplierID = @SupplierID";
-                        updateSupplierCommand.CommandText = updateSupplierQuery;
-                        updateSupplierCommand.Parameters.AddWithValue("@SupplierID", selectedRow.Cells["SupplierID"].Value.ToString());
-                        int supplierRowsAffected = updateSupplierCommand.ExecuteNonQuery();
-                        isSupplierUpdated = supplierRowsAffected > 0;
+                        string updateCustomerQuery = $"UPDATE Customers SET {string.Join(", ", customerSetClauses)} WHERE CustomerID = @CustomerID";
+                        updateCustomerCommand.CommandText = updateCustomerQuery;
+                        updateCustomerCommand.Parameters.AddWithValue("@CustomerID", selectedRow.Cells["CustomerID"].Value.ToString());
+                        int customerRowsAffected = updateCustomerCommand.ExecuteNonQuery();
+                        isCustomerUpdated = customerRowsAffected > 0;
                     }
 
                     // Handle Debt logic here
@@ -325,24 +231,24 @@ namespace loginPage
                         Connection = connection
                     };
 
-                    string debtAmountValue = selectedRow.Cells["DebtAmount"].Value?.ToString();
+                    string debtAmountValue = selectedRow.Cells["DebtAmount"]?.Value?.ToString();
                     string paymentDueDateValue = dateTimePickerPaymentDueDate.Value.Date.ToString();
 
                     if (string.IsNullOrWhiteSpace(debtAmountValue))
                     {
-                        // Clear the PaymentDueDate if DebtAmount is empty
-                        updateDebtCommand.CommandText = "DELETE FROM SupplierDebt WHERE SupplierID = @SupplierID";
-                        updateDebtCommand.Parameters.AddWithValue("@SupplierID", selectedRow.Cells["SupplierID"].Value.ToString());
+                        // Clear the debt entry if DebtAmount is empty
+                        updateDebtCommand.CommandText = "DELETE FROM CustomerDebt WHERE CustomerID = @CustomerID";
+                        updateDebtCommand.Parameters.AddWithValue("@CustomerID", selectedRow.Cells["CustomerID"].Value.ToString());
                     }
                     else
                     {
-                        // Insert/Update debt only when debt amount is provided and payment due date is valid
-                        updateDebtCommand.CommandText = $"IF EXISTS (SELECT 1 FROM SupplierDebt WHERE SupplierID = @SupplierID) " +
-                                                          $"UPDATE SupplierDebt SET DebtAmount = @Debt, PaymentDueDate = @DueDate WHERE SupplierID = @SupplierID " +
-                                                          "ELSE INSERT INTO SupplierDebt (SupplierID, DebtAmount, PaymentDueDate) VALUES (@SupplierID, @Debt, @DueDate)";
+                        // Insert/Update debt only when debt amount is provided
+                        updateDebtCommand.CommandText = $"IF EXISTS (SELECT 1 FROM CustomerDebt WHERE CustomerID = @CustomerID) " +
+                                                          $"UPDATE CustomerDebt SET DebtAmount = @Debt, DueDate = @DueDate WHERE CustomerID = @CustomerID " +
+                                                          "ELSE INSERT INTO CustomerDebt (CustomerID, DebtAmount, DueDate) VALUES (@CustomerID, @Debt, @DueDate)";
                         updateDebtCommand.Parameters.AddWithValue("@Debt", debtAmountValue);
                         updateDebtCommand.Parameters.AddWithValue("@DueDate", dateTimePickerPaymentDueDate.Value.Date);
-                        updateDebtCommand.Parameters.AddWithValue("@SupplierID", selectedRow.Cells["SupplierID"].Value.ToString());
+                        updateDebtCommand.Parameters.AddWithValue("@CustomerID", selectedRow.Cells["CustomerID"].Value.ToString());
                     }
 
                     try
@@ -355,10 +261,10 @@ namespace loginPage
                         MessageBox.Show($"Error while updating debt/payment information: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
-                    if (isDebtUpdated || isSupplierUpdated)
+                    if (isDebtUpdated || isCustomerUpdated)
                     {
                         MessageBox.Show("Update Successful", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        RefreshSupplierData();
+                        RefreshCustomerData();
                     }
                     else
                     {
@@ -371,6 +277,7 @@ namespace loginPage
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
 
@@ -435,7 +342,7 @@ namespace loginPage
             }
             else if (selectedFilter == "Filter by Date")
             {
-               
+
                 textBoxSearch.Visible = true;
                 dateTimePickerSingle.Visible = true;
                 dateTimePickerFrom.Visible = true;
@@ -471,7 +378,8 @@ namespace loginPage
                 string searchText = textBoxSearch.Text.Trim();
                 string selectedFilter = comboBoxFilter.SelectedItem?.ToString();
 
-                if (string.IsNullOrEmpty(searchText) && (string.IsNullOrEmpty(textBoxDebtFrom.Text) && string.IsNullOrEmpty(textBoxDebtTo.Text)))
+                if (string.IsNullOrEmpty(searchText) &&
+                    (string.IsNullOrEmpty(textBoxDebtFrom.Text) && string.IsNullOrEmpty(textBoxDebtTo.Text)))
                 {
                     MessageBox.Show("Please enter a search term to proceed.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -484,11 +392,16 @@ namespace loginPage
 
                     if (selectedFilter == "Filter by Name")
                     {
-                        query = "SELECT * FROM Supplier WHERE SupplierName LIKE @SearchText";
+                        // Adjusted to search using FirstName and LastName
+                        query = @"
+                    SELECT * 
+                    FROM Customers 
+                    WHERE FirstName LIKE @SearchText OR LastName LIKE @SearchText";
+
                         if (radioButtonAZ.Checked)
-                            query += " ORDER BY SupplierName ASC";
+                            query += " ORDER BY FirstName ASC, LastName ASC";
                         else if (radioButtonZA.Checked)
-                            query += " ORDER BY SupplierName DESC";
+                            query += " ORDER BY FirstName DESC, LastName DESC";
                     }
                     else if (selectedFilter == "Filter by Address")
                     {
@@ -501,7 +414,7 @@ namespace loginPage
                             if (decimal.TryParse(textBoxDebtFrom.Text, out decimal debtFrom) &&
                                 decimal.TryParse(textBoxDebtTo.Text, out decimal debtTo))
                             {
-                                query = "SELECT sd.*, s.SupplierName FROM SupplierDebt sd INNER JOIN Supplier s ON sd.SupplierID = s.SupplierID WHERE sd.DebtAmount BETWEEN @DebtFrom AND @DebtTo";
+                                query = "SELECT sd.*, c.FirstName, c.LastName FROM CustomerDebt sd INNER JOIN Customers c ON sd.CustomerID = c.CustomerID WHERE sd.DebtAmount BETWEEN @DebtFrom AND @DebtTo";
                             }
                             else
                             {
@@ -511,7 +424,7 @@ namespace loginPage
                         }
                         else
                         {
-                            query = "SELECT * FROM SupplierDebt WHERE 1=1";
+                            query = "SELECT * FROM CustomerDebt";
                         }
                     }
                     else if (selectedFilter == "Filter by Date")
@@ -520,20 +433,20 @@ namespace loginPage
                             !string.IsNullOrEmpty(dateTimePickerTo.Value.ToString()))
                         {
                             query = @"
-                        SELECT sd.*, s.SupplierName 
-                        FROM SupplierDebt sd 
-                        INNER JOIN Supplier s ON sd.SupplierID = s.SupplierID
-                        WHERE sd.PaymentDueDate BETWEEN @DateFrom AND @DateTo";
+                    SELECT sd.*, c.FirstName, c.LastName 
+                    FROM CustomerDebt sd 
+                    INNER JOIN Customers c ON sd.CustomerID = c.CustomerID
+                    WHERE sd.DueDate BETWEEN @DateFrom AND @DateTo";
                         }
                         else
                         {
-                            query = "SELECT * FROM SupplierDebt";
+                            query = "SELECT * FROM CustomerDebt";
                         }
                     }
 
                     SqlCommand cmd = new SqlCommand(query, connection);
 
-                    if (selectedFilter == "Filter by Name" || selectedFilter == "Filter by Address")
+                    if (selectedFilter == "Filter by Name")
                     {
                         cmd.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
                     }
@@ -561,7 +474,7 @@ namespace loginPage
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
 
-                    dataGridViewSuppliers.DataSource = dt;
+                    dataGridViewCustomers.DataSource = dt;
 
                     if (dt.Rows.Count == 0)
                         MessageBox.Show("No results found for your query.", "No Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -573,7 +486,6 @@ namespace loginPage
             }
         }
 
-
         private void btnGoBack_Click(object sender, EventArgs e)
         {
             // Hide the current form
@@ -582,11 +494,11 @@ namespace loginPage
             ownerForm.ShowDialog();
             ownerForm.Show(); // Show the owner form
         }
+
         private void refresh_Click(object sender, EventArgs e)
         {
-            RefreshSupplierData();
+            RefreshCustomerData();
         }
-
 
 
 

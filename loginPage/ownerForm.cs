@@ -81,8 +81,7 @@ namespace UtilityStoreApp
 
         private void btnManageCategories_Click(object sender, EventArgs e)
         {
-            var data = ExecuteQuery("SELECT * FROM Categories");
-            LoadDataToGrid(data);
+            
 
         }
 
@@ -99,20 +98,10 @@ namespace UtilityStoreApp
 
         private void btnManageCustomerDebt_Click(object sender, EventArgs e)
         {
-            string query = @"
-        SELECT 
-            CustomerDebt.CustomerDebtID, 
-            Customers.FirstName + ' ' + Customers.LastName AS CustomerName, 
-            Customers.Phone, 
-            CustomerDebt.DebtAmount, 
-            CustomerDebt.DueDate
-        FROM 
-            CustomerDebt
-        INNER JOIN 
-            Customers ON CustomerDebt.CustomerID = Customers.CustomerID";
-
-            var data = ExecuteQuery(query);
-            LoadDataToGrid(data);
+            CustomerForm customerForm = new CustomerForm();
+            this.Close();
+            customerForm.ShowDialog();
+            customerForm.Show();
         }
         #endregion
 
