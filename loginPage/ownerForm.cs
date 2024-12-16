@@ -28,8 +28,8 @@ namespace UtilityStoreApp
         {
             dataGridView = new DataGridView
             {
-                Location = new Point(this.ClientSize.Width / 2, 0), // Start at the middle of the form
-                Size = new Size(this.ClientSize.Width / 2, this.ClientSize.Height), // Cover the right half
+                Location = new Point((this.ClientSize.Width / 2) - 100, 100), // Start at the middle of the form
+                Size = new Size(this.ClientSize.Width / 2, this.ClientSize.Height +100), // Cover the right half
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right, // Responsive anchoring
                 BorderStyle = BorderStyle.Fixed3D,
                 BackgroundColor = Color.White
@@ -81,11 +81,8 @@ namespace UtilityStoreApp
 
         private void btnManageCategories_Click(object sender, EventArgs e)
         {
-            Categories catForm = new Categories();
-            this.Close();
-            catForm.ShowDialog();
-            catForm.Show();
-
+            var data = ExecuteQuery("SELECT * FROM Categories");
+            LoadDataToGrid(data);
         }
 
         #region Event Handlers
@@ -149,6 +146,8 @@ namespace UtilityStoreApp
         {
 
         }
+
+       
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {

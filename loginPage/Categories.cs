@@ -19,7 +19,7 @@ namespace loginPage
             InitializeComponent();
         }
 
-        private void Categories_Load(object sender, EventArgs e)
+        public void Categories_Load(object sender, EventArgs e)
         {
             RefreshCategoryGrid();
         }
@@ -63,7 +63,7 @@ namespace loginPage
             }
         }
 
-        private void RefreshCategoryGrid()
+        public void RefreshCategoryGrid()
         {
             try
             {
