@@ -505,6 +505,9 @@ namespace loginPage
         private void refresh_Click(object sender, EventArgs e)
         {
             RefreshCustomerData();
+            textBoxDebtFrom.Clear();
+            textBoxDebtTo.Clear();
+            textBoxSearch.Clear();
         }
 
      

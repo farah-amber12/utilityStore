@@ -241,7 +241,7 @@
             // 
             cmbFilterType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFilterType.FormattingEnabled = true;
-            cmbFilterType.Items.AddRange(new object[] { "Select Filter", "All","Name", "Role", "Salary" });
+            cmbFilterType.Items.AddRange(new object[] { "Select Filter", "All", "Name", "Role", "Salary" });
             cmbFilterType.Location = new Point(888, 142);
             cmbFilterType.Name = "cmbFilterType";
             cmbFilterType.Size = new Size(150, 33);
@@ -352,6 +352,7 @@
             Name = "StaffForm";
             Text = "Staff Management Form";
             WindowState = FormWindowState.Maximized;
+            Load += StaffForm_Load;
             ((System.ComponentModel.ISupportInitialize)dgvStaff).EndInit();
             ResumeLayout(false);
             PerformLayout();

@@ -436,7 +436,7 @@ namespace loginPage
             else if (selectedFilter == "Filter by Date")
             {
 
-                textBoxSearch.Visible = true;
+                textBoxSearch.Visible = false;
                 dateTimePickerSingle.Visible = true;
                 dateTimePickerFrom.Visible = true;
                 dateTimePickerTo.Visible = true;
@@ -471,16 +471,13 @@ namespace loginPage
                 string searchText = textBoxSearch.Text.Trim();
                 string selectedFilter = comboBoxFilter.SelectedItem?.ToString();
 
-                if (string.IsNullOrEmpty(searchText) && (string.IsNullOrEmpty(textBoxDebtFrom.Text) && string.IsNullOrEmpty(textBoxDebtTo.Text)))
-                {
-                    MessageBox.Show("Please enter a search term to proceed.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+               
 
                 using (SqlConnection connection = new SqlConnection(loginForm.connectionString))
                 {
                     connection.Open();
                     string query = "";
+                    SqlCommand cmd = new SqlCommand();
 
                     if (selectedFilter == "Filter by Name")
                     {
@@ -489,73 +486,76 @@ namespace loginPage
                             query += " ORDER BY SupplierName ASC";
                         else if (radioButtonZA.Checked)
                             query += " ORDER BY SupplierName DESC";
+
+                        cmd.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
                     }
                     else if (selectedFilter == "Filter by Address")
                     {
                         query = "SELECT * FROM Supplier WHERE Address LIKE @SearchText";
+                        cmd.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
                     }
                     else if (selectedFilter == "With Debt")
                     {
+                        query = "SELECT sd.*, s.SupplierName FROM SupplierDebt sd INNER JOIN Supplier s ON sd.SupplierID = s.SupplierID";
+
                         if (!string.IsNullOrEmpty(textBoxDebtFrom.Text) && !string.IsNullOrEmpty(textBoxDebtTo.Text))
                         {
                             if (decimal.TryParse(textBoxDebtFrom.Text, out decimal debtFrom) &&
                                 decimal.TryParse(textBoxDebtTo.Text, out decimal debtTo))
                             {
-                                query = "SELECT sd.*, s.SupplierName FROM SupplierDebt sd INNER JOIN Supplier s ON sd.SupplierID = s.SupplierID WHERE sd.DebtAmount BETWEEN @DebtFrom AND @DebtTo";
+                                query += " WHERE sd.DebtAmount BETWEEN @DebtFrom AND @DebtTo";
+                                cmd.Parameters.AddWithValue("@DebtFrom", debtFrom);
+                                cmd.Parameters.AddWithValue("@DebtTo", debtTo);
                             }
                             else
                             {
-                                MessageBox.Show("Please provide valid Debt From and Debt To values.", "Debt Range Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("Please enter valid numeric values for the debt range.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 return;
                             }
                         }
+                        else if (!string.IsNullOrEmpty(searchText) && decimal.TryParse(searchText, out decimal debtAmount))
+                        {
+                            query += " WHERE sd.DebtAmount = @DebtAmount";
+                            cmd.Parameters.AddWithValue("@DebtAmount", debtAmount);
+                        }
                         else
                         {
-                            query = "SELECT * FROM SupplierDebt WHERE 1=1";
+                            MessageBox.Show("Please provide valid debt information.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
                         }
                     }
                     else if (selectedFilter == "Filter by Date")
                     {
-                        if (!string.IsNullOrEmpty(dateTimePickerFrom.Value.ToString()) &&
-                            !string.IsNullOrEmpty(dateTimePickerTo.Value.ToString()))
+                        query = "SELECT sd.*, s.SupplierName FROM SupplierDebt sd INNER JOIN Supplier s ON sd.SupplierID = s.SupplierID";
+
+                        DateTime today = DateTime.Today;
+
+                        if (dateTimePickerFrom.Value.Date != today || dateTimePickerTo.Value.Date != today)
                         {
-                            query = @"
-                        SELECT sd.*, s.SupplierName 
-                        FROM SupplierDebt sd 
-                        INNER JOIN Supplier s ON sd.SupplierID = s.SupplierID
-                        WHERE sd.PaymentDueDate BETWEEN @DateFrom AND @DateTo";
+                            query += " WHERE sd.DueDate BETWEEN @DateFrom AND @DateTo";
+                            cmd.Parameters.AddWithValue("@DateFrom", dateTimePickerFrom.Value.Date);
+                            cmd.Parameters.AddWithValue("@DateTo", dateTimePickerTo.Value.Date);
+                            
+                        }
+                        else if (dateTimePickerSingle.Value.Date != today)
+                        {
+                            query += " WHERE sd.PaymentDueDate = @SingleDate";
+                            cmd.Parameters.AddWithValue("@SingleDate", dateTimePickerSingle.Value.Date);
                         }
                         else
                         {
-                            query = "SELECT * FROM SupplierDebt";
+                            MessageBox.Show("No data for this date found", "No Reocrd Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
                         }
                     }
 
-                    SqlCommand cmd = new SqlCommand(query, connection);
-
-                    if (selectedFilter == "Filter by Name" || selectedFilter == "Filter by Address")
+                    if (string.IsNullOrEmpty(query))
                     {
-                        cmd.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
+                        query = "SELECT * FROM Supplier"; // Default query
                     }
 
-                    if (selectedFilter == "With Debt")
-                    {
-                        if (!string.IsNullOrEmpty(textBoxDebtFrom.Text) && !string.IsNullOrEmpty(textBoxDebtTo.Text))
-                        {
-                            cmd.Parameters.AddWithValue("@DebtFrom", decimal.Parse(textBoxDebtFrom.Text));
-                            cmd.Parameters.AddWithValue("@DebtTo", decimal.Parse(textBoxDebtTo.Text));
-                        }
-                    }
-
-                    if (selectedFilter == "Filter by Date")
-                    {
-                        if (!string.IsNullOrEmpty(dateTimePickerFrom.Value.ToString()) &&
-                            !string.IsNullOrEmpty(dateTimePickerTo.Value.ToString()))
-                        {
-                            cmd.Parameters.AddWithValue("@DateFrom", dateTimePickerFrom.Value.Date);
-                            cmd.Parameters.AddWithValue("@DateTo", dateTimePickerTo.Value.Date);
-                        }
-                    }
+                    cmd.CommandText = query;
+                    cmd.Connection = connection;
 
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
@@ -564,7 +564,9 @@ namespace loginPage
                     dataGridViewSuppliers.DataSource = dt;
 
                     if (dt.Rows.Count == 0)
+                    {
                         MessageBox.Show("No results found for your query.", "No Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
             catch (Exception ex)
@@ -572,7 +574,6 @@ namespace loginPage
                 MessageBox.Show($"Error: {ex.Message}", "Search Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         private void btnGoBack_Click(object sender, EventArgs e)
         {
@@ -585,16 +586,10 @@ namespace loginPage
         private void refresh_Click(object sender, EventArgs e)
         {
             RefreshSupplierData();
+            textBoxSearch.Clear();
+            textBoxDebtFrom.Clear();
+            textBoxDebtTo.Clear();
         }
 
-        private void SupplierForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridViewSuppliers_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
     }
 }

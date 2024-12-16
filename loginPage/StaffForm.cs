@@ -423,7 +423,7 @@ namespace loginPage
                     switch (cmbFilterType.SelectedItem?.ToString())
                     {
                         case "All":
-                          
+
                             query = @"
                             SELECT * 
                             FROM Staff 
@@ -433,8 +433,8 @@ namespace loginPage
                                 OR Username LIKE @SearchText
                                 OR Username LIKE @SearchText
                                 OR CAST(Salary AS VARCHAR) LIKE @SearchText";
-                                cmd.Parameters.AddWithValue("@SearchText", $"%{txtSearchName.Text.Trim()}%");
-                            
+                            cmd.Parameters.AddWithValue("@SearchText", $"%{txtSearchName.Text.Trim()}%");
+
 
                             break;
                         case "Name":
@@ -588,12 +588,14 @@ namespace loginPage
             this.Close();
             ownerForm.ShowDialog();
             ownerForm.Show();
-            
+
 
 
         }
 
+        private void StaffForm_Load(object sender, EventArgs e)
+        {
 
-
+        }
     }
 }

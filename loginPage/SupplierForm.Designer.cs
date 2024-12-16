@@ -212,7 +212,6 @@
             dataGridViewSuppliers.RowHeadersWidth = 62;
             dataGridViewSuppliers.Size = new Size(1098, 573);
             dataGridViewSuppliers.TabIndex = 12;
-            dataGridViewSuppliers.CellContentClick += dataGridViewSuppliers_CellContentClick;
             // 
             // textBoxSearch
             // 
@@ -280,18 +279,18 @@
             // 
             // textBoxDebtFrom
             // 
-            textBoxDebtFrom.Location = new Point(64, 543);
+            textBoxDebtFrom.Location = new Point(331, 543);
             textBoxDebtFrom.Name = "textBoxDebtFrom";
-            textBoxDebtFrom.Size = new Size(213, 31);
-            textBoxDebtFrom.TabIndex = 19;
+            textBoxDebtFrom.Size = new Size(178, 31);
+            textBoxDebtFrom.TabIndex = 11;
             textBoxDebtFrom.Visible = false;
             // 
             // textBoxDebtTo
             // 
-            textBoxDebtTo.Location = new Point(333, 543);
+            textBoxDebtTo.Location = new Point(64, 543);
             textBoxDebtTo.Name = "textBoxDebtTo";
-            textBoxDebtTo.Size = new Size(200, 31);
-            textBoxDebtTo.TabIndex = 20;
+            textBoxDebtTo.Size = new Size(192, 31);
+            textBoxDebtTo.TabIndex = 13;
             textBoxDebtTo.Visible = false;
             // 
             // dateTimePickerFrom
@@ -312,9 +311,9 @@
             // 
             // dateTimePickerSingle
             // 
-            dateTimePickerSingle.Location = new Point(0, 0);
+            dateTimePickerSingle.Location = new Point(115, 429);
             dateTimePickerSingle.Name = "dateTimePickerSingle";
-            dateTimePickerSingle.Size = new Size(200, 31);
+            dateTimePickerSingle.Size = new Size(264, 31);
             dateTimePickerSingle.TabIndex = 27;
             // 
             // radioButtonAZ
@@ -418,7 +417,6 @@
             Controls.Add(radioButtonZA);
             Name = "SupplierForm";
             Text = "Supplier Management";
-            Load += SupplierForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewSuppliers).EndInit();
             ResumeLayout(false);
             PerformLayout();
