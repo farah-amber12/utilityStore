@@ -55,9 +55,19 @@
             label11 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
+            dtpFrom = new DateTimePicker();
+            dtpTo = new DateTimePicker();
+            btnSearch = new Button();
+            dgvResults = new DataGridView();
+            labelFrom = new Label();
+            labelTo = new Label();
+            textBox1 = new TextBox();
+            dtpSpecific = new DateTimePicker();
+            labelSpecific = new Label();
             ((System.ComponentModel.ISupportInitialize)productsGridView).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvResults).BeginInit();
             SuspendLayout();
             // 
             // label4
@@ -66,7 +76,7 @@
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Bell MT", 12F, FontStyle.Bold);
             label4.ForeColor = Color.MediumSeaGreen;
-            label4.Location = new Point(1, 90);
+            label4.Location = new Point(-4, 105);
             label4.Name = "label4";
             label4.Size = new Size(184, 29);
             label4.TabIndex = 4;
@@ -279,7 +289,7 @@
             // 
             productsGridView.BackgroundColor = Color.White;
             productsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            productsGridView.Location = new Point(38, 402);
+            productsGridView.Location = new Point(48, 405);
             productsGridView.Name = "productsGridView";
             productsGridView.RowHeadersWidth = 62;
             productsGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -310,6 +320,7 @@
             label3.Size = new Size(267, 47);
             label3.TabIndex = 3;
             label3.Text = "Product Details";
+            label3.Click += label3_Click;
             // 
             // label11
             // 
@@ -331,7 +342,7 @@
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 29.4117641F));
             tableLayoutPanel1.Controls.Add(label3, 0, 0);
-            tableLayoutPanel1.Location = new Point(38, 12);
+            tableLayoutPanel1.Location = new Point(29, 12);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
@@ -354,12 +365,99 @@
             tableLayoutPanel2.Size = new Size(1420, 68);
             tableLayoutPanel2.TabIndex = 33;
             // 
+            // dtpFrom
+            // 
+            dtpFrom.Format = DateTimePickerFormat.Short;
+            dtpFrom.Location = new Point(1435, 290);
+            dtpFrom.Name = "dtpFrom";
+            dtpFrom.Size = new Size(120, 31);
+            dtpFrom.TabIndex = 0;
+            // 
+            // dtpTo
+            // 
+            dtpTo.Format = DateTimePickerFormat.Short;
+            dtpTo.Location = new Point(1435, 337);
+            dtpTo.Name = "dtpTo";
+            dtpTo.Size = new Size(120, 31);
+            dtpTo.TabIndex = 1;
+            // 
+            // btnSearch
+            // 
+            btnSearch.Location = new Point(1604, 163);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(144, 43);
+            btnSearch.TabIndex = 2;
+            btnSearch.Text = "Search";
+            btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
+            // 
+            // dgvResults
+            // 
+            dgvResults.ColumnHeadersHeight = 34;
+            dgvResults.Location = new Point(1454, 225);
+            dgvResults.Name = "dgvResults";
+            dgvResults.RowHeadersWidth = 62;
+            dgvResults.Size = new Size(240, 150);
+            dgvResults.TabIndex = 34;
+            // 
+            // labelFrom
+            // 
+            labelFrom.AutoSize = true;
+            labelFrom.Location = new Point(1317, 295);
+            labelFrom.Name = "labelFrom";
+            labelFrom.Size = new Size(96, 25);
+            labelFrom.TabIndex = 4;
+            labelFrom.Text = "From Date";
+            // 
+            // labelTo
+            // 
+            labelTo.AutoSize = true;
+            labelTo.Location = new Point(1332, 342);
+            labelTo.Name = "labelTo";
+            labelTo.Size = new Size(72, 25);
+            labelTo.TabIndex = 5;
+            labelTo.Text = "To Date";
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(1332, 173);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(244, 31);
+            textBox1.TabIndex = 34;
+            // 
+            // dtpSpecific
+            // 
+            dtpSpecific.Format = DateTimePickerFormat.Short;
+            dtpSpecific.Location = new Point(1435, 242);
+            dtpSpecific.Name = "dtpSpecific";
+            dtpSpecific.Size = new Size(120, 31);
+            dtpSpecific.TabIndex = 2;
+
+            // 
+            this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvResults.Location = new System.Drawing.Point(12, 200);
+            this.dgvResults.Name = "dgvResults";
+            this.dgvResults.RowHeadersVisible = false;
+            this.dgvResults.Size = new System.Drawing.Size(760, 300);
+            this.dgvResults.TabIndex = 4;
+            // 
+            // 
+            // labelSpecific
+            // 
+            labelSpecific.AutoSize = true;
+            labelSpecific.Location = new Point(1306, 247);
+            labelSpecific.Name = "labelSpecific";
+            labelSpecific.Size = new Size(114, 25);
+            labelSpecific.TabIndex = 7;
+            labelSpecific.Text = "Specific Date";
+            // 
             // Products
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gainsboro;
             ClientSize = new Size(1898, 1024);
+            Controls.Add(textBox1);
             Controls.Add(tableLayoutPanel2);
             Controls.Add(button4);
             Controls.Add(productsGridView);
@@ -383,6 +481,13 @@
             Controls.Add(label7);
             Controls.Add(label6);
             Controls.Add(label5);
+            Controls.Add(labelFrom);
+            Controls.Add(labelTo);
+            Controls.Add(dtpSpecific);
+            Controls.Add(labelSpecific);
+            Controls.Add(btnSearch);
+            Controls.Add(dtpTo);
+            Controls.Add(dtpFrom);
             Controls.Add(label4);
             Controls.Add(tableLayoutPanel1);
             Name = "Products";
@@ -393,9 +498,11 @@
             tableLayoutPanel1.PerformLayout();
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvResults).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
+
 
         #endregion
         private Label label4;
@@ -424,6 +531,15 @@
         private Label label3;
         private Label label11;
         private TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.DateTimePicker dtpFrom;
+        private System.Windows.Forms.DateTimePicker dtpTo;
+        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.DataGridView dgvResults;
+        private System.Windows.Forms.Label labelFrom;
+        private System.Windows.Forms.Label labelTo;
         private TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label labelSpecific;
+        private System.Windows.Forms.DateTimePicker dtpSpecific;
+        private TextBox textBox1;
     }
 }

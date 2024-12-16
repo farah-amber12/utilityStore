@@ -21,6 +21,7 @@ namespace loginPage
         {
             InitializeComponent();
             ProductsConnection = new SqlConnection(loginForm.connectionString);
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -300,5 +301,62 @@ namespace loginPage
         {
 
         }
+
+
+
+
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(loginForm.connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+
+                    // Logic to determine query type based on user's date input
+                    if (dtpFrom.Value.Date == DateTime.Today && dtpTo.Value.Date == DateTime.Today)
+                    {
+                        // Treat it as specific date search
+                        cmd.CommandText = @"
+                    SELECT p.*, s.SupplierName 
+                    FROM Products p
+                    INNER JOIN Supplier s ON p.SupplierID = s.SupplierID
+                    WHERE p.ExpiryDate = @SpecificDate";
+                        cmd.Parameters.AddWithValue("@SpecificDate", DateTime.Today);
+                    }
+                    else
+                    {
+                        // Use range if dates aren't today
+                        cmd.CommandText = @"
+                    SELECT p.*, s.SupplierName 
+                    FROM Products p
+                    INNER JOIN Supplier s ON p.SupplierID = s.SupplierID
+                    WHERE p.ExpiryDate BETWEEN @FromDate AND @ToDate";
+                        cmd.Parameters.AddWithValue("@FromDate", dtpFrom.Value.Date);
+                        cmd.Parameters.AddWithValue("@ToDate", dtpTo.Value.Date);
+                    }
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    dgvResults.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
+
+

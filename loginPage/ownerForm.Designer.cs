@@ -226,14 +226,14 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.DarkSeaGreen;
-            panel1.Controls.Add(label1);
-            panel1.Cursor = Cursors.Hand;
-            panel1.Location = new Point(168, 831);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(215, 50);
-            panel1.TabIndex = 14;
-            panel1.Paint += panel1_Paint;
+            // panel1.BackColor = Color.DarkSeaGreen;
+            // panel1.Controls.Add(label1);
+            // panel1.Cursor = Cursors.Hand;
+            // panel1.Location = new Point(168, 831);
+            // panel1.Name = "panel1";
+            // panel1.Size = new Size(215, 50);
+            // panel1.TabIndex = 14;
+            // panel1.Paint += panel1_Paint;
             // 
             // label1
             // 

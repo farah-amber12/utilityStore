@@ -35,7 +35,7 @@
             // DailyProfit
             // 
             DailyProfit.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            DailyProfit.Location = new Point(84, 84);
+            DailyProfit.Location = new Point(317, 159);
             DailyProfit.Name = "DailyProfit";
             DailyProfit.RowHeadersWidth = 62;
             DailyProfit.Size = new Size(695, 381);
@@ -46,7 +46,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(901, 574);
+            ClientSize = new Size(1280, 614);
             Controls.Add(DailyProfit);
             Name = "profit_information";
             Text = "profit_information";

@@ -155,13 +155,13 @@ namespace UtilityStoreApp
 
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-            this.Hide();
-            profit_information profit_Information = new profit_information();
-            profit_Information.Show();  
+        //private void panel1_Paint(object sender, PaintEventArgs e)
+        //{
+        //    this.Hide();
+        //    profit_information profit_Information = new profit_information();
+        //    profit_Information.Show();  
 
-        }
+        //}
        
     }
 }
