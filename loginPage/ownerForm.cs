@@ -19,6 +19,7 @@ namespace UtilityStoreApp
 
             // Set up the DataGridView dynamically
             InitializeDataGridView();
+            
         }
 
         #region UI Initialization
@@ -29,7 +30,7 @@ namespace UtilityStoreApp
             dataGridView = new DataGridView
             {
                 Location = new Point((this.ClientSize.Width / 2) - 100, 100), // Start at the middle of the form
-                Size = new Size(this.ClientSize.Width / 2, this.ClientSize.Height +100), // Cover the right half
+                Size = new Size(this.ClientSize.Width / 2, this.ClientSize.Height + 100), // Cover the right half
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right, // Responsive anchoring
                 BorderStyle = BorderStyle.Fixed3D,
                 BackgroundColor = Color.White
@@ -70,14 +71,14 @@ namespace UtilityStoreApp
         #region Event Handlers
         private void btnManageStaff_Click(object sender, EventArgs e)
         {
-           StaffForm staffForm = new StaffForm();
+            StaffForm staffForm = new StaffForm();
             this.Close();
             staffForm.ShowDialog();
             staffForm.Show();
-            
+
 
         }
-            
+
 
         private void btnManageCategories_Click(object sender, EventArgs e)
         {
@@ -92,7 +93,7 @@ namespace UtilityStoreApp
             this.Close();
             supplierForm.ShowDialog();
             supplierForm.Show();
-            
+
 
         }
 
@@ -113,7 +114,7 @@ namespace UtilityStoreApp
 
         private void btnManageOrders_Click(object sender, EventArgs e)
         {
-           viewOrders vo = new viewOrders();
+            viewOrders vo = new viewOrders();
             this.Close();
             vo.ShowDialog();
             vo.Show();
@@ -147,11 +148,20 @@ namespace UtilityStoreApp
 
         }
 
-       
+
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            this.Hide();
+            profit_information profit_Information = new profit_information();
+            profit_Information.Show();  
+
+        }
+       
     }
 }

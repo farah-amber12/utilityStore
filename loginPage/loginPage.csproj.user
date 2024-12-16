@@ -25,6 +25,9 @@
     <Compile Update="ownerForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="profit information.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="StaffForm.cs">
       <SubType>Form</SubType>
     </Compile>

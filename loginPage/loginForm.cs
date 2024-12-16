@@ -17,7 +17,7 @@ namespace loginPage
         static string frhconnect = "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Trust Server Certificate=True";
         static string equconnect = "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
 
-        public static string connectionString = equconnect;
+        public static string connectionString = frhconnect;
 
 
         public loginForm()

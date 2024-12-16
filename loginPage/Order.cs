@@ -964,7 +964,7 @@ namespace loginPage
               lblTotalAmount.Text = totalAmount.ToString("F2");
           }*/
 
-        private void PlaceOrder(int customerId, int staffId, List<(int productId, int quantity)> cart, decimal recievedAmount)
+        /*private void PlaceOrder(int customerId, int staffId, List<(int productId, int quantity)> cart, decimal recievedAmount)
         {
             SqlTransaction transaction = null;
 
@@ -1079,7 +1079,131 @@ namespace loginPage
             {
                 orderdbconnection.Close();
             }
+        }*/
+
+        private void PlaceOrder(int customerId, int staffId, List<(int productId, int quantity)> cart, decimal recievedAmount)
+        {
+            SqlTransaction transaction = null;
+
+            try
+            {
+                orderdbconnection.Open();
+                transaction = orderdbconnection.BeginTransaction();
+
+                // Step 1: Insert into Orders table and get OrderID
+                int orderId = 0;
+                using (SqlCommand orderCommand = new SqlCommand(
+                    "INSERT INTO Orders (OrderDate, CustomerID, StaffID) OUTPUT INSERTED.OrderID VALUES (@OrderDate, @CustomerID, @StaffID)",
+                    orderdbconnection, transaction))
+                {
+                    orderCommand.Parameters.AddWithValue("@OrderDate", DateTime.Now);
+                    orderCommand.Parameters.AddWithValue("@CustomerID", customerId);
+                    orderCommand.Parameters.AddWithValue("@StaffID", staffId);
+
+                    orderId = (int)orderCommand.ExecuteScalar();
+                }
+
+                // Step 2: Process each product in the cart
+                decimal totalSubtotal = 0; // Total cost for the order
+                decimal totalProfit = 0;   // Total profit for the order
+                foreach (var (productId, quantity) in cart)
+                {
+                    int sellingPrice = 0;
+                    int purchasePrice = 0;
+
+                    // Fetch selling and purchase prices for the product
+                    using (SqlCommand priceCommand = new SqlCommand(
+                        "SELECT SellingPrice, PurchasePrice FROM Products WHERE ProductID = @ProductID",
+                        orderdbconnection, transaction))
+                    {
+                        priceCommand.Parameters.AddWithValue("@ProductID", productId);
+                        using (var reader = priceCommand.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                sellingPrice = reader.GetInt32(0);
+                                purchasePrice = reader.GetInt32(1);
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Product with ID {productId} not found.");
+                                transaction.Rollback();
+                                return;
+                            }
+                        }
+                    }
+
+                    // Calculate subtotal and profit for this product
+                    decimal subtotal = quantity * sellingPrice;
+                    decimal profit = (sellingPrice - purchasePrice) * quantity;
+                    totalSubtotal += subtotal;
+                    totalProfit += profit;
+
+                    // Insert into OrderDetails
+                    using (SqlCommand orderDetailsCommand = new SqlCommand(
+                        "INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Subtotal, recievedAmount) VALUES (@OrderID, @ProductID, @Quantity, @Subtotal, @recievedAmount)",
+                        orderdbconnection, transaction))
+                    {
+                        orderDetailsCommand.Parameters.AddWithValue("@OrderID", orderId);
+                        orderDetailsCommand.Parameters.AddWithValue("@ProductID", productId);
+                        orderDetailsCommand.Parameters.AddWithValue("@Quantity", quantity);
+                        orderDetailsCommand.Parameters.AddWithValue("@Subtotal", subtotal);
+                        orderDetailsCommand.Parameters.AddWithValue("@recievedAmount", recievedAmount);
+
+                        orderDetailsCommand.ExecuteNonQuery();
+                    }
+                }
+
+                // Step 3: Insert or update profit in Profit table
+                using (SqlCommand profitCommand = new SqlCommand(
+     "IF EXISTS (SELECT 1 FROM dailyProfit WHERE Dates = @Date) " +
+     "UPDATE dailyProfit SET ProfitAmount = ProfitAmount + @ProfitAmount WHERE Dates = @Date " +
+     "ELSE " +
+     "INSERT INTO dailyProfit (Dates, ProfitAmount) VALUES (@Date, @ProfitAmount)",
+     orderdbconnection, transaction))
+                {
+                    profitCommand.Parameters.AddWithValue("@Date", DateTime.Today);  // Ensure this matches the SQL query
+                    profitCommand.Parameters.AddWithValue("@ProfitAmount", totalProfit);
+
+                    profitCommand.ExecuteNonQuery();
+                }
+
+                // Step 4: Handle customer debt only if there is any
+                if (recievedAmount < totalSubtotal)
+                {
+                    decimal debtAmount = totalSubtotal - recievedAmount;
+
+                    // Calculate due date (e.g., 30 days from now)
+                    DateTime dueDate = DateTime.Now.AddDays(30);
+
+                    // Insert into the CustomerDebt table
+                    using (SqlCommand debtCommand = new SqlCommand(
+                        "INSERT INTO CustomerDebt (CustomerID, DebtAmount, DueDate) VALUES (@CustomerID, @DebtAmount, @DueDate)",
+                        orderdbconnection, transaction))
+                    {
+                        debtCommand.Parameters.AddWithValue("@CustomerID", customerId);
+                        debtCommand.Parameters.AddWithValue("@DebtAmount", debtAmount);
+                        debtCommand.Parameters.AddWithValue("@DueDate", dueDate);
+
+                        debtCommand.ExecuteNonQuery();
+                    }
+                }
+
+                // Commit transaction
+                transaction.Commit();
+                MessageBox.Show("Order placed successfully, and profit recorded!");
+            }
+            catch (Exception ex)
+            {
+                transaction?.Rollback();
+                MessageBox.Show($"Error placing order: {ex.Message}");
+            }
+            finally
+            {
+                orderdbconnection.Close();
+            }
         }
+
 
 
         private void button1_Click_1(object sender, EventArgs e)

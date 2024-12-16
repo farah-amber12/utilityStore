@@ -15,6 +15,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OwnerForm));
             btnManageStaff = new Button();
             btnManageCategories = new Button();
             btnManageSupplierDebt = new Button();
@@ -30,6 +31,9 @@
             pictureBox6 = new PictureBox();
             pictureBox7 = new PictureBox();
             pictureBox8 = new PictureBox();
+            pictureBox9 = new PictureBox();
+            panel1 = new Panel();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -38,6 +42,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // btnManageStaff
@@ -122,7 +128,7 @@
             btnLogout.BackColor = Color.LightCoral;
             btnLogout.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(168, 865);
+            btnLogout.Location = new Point(161, 970);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(222, 50);
             btnLogout.TabIndex = 10;
@@ -191,7 +197,7 @@
             // pictureBox7
             // 
             pictureBox7.Image = loginPage.Properties.Resources.logout;
-            pictureBox7.Location = new Point(24, 840);
+            pictureBox7.Location = new Point(12, 940);
             pictureBox7.Name = "pictureBox7";
             pictureBox7.Size = new Size(119, 98);
             pictureBox7.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -208,10 +214,44 @@
             pictureBox8.TabIndex = 12;
             pictureBox8.TabStop = false;
             // 
+            // pictureBox9
+            // 
+            pictureBox9.Image = (Image)resources.GetObject("pictureBox9.Image");
+            pictureBox9.Location = new Point(26, 807);
+            pictureBox9.Name = "pictureBox9";
+            pictureBox9.Size = new Size(113, 99);
+            pictureBox9.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox9.TabIndex = 13;
+            pictureBox9.TabStop = false;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.DarkSeaGreen;
+            panel1.Controls.Add(label1);
+            panel1.Cursor = Cursors.Hand;
+            panel1.Location = new Point(168, 831);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(215, 50);
+            panel1.TabIndex = 14;
+            panel1.Paint += panel1_Paint;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(60, 14);
+            label1.Name = "label1";
+            label1.Size = new Size(72, 25);
+            label1.TabIndex = 0;
+            label1.Text = "Profit ";
+            // 
             // OwnerForm
             // 
             BackColor = Color.White;
             ClientSize = new Size(1920, 1050);
+            Controls.Add(panel1);
+            Controls.Add(pictureBox9);
             Controls.Add(pictureBox8);
             Controls.Add(btnManageStaff);
             Controls.Add(pictureBox1);
@@ -238,6 +278,9 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox9).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -259,5 +302,8 @@
 
         private DataGridView dataGridView1;
         private PictureBox pictureBox8;
+        private PictureBox pictureBox9;
+        private Panel panel1;
+        private Label label1;
     }
 }
