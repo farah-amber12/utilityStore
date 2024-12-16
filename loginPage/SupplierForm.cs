@@ -16,7 +16,7 @@ namespace loginPage
         public SupplierForm()
 
         {
-            InitializeComponent(GetButton1());
+            InitializeComponent();
             RefreshSupplierData();
         }
 
@@ -435,7 +435,7 @@ namespace loginPage
             }
             else if (selectedFilter == "Filter by Date")
             {
-               
+
                 textBoxSearch.Visible = true;
                 dateTimePickerSingle.Visible = true;
                 dateTimePickerFrom.Visible = true;
@@ -587,8 +587,14 @@ namespace loginPage
             RefreshSupplierData();
         }
 
+        private void SupplierForm_Load(object sender, EventArgs e)
+        {
 
+        }
 
+        private void dataGridViewSuppliers_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
+        }
     }
 }

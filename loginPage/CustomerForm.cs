@@ -16,7 +16,7 @@ namespace loginPage
         public CustomerForm()
 
         {
-            InitializeComponent(GetButton1());
+            InitializeComponent();
             RefreshCustomerData();
         }
 
@@ -342,8 +342,8 @@ namespace loginPage
             }
             else if (selectedFilter == "Filter by Date")
             {
-
-                textBoxSearch.Visible = true;
+                dateTimePickerSingle.Visible = true;
+                textBoxSearch.Visible = false;
                 dateTimePickerSingle.Visible = true;
                 dateTimePickerFrom.Visible = true;
                 dateTimePickerTo.Visible = true;
@@ -357,6 +357,7 @@ namespace loginPage
             else if (selectedFilter == "Filter by Name")
 
             {
+                dateTimePickerSingle.Visible = false;
                 textBoxSearch.Visible = true;
                 radioButtonAZ.Visible = true;
                 radioButtonZA.Visible = true;
@@ -378,25 +379,19 @@ namespace loginPage
                 string searchText = textBoxSearch.Text.Trim();
                 string selectedFilter = comboBoxFilter.SelectedItem?.ToString();
 
-                if (string.IsNullOrEmpty(searchText) &&
-                    (string.IsNullOrEmpty(textBoxDebtFrom.Text) && string.IsNullOrEmpty(textBoxDebtTo.Text)))
-                {
-                    MessageBox.Show("Please enter a search term to proceed.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 using (SqlConnection connection = new SqlConnection(loginForm.connectionString))
                 {
                     connection.Open();
-                    string query = "";
+                    string query = "SELECT * FROM Customers"; // Default query (All)
+                    bool hasConditions = false;
+
+                    SqlCommand cmd = new SqlCommand();
 
                     if (selectedFilter == "Filter by Name")
                     {
-                        // Adjusted to search using FirstName and LastName
-                        query = @"
-                    SELECT * 
-                    FROM Customers 
-                    WHERE FirstName LIKE @SearchText OR LastName LIKE @SearchText";
+                        query = "SELECT * FROM Customers WHERE FirstName LIKE @SearchText OR LastName LIKE @SearchText";
+                        cmd.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
+                        hasConditions = true;
 
                         if (radioButtonAZ.Checked)
                             query += " ORDER BY FirstName ASC, LastName ASC";
@@ -405,70 +400,82 @@ namespace loginPage
                     }
                     else if (selectedFilter == "Filter by Address")
                     {
-                        query = "SELECT * FROM Supplier WHERE Address LIKE @SearchText";
+                        query = "SELECT * FROM Customers WHERE Address LIKE @SearchText";
+                        cmd.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
+                        hasConditions = true;
                     }
                     else if (selectedFilter == "With Debt")
                     {
+                        query = "SELECT sd.*, c.FirstName, c.LastName FROM CustomerDebt sd INNER JOIN Customers c ON sd.CustomerID = c.CustomerID";
+
+                        // Prioritize "From-To" range over single search text
                         if (!string.IsNullOrEmpty(textBoxDebtFrom.Text) && !string.IsNullOrEmpty(textBoxDebtTo.Text))
                         {
                             if (decimal.TryParse(textBoxDebtFrom.Text, out decimal debtFrom) &&
                                 decimal.TryParse(textBoxDebtTo.Text, out decimal debtTo))
                             {
-                                query = "SELECT sd.*, c.FirstName, c.LastName FROM CustomerDebt sd INNER JOIN Customers c ON sd.CustomerID = c.CustomerID WHERE sd.DebtAmount BETWEEN @DebtFrom AND @DebtTo";
+                                query += " WHERE sd.DebtAmount BETWEEN @DebtFrom AND @DebtTo";
+                                cmd.Parameters.AddWithValue("@DebtFrom", debtFrom);
+                                cmd.Parameters.AddWithValue("@DebtTo", debtTo);
+                                hasConditions = true;
                             }
                             else
                             {
-                                MessageBox.Show("Please provide valid Debt From and Debt To values.", "Debt Range Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("Please enter valid numeric values for debt range.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 return;
                             }
                         }
-                        else
+                        else if (!string.IsNullOrEmpty(textBoxSearch.Text))
                         {
-                            query = "SELECT * FROM CustomerDebt";
+                            if (decimal.TryParse(textBoxSearch.Text, out decimal debtAmount))
+                            {
+                                query += " WHERE sd.DebtAmount = @DebtAmount";
+                                cmd.Parameters.AddWithValue("@DebtAmount", debtAmount);
+                                hasConditions = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Please enter a valid numeric value for debt.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
                         }
                     }
                     else if (selectedFilter == "Filter by Date")
                     {
-                        if (!string.IsNullOrEmpty(dateTimePickerFrom.Value.ToString()) &&
-                            !string.IsNullOrEmpty(dateTimePickerTo.Value.ToString()))
+                        query = "SELECT sd.*, c.FirstName, c.LastName FROM CustomerDebt sd INNER JOIN Customers c ON sd.CustomerID = c.CustomerID";
+
+                        DateTime today = DateTime.Today;
+
+                        // Prioritize From-To directly only if NOT today's date
+                        if (dateTimePickerFrom.Value.Date != today || dateTimePickerTo.Value.Date != today)
                         {
-                            query = @"
-                    SELECT sd.*, c.FirstName, c.LastName 
-                    FROM CustomerDebt sd 
-                    INNER JOIN Customers c ON sd.CustomerID = c.CustomerID
-                    WHERE sd.DueDate BETWEEN @DateFrom AND @DateTo";
+                            query += " WHERE sd.DueDate BETWEEN @DateFrom AND @DateTo";
+                            cmd.Parameters.AddWithValue("@DateFrom", dateTimePickerFrom.Value.Date);
+                            cmd.Parameters.AddWithValue("@DateTo", dateTimePickerTo.Value.Date);
+                            hasConditions = true;
+                        }
+                        else if (dateTimePickerSingle.Value.Date != today)
+                        {
+                            // Search if the text box contains today's date
+                            query += " WHERE sd.DueDate = @dateTimePickerSingle";
+                            cmd.Parameters.AddWithValue("@dateTimePickerSingle", dateTimePickerSingle.Value.Date);
+                            hasConditions = true;
                         }
                         else
                         {
-                            query = "SELECT * FROM CustomerDebt";
+                            // Handle incorrect date format or invalid user input
+                            MessageBox.Show("No data for this date found", "No Reocrd Found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
                         }
                     }
 
-                    SqlCommand cmd = new SqlCommand(query, connection);
-
-                    if (selectedFilter == "Filter by Name")
+                    if (string.IsNullOrEmpty(searchText) && !hasConditions)
                     {
-                        cmd.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
+                        query = "SELECT * FROM Customers"; // Default case (All records)
                     }
 
-                    if (selectedFilter == "With Debt")
-                    {
-                        if (!string.IsNullOrEmpty(textBoxDebtFrom.Text) && !string.IsNullOrEmpty(textBoxDebtTo.Text))
-                        {
-                            cmd.Parameters.AddWithValue("@DebtFrom", decimal.Parse(textBoxDebtFrom.Text));
-                            cmd.Parameters.AddWithValue("@DebtTo", decimal.Parse(textBoxDebtTo.Text));
-                        }
-                    }
-
-                    if (selectedFilter == "Filter by Date")
-                    {
-                        if (!string.IsNullOrEmpty(dateTimePickerFrom.Value.ToString()) &&
-                            !string.IsNullOrEmpty(dateTimePickerTo.Value.ToString()))
-                        {
-                            cmd.Parameters.AddWithValue("@DateFrom", dateTimePickerFrom.Value.Date);
-                            cmd.Parameters.AddWithValue("@DateTo", dateTimePickerTo.Value.Date);
-                        }
-                    }
+                    cmd.CommandText = query;
+                    cmd.Connection = connection;
 
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
@@ -500,7 +507,6 @@ namespace loginPage
             RefreshCustomerData();
         }
 
-
-
+     
     }
 }

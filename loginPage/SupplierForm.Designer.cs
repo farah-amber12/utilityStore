@@ -44,10 +44,7 @@
             base.Dispose(disposing);
         }
 
-        private Button GetButton1()
-        {
-            return button1;
-        }
+
 
         #region Windows Form Designer generated code
 
@@ -55,7 +52,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent(Button button1)
+        private void InitializeComponent()
         {
             lblSupplierName = new Label();
             txtSupplierName = new TextBox();
@@ -215,6 +212,7 @@
             dataGridViewSuppliers.RowHeadersWidth = 62;
             dataGridViewSuppliers.Size = new Size(1098, 573);
             dataGridViewSuppliers.TabIndex = 12;
+            dataGridViewSuppliers.CellContentClick += dataGridViewSuppliers_CellContentClick;
             // 
             // textBoxSearch
             // 
@@ -420,6 +418,7 @@
             Controls.Add(radioButtonZA);
             Name = "SupplierForm";
             Text = "Supplier Management";
+            Load += SupplierForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewSuppliers).EndInit();
             ResumeLayout(false);
             PerformLayout();
