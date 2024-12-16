@@ -108,12 +108,14 @@
             // 
             // button1
             // 
+            button1.BackColor = Color.DarkSeaGreen;
+            button1.ForeColor = Color.White;
             button1.Location = new Point(1062, 586);
             button1.Name = "button1";
             button1.Size = new Size(112, 34);
             button1.TabIndex = 7;
             button1.Text = "back";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // manager
