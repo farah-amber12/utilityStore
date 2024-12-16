@@ -175,7 +175,7 @@
             // 
             // btnAddSupplier
             // 
-            btnAddSupplier.Location = new Point(16, 328);
+            btnAddSupplier.Location = new Point(20, 348);
             btnAddSupplier.Name = "btnAddSupplier";
             btnAddSupplier.Size = new Size(183, 36);
             btnAddSupplier.TabIndex = 10;
@@ -185,7 +185,7 @@
             // 
             // btnDeleteSupplier
             // 
-            btnDeleteSupplier.Location = new Point(16, 380);
+            btnDeleteSupplier.Location = new Point(164, 412);
             btnDeleteSupplier.Name = "btnDeleteSupplier";
             btnDeleteSupplier.Size = new Size(183, 36);
             btnDeleteSupplier.TabIndex = 11;
@@ -195,7 +195,7 @@
             // 
             // btnUpdateSupplier
             // 
-            btnUpdateSupplier.Location = new Point(261, 328);
+            btnUpdateSupplier.Location = new Point(274, 348);
             btnUpdateSupplier.Name = "btnUpdateSupplier";
             btnUpdateSupplier.Size = new Size(183, 36);
             btnUpdateSupplier.TabIndex = 13;
@@ -210,12 +210,12 @@
             dataGridViewSuppliers.Location = new Point(573, 34);
             dataGridViewSuppliers.Name = "dataGridViewSuppliers";
             dataGridViewSuppliers.RowHeadersWidth = 62;
-            dataGridViewSuppliers.Size = new Size(1098, 573);
+            dataGridViewSuppliers.Size = new Size(1213, 698);
             dataGridViewSuppliers.TabIndex = 12;
             // 
             // textBoxSearch
             // 
-            textBoxSearch.Location = new Point(115, 433);
+            textBoxSearch.Location = new Point(123, 484);
             textBoxSearch.Name = "textBoxSearch";
             textBoxSearch.Size = new Size(264, 31);
             textBoxSearch.TabIndex = 0;
@@ -225,7 +225,7 @@
             comboBoxFilter.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxFilter.FormattingEnabled = true;
             comboBoxFilter.Items.AddRange(new object[] { "All", "Filter by Name", "Filter by City", "With Debt", "Without Debt", "Filter by Date" });
-            comboBoxFilter.Location = new Point(123, 480);
+            comboBoxFilter.Location = new Point(123, 550);
             comboBoxFilter.Name = "comboBoxFilter";
             comboBoxFilter.Size = new Size(150, 33);
             comboBoxFilter.TabIndex = 0;
@@ -234,7 +234,7 @@
             // btnSearch
             // 
             btnSearch.BackColor = Color.White;
-            btnSearch.Location = new Point(400, 425);
+            btnSearch.Location = new Point(422, 480);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(109, 43);
             btnSearch.TabIndex = 1;
@@ -246,7 +246,7 @@
             // 
             btnGoBack.BackColor = Color.DarkRed;
             btnGoBack.ForeColor = Color.FloralWhite;
-            btnGoBack.Location = new Point(229, 380);
+            btnGoBack.Location = new Point(362, 719);
             btnGoBack.Name = "btnGoBack";
             btnGoBack.Size = new Size(150, 36);
             btnGoBack.TabIndex = 5;
@@ -258,7 +258,7 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.White;
-            label1.Location = new Point(16, 480);
+            label1.Location = new Point(11, 553);
             label1.Name = "label1";
             label1.Size = new Size(78, 25);
             label1.TabIndex = 17;
@@ -269,17 +269,17 @@
             label2.AutoSize = true;
             label2.BackColor = Color.DarkSeaGreen;
             label2.Cursor = Cursors.IBeam;
-            label2.Font = new Font("Arial", 11F);
+            label2.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.White;
             label2.Location = new Point(16, 9);
             label2.Name = "label2";
-            label2.Size = new Size(257, 25);
+            label2.Size = new Size(307, 29);
             label2.TabIndex = 18;
             label2.Text = "Enter Details of Supplier :";
             // 
             // textBoxDebtFrom
             // 
-            textBoxDebtFrom.Location = new Point(331, 543);
+            textBoxDebtFrom.Location = new Point(334, 643);
             textBoxDebtFrom.Name = "textBoxDebtFrom";
             textBoxDebtFrom.Size = new Size(178, 31);
             textBoxDebtFrom.TabIndex = 11;
@@ -287,7 +287,7 @@
             // 
             // textBoxDebtTo
             // 
-            textBoxDebtTo.Location = new Point(64, 543);
+            textBoxDebtTo.Location = new Point(73, 639);
             textBoxDebtTo.Name = "textBoxDebtTo";
             textBoxDebtTo.Size = new Size(192, 31);
             textBoxDebtTo.TabIndex = 13;
@@ -295,7 +295,7 @@
             // 
             // dateTimePickerFrom
             // 
-            dateTimePickerFrom.Location = new Point(73, 541);
+            dateTimePickerFrom.Location = new Point(73, 637);
             dateTimePickerFrom.Name = "dateTimePickerFrom";
             dateTimePickerFrom.Size = new Size(200, 31);
             dateTimePickerFrom.TabIndex = 21;
@@ -303,7 +303,7 @@
             // 
             // dateTimePickerTo
             // 
-            dateTimePickerTo.Location = new Point(333, 541);
+            dateTimePickerTo.Location = new Point(334, 641);
             dateTimePickerTo.Name = "dateTimePickerTo";
             dateTimePickerTo.Size = new Size(213, 31);
             dateTimePickerTo.TabIndex = 22;
@@ -311,14 +311,15 @@
             // 
             // dateTimePickerSingle
             // 
-            dateTimePickerSingle.Location = new Point(115, 429);
+            dateTimePickerSingle.Location = new Point(123, 484);
             dateTimePickerSingle.Name = "dateTimePickerSingle";
             dateTimePickerSingle.Size = new Size(264, 31);
             dateTimePickerSingle.TabIndex = 27;
+            dateTimePickerSingle.ValueChanged += dateTimePickerSingle_ValueChanged;
             // 
             // radioButtonAZ
             // 
-            radioButtonAZ.Location = new Point(306, 489);
+            radioButtonAZ.Location = new Point(318, 554);
             radioButtonAZ.Name = "radioButtonAZ";
             radioButtonAZ.Size = new Size(104, 24);
             radioButtonAZ.TabIndex = 23;
@@ -327,7 +328,7 @@
             // 
             // radioButtonZA
             // 
-            radioButtonZA.Location = new Point(426, 489);
+            radioButtonZA.Location = new Point(443, 553);
             radioButtonZA.Name = "radioButtonZA";
             radioButtonZA.Size = new Size(104, 24);
             radioButtonZA.TabIndex = 24;
@@ -339,7 +340,7 @@
             label3.AutoSize = true;
             label3.Font = new Font("Arial", 10F);
             label3.ForeColor = Color.White;
-            label3.Location = new Point(294, 547);
+            label3.Location = new Point(285, 643);
             label3.Name = "label3";
             label3.Size = new Size(31, 23);
             label3.TabIndex = 25;
@@ -351,7 +352,7 @@
             label4.AutoSize = true;
             label4.Font = new Font("Arial", 10F);
             label4.ForeColor = Color.White;
-            label4.Location = new Point(2, 541);
+            label4.Location = new Point(11, 643);
             label4.Name = "label4";
             label4.Size = new Size(56, 23);
             label4.TabIndex = 0;
@@ -363,7 +364,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Microsoft Sans Serif", 11F);
             label5.ForeColor = Color.White;
-            label5.Location = new Point(16, 431);
+            label5.Location = new Point(8, 484);
             label5.Name = "label5";
             label5.Size = new Size(93, 26);
             label5.TabIndex = 26;
@@ -372,7 +373,7 @@
             // button1
             // 
             button1.Font = new Font("Georgia", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(400, 380);
+            button1.Location = new Point(204, 719);
             button1.Name = "button1";
             button1.Size = new Size(112, 34);
             button1.TabIndex = 28;
@@ -383,7 +384,7 @@
             // SupplierForm
             // 
             BackColor = Color.DarkSeaGreen;
-            ClientSize = new Size(1793, 752);
+            ClientSize = new Size(1898, 1024);
             Controls.Add(button1);
             Controls.Add(label5);
             Controls.Add(label4);
@@ -417,6 +418,7 @@
             Controls.Add(radioButtonZA);
             Name = "SupplierForm";
             Text = "Supplier Management";
+            Load += SupplierForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewSuppliers).EndInit();
             ResumeLayout(false);
             PerformLayout();

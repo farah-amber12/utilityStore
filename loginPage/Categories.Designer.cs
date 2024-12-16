@@ -41,7 +41,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(256, 167);
+            button2.Location = new Point(673, 241);
             button2.Name = "button2";
             button2.Size = new Size(150, 34);
             button2.TabIndex = 16;
@@ -52,31 +52,35 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(264, 29);
+            label2.Font = new Font("Times New Roman", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.ForeColor = Color.White;
+            label2.Location = new Point(637, 24);
             label2.Name = "label2";
-            label2.Size = new Size(142, 25);
+            label2.Size = new Size(384, 41);
             label2.TabIndex = 15;
-            label2.Text = "Catogary Details";
+            label2.Text = "CATOGARY DETAILS";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(70, 95);
+            label1.Font = new Font("Sitka Banner", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(558, 125);
             label1.Name = "label1";
-            label1.Size = new Size(136, 25);
+            label1.Size = new Size(176, 35);
             label1.TabIndex = 14;
-            label1.Text = "Catogary Name";
+            label1.Text = "Catogary Name :";
             // 
             // categoryfield
             // 
-            categoryfield.Location = new Point(256, 89);
+            categoryfield.Location = new Point(797, 130);
             categoryfield.Name = "categoryfield";
-            categoryfield.Size = new Size(150, 31);
+            categoryfield.Size = new Size(268, 31);
             categoryfield.TabIndex = 13;
             // 
             // button1
             // 
-            button1.Location = new Point(463, 167);
+            button1.Location = new Point(859, 241);
             button1.Name = "button1";
             button1.Size = new Size(162, 34);
             button1.TabIndex = 17;
@@ -86,7 +90,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(53, 167);
+            button3.Location = new Point(486, 241);
             button3.Name = "button3";
             button3.Size = new Size(153, 34);
             button3.TabIndex = 18;
@@ -96,8 +100,9 @@
             // 
             // dgvCategory
             // 
+            dgvCategory.BackgroundColor = Color.White;
             dgvCategory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCategory.Location = new Point(39, 239);
+            dgvCategory.Location = new Point(442, 311);
             dgvCategory.Name = "dgvCategory";
             dgvCategory.RowHeadersWidth = 62;
             dgvCategory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -106,7 +111,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(669, 167);
+            button4.Location = new Point(1067, 241);
             button4.Name = "button4";
             button4.Size = new Size(112, 34);
             button4.TabIndex = 20;
@@ -118,7 +123,8 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(898, 628);
+            BackColor = Color.DarkSeaGreen;
+            ClientSize = new Size(1898, 1024);
             Controls.Add(button4);
             Controls.Add(dgvCategory);
             Controls.Add(button3);

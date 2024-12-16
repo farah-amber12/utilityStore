@@ -1160,6 +1160,11 @@ namespace loginPage
         {
 
         }
+
+        private void cartGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 
 }

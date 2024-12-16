@@ -130,35 +130,41 @@
             // 
             // btnAddStaff
             // 
+            btnAddStaff.BackColor = Color.SeaGreen;
+            btnAddStaff.ForeColor = Color.White;
             btnAddStaff.Location = new Point(38, 297);
             btnAddStaff.Margin = new Padding(4, 5, 4, 5);
             btnAddStaff.Name = "btnAddStaff";
             btnAddStaff.Size = new Size(188, 47);
             btnAddStaff.TabIndex = 8;
             btnAddStaff.Text = "Add Staff Member";
-            btnAddStaff.UseVisualStyleBackColor = true;
+            btnAddStaff.UseVisualStyleBackColor = false;
             btnAddStaff.Click += BtnAddStaff_Click;
             // 
             // btnUpdateStaff
             // 
+            btnUpdateStaff.BackColor = Color.SeaGreen;
+            btnUpdateStaff.ForeColor = Color.White;
             btnUpdateStaff.Location = new Point(238, 297);
             btnUpdateStaff.Margin = new Padding(4, 5, 4, 5);
             btnUpdateStaff.Name = "btnUpdateStaff";
             btnUpdateStaff.Size = new Size(210, 47);
             btnUpdateStaff.TabIndex = 9;
             btnUpdateStaff.Text = "Update Staff Member";
-            btnUpdateStaff.UseVisualStyleBackColor = true;
+            btnUpdateStaff.UseVisualStyleBackColor = false;
             btnUpdateStaff.Click += BtnUpdateStaff_Click;
             // 
             // btnDeleteStaff
             // 
+            btnDeleteStaff.BackColor = Color.SeaGreen;
+            btnDeleteStaff.ForeColor = Color.White;
             btnDeleteStaff.Location = new Point(472, 297);
             btnDeleteStaff.Margin = new Padding(4, 5, 4, 5);
             btnDeleteStaff.Name = "btnDeleteStaff";
             btnDeleteStaff.Size = new Size(188, 47);
             btnDeleteStaff.TabIndex = 10;
             btnDeleteStaff.Text = "Delete Selected Staff";
-            btnDeleteStaff.UseVisualStyleBackColor = true;
+            btnDeleteStaff.UseVisualStyleBackColor = false;
             btnDeleteStaff.Click += btnDeleteStaff_Click;
             // 
             // dgvStaff
@@ -171,35 +177,35 @@
             dgvStaff.ReadOnly = true;
             dgvStaff.RowHeadersWidth = 62;
             dgvStaff.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvStaff.Size = new Size(1449, 620);
+            dgvStaff.Size = new Size(1698, 612);
             dgvStaff.TabIndex = 11;
             // 
             // txtSearchName
             // 
-            txtSearchName.Location = new Point(888, 66);
+            txtSearchName.Location = new Point(951, 57);
             txtSearchName.Name = "txtSearchName";
             txtSearchName.Size = new Size(200, 31);
             txtSearchName.TabIndex = 0;
             // 
             // txtMinSalary
             // 
-            txtMinSalary.Location = new Point(1084, 144);
+            txtMinSalary.Location = new Point(1248, 172);
             txtMinSalary.Name = "txtMinSalary";
-            txtMinSalary.Size = new Size(149, 31);
+            txtMinSalary.Size = new Size(184, 31);
             txtMinSalary.TabIndex = 1;
             // 
             // txtMaxSalary
             // 
-            txtMaxSalary.Location = new Point(1268, 144);
+            txtMaxSalary.Location = new Point(1512, 172);
             txtMaxSalary.Name = "txtMaxSalary";
-            txtMaxSalary.Size = new Size(140, 31);
+            txtMaxSalary.Size = new Size(183, 31);
             txtMaxSalary.TabIndex = 2;
             // 
             // cmbSearchRole
             // 
             cmbSearchRole.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSearchRole.FormattingEnabled = true;
-            cmbSearchRole.Location = new Point(888, 198);
+            cmbSearchRole.Location = new Point(974, 247);
             cmbSearchRole.Name = "cmbSearchRole";
             cmbSearchRole.Size = new Size(200, 33);
             cmbSearchRole.TabIndex = 4;
@@ -207,18 +213,20 @@
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(1133, 64);
+            btnSearch.BackColor = Color.SeaGreen;
+            btnSearch.ForeColor = Color.White;
+            btnSearch.Location = new Point(1194, 48);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(100, 30);
+            btnSearch.Size = new Size(138, 44);
             btnSearch.TabIndex = 5;
             btnSearch.Text = "Search";
-            btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.UseVisualStyleBackColor = false;
             btnSearch.Click += btnSearch_Click;
             // 
             // rbtnSortAZ
             // 
             rbtnSortAZ.AutoSize = true;
-            rbtnSortAZ.Location = new Point(1084, 140);
+            rbtnSortAZ.Location = new Point(1528, 172);
             rbtnSortAZ.Name = "rbtnSortAZ";
             rbtnSortAZ.Size = new Size(66, 29);
             rbtnSortAZ.TabIndex = 2;
@@ -229,7 +237,7 @@
             // rbtnSortZA
             // 
             rbtnSortZA.AutoSize = true;
-            rbtnSortZA.Location = new Point(1179, 138);
+            rbtnSortZA.Location = new Point(1296, 172);
             rbtnSortZA.Name = "rbtnSortZA";
             rbtnSortZA.Size = new Size(66, 29);
             rbtnSortZA.TabIndex = 3;
@@ -242,18 +250,20 @@
             cmbFilterType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFilterType.FormattingEnabled = true;
             cmbFilterType.Items.AddRange(new object[] { "Select Filter", "All", "Name", "Role", "Salary" });
-            cmbFilterType.Location = new Point(888, 142);
+            cmbFilterType.Location = new Point(951, 172);
             cmbFilterType.Name = "cmbFilterType";
-            cmbFilterType.Size = new Size(150, 33);
+            cmbFilterType.Size = new Size(223, 33);
             cmbFilterType.TabIndex = 0;
             cmbFilterType.SelectedIndexChanged += cmbFilterType_SelectedIndexChanged;
             // 
             // lblSearch
             // 
             lblSearch.AutoSize = true;
-            lblSearch.Location = new Point(775, 66);
+            lblSearch.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblSearch.ForeColor = Color.Black;
+            lblSearch.Location = new Point(831, 57);
             lblSearch.Name = "lblSearch";
-            lblSearch.Size = new Size(73, 25);
+            lblSearch.Size = new Size(103, 32);
             lblSearch.TabIndex = 7;
             lblSearch.Text = "Search :";
             lblSearch.Click += btnSearch_Click;
@@ -261,54 +271,64 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(765, 142);
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label1.ForeColor = Color.Black;
+            label1.Location = new Point(831, 172);
             label1.Name = "label1";
-            label1.Size = new Size(83, 25);
+            label1.Size = new Size(121, 32);
             label1.TabIndex = 12;
             label1.Text = "Filter By :";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(1084, 109);
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label2.ForeColor = Color.Black;
+            label2.Location = new Point(1194, 132);
             label2.Name = "label2";
-            label2.Size = new Size(103, 25);
+            label2.Size = new Size(150, 32);
             label2.TabIndex = 13;
             label2.Text = "Min Salary: ";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(1234, 110);
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label3.ForeColor = Color.Black;
+            label3.Location = new Point(1489, 132);
             label3.Name = "label3";
-            label3.Size = new Size(105, 25);
+            label3.Size = new Size(154, 32);
             label3.TabIndex = 14;
             label3.Text = "Max. Salary:";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(757, 201);
+            label4.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label4.ForeColor = Color.Black;
+            label4.Location = new Point(813, 248);
             label4.Name = "label4";
-            label4.Size = new Size(101, 25);
+            label4.Size = new Size(145, 32);
             label4.TabIndex = 15;
             label4.Text = "Select Role:";
             // 
             // button1
             // 
-            button1.Location = new Point(682, 248);
+            button1.BackColor = Color.SeaGreen;
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(734, 302);
             button1.Name = "button1";
             button1.Size = new Size(125, 35);
             button1.TabIndex = 16;
             button1.Text = "Clear Fields";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += ClrBtn_Click;
             // 
             // button2
             // 
             button2.BackColor = Color.Crimson;
             button2.ForeColor = Color.White;
-            button2.Location = new Point(723, 310);
+            button2.Location = new Point(962, 303);
             button2.Name = "button2";
             button2.Size = new Size(112, 34);
             button2.TabIndex = 17;
@@ -320,7 +340,8 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1557, 1016);
+            BackColor = Color.White;
+            ClientSize = new Size(1898, 1024);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(label4);
@@ -348,6 +369,7 @@
             Controls.Add(lblSearch);
             Controls.Add(rbtnSortAZ);
             Controls.Add(rbtnSortZA);
+            ForeColor = Color.White;
             Margin = new Padding(4, 5, 4, 5);
             Name = "StaffForm";
             Text = "Staff Management Form";

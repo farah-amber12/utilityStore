@@ -471,7 +471,7 @@ namespace loginPage
                 string searchText = textBoxSearch.Text.Trim();
                 string selectedFilter = comboBoxFilter.SelectedItem?.ToString();
 
-               
+
 
                 using (SqlConnection connection = new SqlConnection(loginForm.connectionString))
                 {
@@ -535,7 +535,7 @@ namespace loginPage
                             query += " WHERE sd.DueDate BETWEEN @DateFrom AND @DateTo";
                             cmd.Parameters.AddWithValue("@DateFrom", dateTimePickerFrom.Value.Date);
                             cmd.Parameters.AddWithValue("@DateTo", dateTimePickerTo.Value.Date);
-                            
+
                         }
                         else if (dateTimePickerSingle.Value.Date != today)
                         {
@@ -591,5 +591,14 @@ namespace loginPage
             textBoxDebtTo.Clear();
         }
 
+        private void SupplierForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dateTimePickerSingle_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

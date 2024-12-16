@@ -96,7 +96,7 @@
             label9.BackColor = Color.Transparent;
             label9.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label9.ForeColor = Color.White;
-            label9.Location = new Point(309, 63);
+            label9.Location = new Point(521, 58);
             label9.Name = "label9";
             label9.Size = new Size(130, 25);
             label9.TabIndex = 13;
@@ -106,7 +106,7 @@
             // staffcombo
             // 
             staffcombo.FormattingEnabled = true;
-            staffcombo.Location = new Point(445, 60);
+            staffcombo.Location = new Point(688, 55);
             staffcombo.Name = "staffcombo";
             staffcombo.Size = new Size(182, 33);
             staffcombo.TabIndex = 14;
@@ -138,7 +138,7 @@
             button1.BackColor = Color.DarkSeaGreen;
             button1.Font = new Font("Segoe UI", 11F);
             button1.ForeColor = Color.White;
-            button1.Location = new Point(1274, 876);
+            button1.Location = new Point(1676, 908);
             button1.Name = "button1";
             button1.Size = new Size(153, 49);
             button1.TabIndex = 21;
@@ -247,14 +247,14 @@
             panel2.Controls.Add(label6);
             panel2.Controls.Add(label5);
             panel2.Controls.Add(label3);
-            panel2.Location = new Point(12, 619);
+            panel2.Location = new Point(28, 619);
             panel2.Name = "panel2";
-            panel2.Size = new Size(725, 338);
+            panel2.Size = new Size(950, 338);
             panel2.TabIndex = 16;
             // 
             // txtPhone
             // 
-            txtPhone.Location = new Point(61, 281);
+            txtPhone.Location = new Point(175, 247);
             txtPhone.Name = "txtPhone";
             txtPhone.Size = new Size(182, 31);
             txtPhone.TabIndex = 11;
@@ -262,14 +262,14 @@
             // 
             // txtLastName
             // 
-            txtLastName.Location = new Point(61, 163);
+            txtLastName.Location = new Point(175, 151);
             txtLastName.Name = "txtLastName";
             txtLastName.Size = new Size(182, 31);
             txtLastName.TabIndex = 10;
             // 
             // txtFirstName
             // 
-            txtFirstName.Location = new Point(62, 60);
+            txtFirstName.Location = new Point(175, 63);
             txtFirstName.Name = "txtFirstName";
             txtFirstName.Size = new Size(181, 31);
             txtFirstName.TabIndex = 9;
@@ -294,7 +294,7 @@
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Times New Roman", 11F, FontStyle.Bold);
             label6.ForeColor = Color.White;
-            label6.Location = new Point(3, 135);
+            label6.Location = new Point(14, 153);
             label6.Name = "label6";
             label6.Size = new Size(134, 25);
             label6.TabIndex = 7;
@@ -307,7 +307,7 @@
             label5.BackColor = Color.Transparent;
             label5.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = Color.White;
-            label5.Location = new Point(0, 32);
+            label5.Location = new Point(20, 63);
             label5.Name = "label5";
             label5.Size = new Size(137, 25);
             label5.TabIndex = 6;
@@ -346,7 +346,7 @@
             panel1.Controls.Add(label10);
             panel1.Controls.Add(quantityTextBox);
             panel1.Controls.Add(button2);
-            panel1.Location = new Point(12, 156);
+            panel1.Location = new Point(90, 154);
             panel1.Name = "panel1";
             panel1.Size = new Size(360, 387);
             panel1.TabIndex = 15;
@@ -379,7 +379,7 @@
             panel4.Controls.Add(label15);
             panel4.Location = new Point(-1, -1);
             panel4.Name = "panel4";
-            panel4.Size = new Size(1473, 74);
+            panel4.Size = new Size(1920, 74);
             panel4.TabIndex = 26;
             // 
             // label15
@@ -387,7 +387,7 @@
             label15.AutoSize = true;
             label15.Font = new Font("Times New Roman", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label15.ForeColor = Color.White;
-            label15.Location = new Point(398, 10);
+            label15.Location = new Point(671, 0);
             label15.Name = "label15";
             label15.Size = new Size(710, 45);
             label15.TabIndex = 0;
@@ -410,7 +410,7 @@
             button4.BackColor = Color.DarkSeaGreen;
             button4.Font = new Font("Segoe UI", 11F);
             button4.ForeColor = Color.White;
-            button4.Location = new Point(1105, 876);
+            button4.Location = new Point(1470, 908);
             button4.Name = "button4";
             button4.Size = new Size(143, 49);
             button4.TabIndex = 28;
@@ -427,7 +427,7 @@
             panel5.Controls.Add(rcvdamount);
             panel5.Controls.Add(debtDueDatePicker);
             panel5.Controls.Add(debtDueDateLabel);
-            panel5.Location = new Point(792, 619);
+            panel5.Location = new Point(1160, 636);
             panel5.Name = "panel5";
             panel5.Size = new Size(635, 220);
             panel5.TabIndex = 29;
@@ -448,11 +448,12 @@
             // cartGridView
             // 
             cartGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            cartGridView.Location = new Point(442, 156);
+            cartGridView.Location = new Point(598, 138);
             cartGridView.Name = "cartGridView";
             cartGridView.RowHeadersWidth = 62;
-            cartGridView.Size = new Size(938, 369);
+            cartGridView.Size = new Size(1211, 369);
             cartGridView.TabIndex = 30;
+            cartGridView.CellContentClick += cartGridView_CellContentClick;
             // 
             // label16
             // 
@@ -460,7 +461,7 @@
             label16.BackColor = Color.Transparent;
             label16.Font = new Font("Times New Roman", 13F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label16.ForeColor = SystemColors.WindowFrame;
-            label16.Location = new Point(442, 111);
+            label16.Location = new Point(559, 86);
             label16.Name = "label16";
             label16.Size = new Size(150, 30);
             label16.TabIndex = 32;
@@ -482,7 +483,7 @@
             panel3.BackColor = Color.Beige;
             panel3.Controls.Add(label14);
             panel3.ForeColor = Color.DarkCyan;
-            panel3.Location = new Point(28, 86);
+            panel3.Location = new Point(120, 86);
             panel3.Name = "panel3";
             panel3.Size = new Size(275, 50);
             panel3.TabIndex = 34;
@@ -492,7 +493,7 @@
             panel6.BackColor = Color.Beige;
             panel6.Controls.Add(label4);
             panel6.ForeColor = Color.DarkCyan;
-            panel6.Location = new Point(12, 563);
+            panel6.Location = new Point(120, 563);
             panel6.Name = "panel6";
             panel6.Size = new Size(360, 50);
             panel6.TabIndex = 35;
@@ -502,7 +503,7 @@
             panel7.BackColor = Color.Beige;
             panel7.Controls.Add(label8);
             panel7.ForeColor = Color.DarkCyan;
-            panel7.Location = new Point(397, 563);
+            panel7.Location = new Point(505, 563);
             panel7.Name = "panel7";
             panel7.Size = new Size(340, 50);
             panel7.TabIndex = 36;
@@ -512,7 +513,7 @@
             panel8.BackColor = Color.Beige;
             panel8.Controls.Add(label17);
             panel8.ForeColor = Color.DarkCyan;
-            panel8.Location = new Point(792, 562);
+            panel8.Location = new Point(1160, 563);
             panel8.Name = "panel8";
             panel8.Size = new Size(635, 50);
             panel8.TabIndex = 37;
@@ -522,7 +523,7 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1466, 960);
+            ClientSize = new Size(1898, 1024);
             Controls.Add(panel8);
             Controls.Add(panel7);
             Controls.Add(panel6);

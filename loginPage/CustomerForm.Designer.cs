@@ -71,7 +71,7 @@ namespace loginPage
             // 
             // dateTimePickerPaymentDueDate
             // 
-            dateTimePickerPaymentDueDate.Location = new Point(91, 69);
+            dateTimePickerPaymentDueDate.Location = new Point(164, 154);
             dateTimePickerPaymentDueDate.Name = "dateTimePickerPaymentDueDate";
             dateTimePickerPaymentDueDate.Size = new Size(322, 31);
             dateTimePickerPaymentDueDate.TabIndex = 15;
@@ -80,7 +80,7 @@ namespace loginPage
             // 
             btnDeleteCustomer.BackColor = Color.DarkSlateGray;
             btnDeleteCustomer.ForeColor = Color.White;
-            btnDeleteCustomer.Location = new Point(259, 119);
+            btnDeleteCustomer.Location = new Point(344, 239);
             btnDeleteCustomer.Name = "btnDeleteCustomer";
             btnDeleteCustomer.Size = new Size(222, 44);
             btnDeleteCustomer.TabIndex = 2;
@@ -92,7 +92,7 @@ namespace loginPage
             // 
             btnUpdateCustomer.BackColor = Color.DarkSlateGray;
             btnUpdateCustomer.ForeColor = Color.White;
-            btnUpdateCustomer.Location = new Point(29, 119);
+            btnUpdateCustomer.Location = new Point(32, 239);
             btnUpdateCustomer.Name = "btnUpdateCustomer";
             btnUpdateCustomer.Size = new Size(210, 44);
             btnUpdateCustomer.TabIndex = 3;
@@ -104,26 +104,26 @@ namespace loginPage
             // 
             dataGridViewCustomers.BackgroundColor = Color.White;
             dataGridViewCustomers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCustomers.Location = new Point(609, 12);
+            dataGridViewCustomers.Location = new Point(636, 47);
             dataGridViewCustomers.Name = "dataGridViewCustomers";
             dataGridViewCustomers.RowHeadersWidth = 62;
-            dataGridViewCustomers.Size = new Size(1098, 573);
+            dataGridViewCustomers.Size = new Size(1134, 817);
             dataGridViewCustomers.TabIndex = 4;
             // 
             // textBoxSearch
             // 
-            textBoxSearch.Location = new Point(141, 181);
+            textBoxSearch.Location = new Point(138, 400);
             textBoxSearch.Name = "textBoxSearch";
-            textBoxSearch.Size = new Size(233, 31);
+            textBoxSearch.Size = new Size(290, 31);
             textBoxSearch.TabIndex = 5;
             // 
             // comboBoxFilter
             // 
             comboBoxFilter.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxFilter.Items.AddRange(new object[] { "All", "Filter by Name", "Filter by City", "With Debt", "Without Debt", "Filter by Date" });
-            comboBoxFilter.Location = new Point(133, 239);
+            comboBoxFilter.Location = new Point(141, 481);
             comboBoxFilter.Name = "comboBoxFilter";
-            comboBoxFilter.Size = new Size(150, 33);
+            comboBoxFilter.Size = new Size(287, 33);
             comboBoxFilter.TabIndex = 6;
             comboBoxFilter.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
             // 
@@ -131,7 +131,7 @@ namespace loginPage
             // 
             btnSearch.BackColor = Color.DarkSlateGray;
             btnSearch.ForeColor = Color.White;
-            btnSearch.Location = new Point(403, 177);
+            btnSearch.Location = new Point(462, 400);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(128, 37);
             btnSearch.TabIndex = 1;
@@ -143,7 +143,7 @@ namespace loginPage
             // 
             btnGoBack.BackColor = Color.DarkRed;
             btnGoBack.ForeColor = Color.White;
-            btnGoBack.Location = new Point(365, 367);
+            btnGoBack.Location = new Point(440, 803);
             btnGoBack.Name = "btnGoBack";
             btnGoBack.Size = new Size(150, 36);
             btnGoBack.TabIndex = 0;
@@ -153,69 +153,69 @@ namespace loginPage
             // 
             // label1
             // 
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(16, 242);
+            label1.Location = new Point(24, 481);
             label1.Name = "label1";
-            label1.Size = new Size(111, 33);
+            label1.Size = new Size(144, 33);
             label1.TabIndex = 7;
             label1.Text = "Filter By:";
             // 
             // label2
             // 
             label2.BackColor = Color.DarkSeaGreen;
-            label2.Font = new Font("Britannic Bold", 11F);
+            label2.Font = new Font("Britannic Bold", 12F);
             label2.ForeColor = Color.White;
-            label2.Location = new Point(12, 184);
+            label2.Location = new Point(20, 401);
             label2.Name = "label2";
-            label2.Size = new Size(104, 42);
+            label2.Size = new Size(139, 42);
             label2.TabIndex = 8;
             label2.Text = "Search  :";
             // 
             // textBoxDebtFrom
             // 
-            textBoxDebtFrom.Location = new Point(180, 310);
+            textBoxDebtFrom.Location = new Point(208, 622);
             textBoxDebtFrom.Name = "textBoxDebtFrom";
-            textBoxDebtFrom.Size = new Size(159, 31);
+            textBoxDebtFrom.Size = new Size(307, 31);
             textBoxDebtFrom.TabIndex = 11;
             textBoxDebtFrom.Visible = false;
             // 
             // textBoxDebtTo
             // 
-            textBoxDebtTo.Location = new Point(162, 368);
+            textBoxDebtTo.Location = new Point(208, 698);
             textBoxDebtTo.Name = "textBoxDebtTo";
-            textBoxDebtTo.Size = new Size(166, 31);
+            textBoxDebtTo.Size = new Size(307, 31);
             textBoxDebtTo.TabIndex = 13;
             textBoxDebtTo.Visible = false;
             // 
             // dateTimePickerFrom
             // 
-            dateTimePickerFrom.Location = new Point(171, 310);
+            dateTimePickerFrom.Location = new Point(208, 620);
             dateTimePickerFrom.Name = "dateTimePickerFrom";
-            dateTimePickerFrom.Size = new Size(188, 31);
+            dateTimePickerFrom.Size = new Size(330, 31);
             dateTimePickerFrom.TabIndex = 0;
             dateTimePickerFrom.Visible = false;
             // 
             // dateTimePickerTo
             // 
-            dateTimePickerTo.Location = new Point(159, 367);
+            dateTimePickerTo.Location = new Point(208, 698);
             dateTimePickerTo.Name = "dateTimePickerTo";
-            dateTimePickerTo.Size = new Size(200, 31);
+            dateTimePickerTo.Size = new Size(330, 31);
             dateTimePickerTo.TabIndex = 0;
             dateTimePickerTo.Visible = false;
             // 
             // dateTimePickerSingle
             // 
-            dateTimePickerSingle.Location = new Point(141, 179);
+            dateTimePickerSingle.Location = new Point(138, 401);
             dateTimePickerSingle.Name = "dateTimePickerSingle";
-            dateTimePickerSingle.Size = new Size(233, 31);
+            dateTimePickerSingle.Size = new Size(287, 31);
             dateTimePickerSingle.TabIndex = 0;
             dateTimePickerSingle.Visible = false;
             // 
             // radioButtonAZ
             // 
             radioButtonAZ.AutoSize = true;
-            radioButtonAZ.Location = new Point(309, 246);
+            radioButtonAZ.Location = new Point(164, 548);
             radioButtonAZ.Name = "radioButtonAZ";
             radioButtonAZ.Size = new Size(104, 29);
             radioButtonAZ.TabIndex = 0;
@@ -227,7 +227,7 @@ namespace loginPage
             // radioButtonZA
             // 
             radioButtonZA.AutoSize = true;
-            radioButtonZA.Location = new Point(419, 246);
+            radioButtonZA.Location = new Point(312, 548);
             radioButtonZA.Name = "radioButtonZA";
             radioButtonZA.Size = new Size(104, 29);
             radioButtonZA.TabIndex = 0;
@@ -239,9 +239,9 @@ namespace loginPage
             // label3
             // 
             label3.BackColor = SystemColors.Menu;
-            label3.Location = new Point(12, 303);
+            label3.Location = new Point(32, 625);
             label3.Name = "label3";
-            label3.Size = new Size(127, 35);
+            label3.Size = new Size(127, 29);
             label3.TabIndex = 10;
             label3.Text = " Range From:";
             label3.Visible = false;
@@ -249,9 +249,9 @@ namespace loginPage
             // label4
             // 
             label4.BackColor = SystemColors.Menu;
-            label4.Location = new Point(9, 367);
+            label4.Location = new Point(60, 698);
             label4.Name = "label4";
-            label4.Size = new Size(130, 33);
+            label4.Size = new Size(99, 31);
             label4.TabIndex = 12;
             label4.Text = " Range To:";
             label4.Visible = false;
@@ -259,7 +259,8 @@ namespace loginPage
             // label5
             // 
             label5.BackColor = Color.LightYellow;
-            label5.Location = new Point(9, 9);
+            label5.Font = new Font("Bahnschrift Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(20, 83);
             label5.Name = "label5";
             label5.Size = new Size(230, 31);
             label5.TabIndex = 14;
@@ -268,7 +269,7 @@ namespace loginPage
             // button1
             // 
             button1.BackColor = Color.White;
-            button1.Location = new Point(403, 307);
+            button1.Location = new Point(478, 532);
             button1.Name = "button1";
             button1.Size = new Size(112, 34);
             button1.TabIndex = 9;
@@ -279,7 +280,7 @@ namespace loginPage
             // CustomerForm
             // 
             BackColor = Color.DarkSeaGreen;
-            ClientSize = new Size(1793, 752);
+            ClientSize = new Size(1898, 1024);
             Controls.Add(btnGoBack);
             Controls.Add(btnSearch);
             Controls.Add(btnDeleteCustomer);

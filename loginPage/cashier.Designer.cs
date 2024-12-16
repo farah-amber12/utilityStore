@@ -45,9 +45,9 @@
             // 
             panel1.BackColor = Color.DarkSeaGreen;
             panel1.Controls.Add(textBox1);
-            panel1.Location = new Point(0, 0);
+            panel1.Location = new Point(61, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1216, 87);
+            panel1.Size = new Size(1632, 87);
             panel1.TabIndex = 1;
             // 
             // textBox1
@@ -55,7 +55,7 @@
             textBox1.BackColor = Color.DarkSeaGreen;
             textBox1.BorderStyle = BorderStyle.None;
             textBox1.Font = new Font("Times New Roman", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(245, 26);
+            textBox1.Location = new Point(491, 21);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(719, 37);
             textBox1.TabIndex = 0;
@@ -64,8 +64,9 @@
             // 
             // OrderPicture
             // 
+            OrderPicture.BackColor = Color.White;
             OrderPicture.Image = (Image)resources.GetObject("OrderPicture.Image");
-            OrderPicture.Location = new Point(90, 204);
+            OrderPicture.Location = new Point(410, 277);
             OrderPicture.Name = "OrderPicture";
             OrderPicture.Size = new Size(274, 316);
             OrderPicture.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -77,7 +78,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(143, 151);
+            label1.Location = new Point(459, 204);
             label1.Name = "label1";
             label1.Size = new Size(185, 26);
             label1.TabIndex = 3;
@@ -85,8 +86,9 @@
             // 
             // pictureBox1
             // 
+            pictureBox1.BackColor = Color.White;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(798, 204);
+            pictureBox1.Location = new Point(1182, 277);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(272, 316);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -98,7 +100,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(843, 151);
+            label2.Location = new Point(1220, 204);
             label2.Name = "label2";
             label2.Size = new Size(182, 26);
             label2.TabIndex = 5;
@@ -106,19 +108,22 @@
             // 
             // button1
             // 
-            button1.Location = new Point(671, 578);
+            button1.BackColor = Color.DarkSeaGreen;
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(1550, 884);
             button1.Name = "button1";
-            button1.Size = new Size(112, 34);
+            button1.Size = new Size(156, 52);
             button1.TabIndex = 6;
-            button1.Text = "back";
-            button1.UseVisualStyleBackColor = true;
+            button1.Text = "Back";
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // cashier
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1216, 624);
+            BackColor = Color.White;
+            ClientSize = new Size(1898, 1024);
             Controls.Add(button1);
             Controls.Add(label2);
             Controls.Add(pictureBox1);

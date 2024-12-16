@@ -40,10 +40,10 @@
             // 
             // btnManageStaff
             // 
-            btnManageStaff.BackColor = Color.DodgerBlue;
+            btnManageStaff.BackColor = Color.DarkSeaGreen;
             btnManageStaff.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnManageStaff.ForeColor = Color.White;
-            btnManageStaff.Location = new Point(84, 55);
+            btnManageStaff.Location = new Point(168, 54);
             btnManageStaff.Name = "btnManageStaff";
             btnManageStaff.Size = new Size(222, 50);
             btnManageStaff.TabIndex = 0;
@@ -53,10 +53,10 @@
             // 
             // btnManageCategories
             // 
-            btnManageCategories.BackColor = Color.DodgerBlue;
+            btnManageCategories.BackColor = Color.DarkSeaGreen;
             btnManageCategories.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnManageCategories.ForeColor = Color.White;
-            btnManageCategories.Location = new Point(84, 135);
+            btnManageCategories.Location = new Point(168, 200);
             btnManageCategories.Name = "btnManageCategories";
             btnManageCategories.Size = new Size(222, 50);
             btnManageCategories.TabIndex = 2;
@@ -66,10 +66,10 @@
             // 
             // btnManageSupplierDebt
             // 
-            btnManageSupplierDebt.BackColor = Color.DodgerBlue;
+            btnManageSupplierDebt.BackColor = Color.DarkSeaGreen;
             btnManageSupplierDebt.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnManageSupplierDebt.ForeColor = Color.White;
-            btnManageSupplierDebt.Location = new Point(84, 215);
+            btnManageSupplierDebt.Location = new Point(670, 54);
             btnManageSupplierDebt.Name = "btnManageSupplierDebt";
             btnManageSupplierDebt.Size = new Size(222, 50);
             btnManageSupplierDebt.TabIndex = 4;
@@ -79,10 +79,10 @@
             // 
             // btnManageCustomerDebt
             // 
-            btnManageCustomerDebt.BackColor = Color.DodgerBlue;
+            btnManageCustomerDebt.BackColor = Color.DarkSeaGreen;
             btnManageCustomerDebt.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnManageCustomerDebt.ForeColor = Color.White;
-            btnManageCustomerDebt.Location = new Point(84, 295);
+            btnManageCustomerDebt.Location = new Point(670, 200);
             btnManageCustomerDebt.Name = "btnManageCustomerDebt";
             btnManageCustomerDebt.Size = new Size(222, 50);
             btnManageCustomerDebt.TabIndex = 6;
@@ -92,12 +92,12 @@
             // 
             // btnManageProducts
             // 
-            btnManageProducts.BackColor = Color.DodgerBlue;
+            btnManageProducts.BackColor = Color.DarkSeaGreen;
             btnManageProducts.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnManageProducts.ForeColor = Color.White;
-            btnManageProducts.Location = new Point(84, 375);
+            btnManageProducts.Location = new Point(168, 350);
             btnManageProducts.Name = "btnManageProducts";
-            btnManageProducts.Size = new Size(222, 50);
+            btnManageProducts.Size = new Size(222, 55);
             btnManageProducts.TabIndex = 8;
             btnManageProducts.Text = "Manage Products";
             btnManageProducts.UseVisualStyleBackColor = false;
@@ -115,7 +115,7 @@
             btnLogout.BackColor = Color.LightCoral;
             btnLogout.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(84, 455);
+            btnLogout.Location = new Point(670, 350);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(222, 50);
             btnLogout.TabIndex = 10;
@@ -126,9 +126,9 @@
             // pictureBox1
             // 
             pictureBox1.Image = loginPage.Properties.Resources.manage_staff;
-            pictureBox1.Location = new Point(10, 55);
+            pictureBox1.Location = new Point(26, 29);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(50, 50);
+            pictureBox1.Size = new Size(117, 92);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
@@ -136,9 +136,9 @@
             // pictureBox2
             // 
             pictureBox2.Image = loginPage.Properties.Resources.catagories;
-            pictureBox2.Location = new Point(10, 135);
+            pictureBox2.Location = new Point(26, 178);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(50, 50);
+            pictureBox2.Size = new Size(117, 99);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 3;
             pictureBox2.TabStop = false;
@@ -146,9 +146,9 @@
             // pictureBox3
             // 
             pictureBox3.Image = loginPage.Properties.Resources.supplier_debt;
-            pictureBox3.Location = new Point(10, 215);
+            pictureBox3.Location = new Point(500, 38);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(50, 50);
+            pictureBox3.Size = new Size(113, 83);
             pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox3.TabIndex = 5;
             pictureBox3.TabStop = false;
@@ -156,9 +156,9 @@
             // pictureBox4
             // 
             pictureBox4.Image = loginPage.Properties.Resources.customericon;
-            pictureBox4.Location = new Point(10, 295);
+            pictureBox4.Location = new Point(500, 178);
             pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(50, 50);
+            pictureBox4.Size = new Size(113, 99);
             pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox4.TabIndex = 7;
             pictureBox4.TabStop = false;
@@ -166,9 +166,9 @@
             // pictureBox5
             // 
             pictureBox5.Image = loginPage.Properties.Resources.products_icon;
-            pictureBox5.Location = new Point(10, 375);
+            pictureBox5.Location = new Point(26, 333);
             pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(50, 50);
+            pictureBox5.Size = new Size(117, 97);
             pictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox5.TabIndex = 9;
             pictureBox5.TabStop = false;
@@ -184,16 +184,17 @@
             // pictureBox7
             // 
             pictureBox7.Image = loginPage.Properties.Resources.logout;
-            pictureBox7.Location = new Point(10, 455);
+            pictureBox7.Location = new Point(482, 332);
             pictureBox7.Name = "pictureBox7";
-            pictureBox7.Size = new Size(50, 50);
+            pictureBox7.Size = new Size(119, 98);
             pictureBox7.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox7.TabIndex = 11;
             pictureBox7.TabStop = false;
             // 
             // OwnerForm
             // 
-            ClientSize = new Size(1618, 650);
+            BackColor = Color.White;
+            ClientSize = new Size(1898, 1024);
             Controls.Add(btnManageStaff);
             Controls.Add(pictureBox1);
             Controls.Add(btnManageCategories);

@@ -150,7 +150,7 @@
             button1.BackColor = Color.DarkSeaGreen;
             button1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             button1.ForeColor = Color.White;
-            button1.Location = new Point(557, 307);
+            button1.Location = new Point(463, 316);
             button1.Name = "button1";
             button1.Size = new Size(165, 52);
             button1.TabIndex = 11;
@@ -255,7 +255,7 @@
             button2.BackColor = Color.DarkSeaGreen;
             button2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             button2.ForeColor = Color.White;
-            button2.Location = new Point(778, 307);
+            button2.Location = new Point(728, 316);
             button2.Name = "button2";
             button2.Size = new Size(193, 52);
             button2.TabIndex = 28;
@@ -268,7 +268,7 @@
             button3.BackColor = Color.DarkSeaGreen;
             button3.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             button3.ForeColor = Color.White;
-            button3.Location = new Point(308, 307);
+            button3.Location = new Point(155, 307);
             button3.Name = "button3";
             button3.Size = new Size(176, 52);
             button3.TabIndex = 29;
@@ -283,18 +283,20 @@
             productsGridView.Name = "productsGridView";
             productsGridView.RowHeadersWidth = 62;
             productsGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            productsGridView.Size = new Size(1326, 380);
+            productsGridView.Size = new Size(1772, 544);
             productsGridView.TabIndex = 30;
             productsGridView.CellContentClick += productsGridView_CellContentClick;
             // 
             // button4
             // 
-            button4.Location = new Point(1140, 853);
+            button4.BackColor = Color.DarkSeaGreen;
+            button4.ForeColor = Color.White;
+            button4.Location = new Point(1746, 978);
             button4.Name = "button4";
             button4.Size = new Size(112, 34);
             button4.TabIndex = 31;
             button4.Text = "Back";
-            button4.UseVisualStyleBackColor = true;
+            button4.UseVisualStyleBackColor = false;
             button4.Click += button4_Click;
             // 
             // label3
@@ -344,12 +346,12 @@
             tableLayoutPanel2.ColumnCount = 1;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 29.4117641F));
             tableLayoutPanel2.Controls.Add(label11, 0, 0);
-            tableLayoutPanel2.Location = new Point(419, 12);
+            tableLayoutPanel2.Location = new Point(400, 12);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel2.Size = new Size(836, 68);
+            tableLayoutPanel2.Size = new Size(1420, 68);
             tableLayoutPanel2.TabIndex = 33;
             // 
             // Products
@@ -357,7 +359,7 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gainsboro;
-            ClientSize = new Size(1385, 905);
+            ClientSize = new Size(1898, 1024);
             Controls.Add(tableLayoutPanel2);
             Controls.Add(button4);
             Controls.Add(productsGridView);
