@@ -82,23 +82,26 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label8.Location = new Point(38, 9);
+            label8.Font = new Font("Times New Roman", 13F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.Location = new Point(89, 11);
             label8.Name = "label8";
-            label8.Size = new Size(123, 25);
+            label8.Size = new Size(167, 30);
             label8.TabIndex = 12;
-            label8.Text = "Staff details";
+            label8.Text = " Staff Details ";
             label8.Click += label8_Click;
             // 
             // label9
             // 
             label9.AutoSize = true;
+            label9.BackColor = Color.Transparent;
             label9.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label9.Location = new Point(445, 16);
+            label9.ForeColor = Color.White;
+            label9.Location = new Point(309, 63);
             label9.Name = "label9";
-            label9.Size = new Size(117, 25);
+            label9.Size = new Size(130, 25);
             label9.TabIndex = 13;
-            label9.Text = "User Name";
+            label9.Text = "User Name :";
+            label9.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // staffcombo
             // 
@@ -112,12 +115,15 @@
             // label12
             // 
             label12.AutoSize = true;
+            label12.BackColor = Color.Transparent;
             label12.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label12.ForeColor = Color.White;
             label12.Location = new Point(20, 68);
             label12.Name = "label12";
-            label12.Size = new Size(168, 25);
+            label12.Size = new Size(190, 25);
             label12.TabIndex = 19;
-            label12.Text = "recieved amount";
+            label12.Text = "Recieved Amount :";
+            label12.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // rcvdamount
             // 
@@ -129,12 +135,15 @@
             // 
             // button1
             // 
+            button1.BackColor = Color.DarkSeaGreen;
+            button1.Font = new Font("Segoe UI", 11F);
+            button1.ForeColor = Color.White;
             button1.Location = new Point(1274, 876);
             button1.Name = "button1";
             button1.Size = new Size(153, 49);
             button1.TabIndex = 21;
-            button1.Text = "place order";
-            button1.UseVisualStyleBackColor = true;
+            button1.Text = "Place Order :";
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click_1;
             // 
             // quantityTextBox
@@ -148,42 +157,55 @@
             // label13
             // 
             label13.AutoSize = true;
+            label13.BackColor = Color.Transparent;
             label13.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label13.ForeColor = Color.White;
             label13.Location = new Point(20, 17);
             label13.Name = "label13";
-            label13.Size = new Size(140, 25);
+            label13.Size = new Size(153, 25);
             label13.TabIndex = 20;
-            label13.Text = "Total Amount";
+            label13.Text = "Total Amount :";
+            label13.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label10
             // 
             label10.AutoSize = true;
+            label10.BackColor = Color.Transparent;
             label10.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label10.Location = new Point(61, 226);
+            label10.ForeColor = Color.White;
+            label10.Location = new Point(13, 231);
             label10.Name = "label10";
-            label10.Size = new Size(98, 26);
+            label10.Size = new Size(118, 26);
             label10.TabIndex = 4;
-            label10.Text = "quantity";
+            label10.Text = "Quantity :";
+            label10.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
             label1.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(61, 16);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(16, 17);
             label1.Name = "label1";
-            label1.Size = new Size(106, 25);
+            label1.Size = new Size(131, 25);
             label1.TabIndex = 0;
-            label1.Text = "categories";
+            label1.Text = "Categories : ";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            label1.Click += label1_Click;
             // 
             // label2
             // 
             label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
             label2.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(61, 111);
+            label2.ForeColor = Color.White;
+            label2.Location = new Point(16, 125);
             label2.Name = "label2";
-            label2.Size = new Size(94, 25);
+            label2.Size = new Size(115, 25);
             label2.TabIndex = 1;
-            label2.Text = "products";
+            label2.Text = "Products : ";
+            label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // categoryselection
             // 
@@ -205,16 +227,17 @@
             // 
             // button2
             // 
-            button2.Location = new Point(78, 335);
+            button2.Location = new Point(94, 335);
             button2.Name = "button2";
             button2.Size = new Size(126, 34);
             button2.TabIndex = 22;
-            button2.Text = "add to cart";
+            button2.Text = "Add to Cart";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
             // panel2
             // 
+            panel2.BackColor = Color.DarkSeaGreen;
             panel2.Controls.Add(staffcombo);
             panel2.Controls.Add(label9);
             panel2.Controls.Add(txtPhone);
@@ -255,32 +278,41 @@
             // label7
             // 
             label7.AutoSize = true;
+            label7.BackColor = Color.Transparent;
             label7.Font = new Font("Times New Roman", 11F, FontStyle.Bold);
-            label7.Location = new Point(61, 225);
+            label7.ForeColor = Color.White;
+            label7.Location = new Point(3, 253);
             label7.Name = "label7";
-            label7.Size = new Size(150, 25);
+            label7.Size = new Size(173, 25);
             label7.TabIndex = 8;
-            label7.Text = "Phone number";
+            label7.Text = "Phone Number : ";
+            label7.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label6
             // 
             label6.AutoSize = true;
+            label6.BackColor = Color.Transparent;
             label6.Font = new Font("Times New Roman", 11F, FontStyle.Bold);
-            label6.Location = new Point(61, 119);
+            label6.ForeColor = Color.White;
+            label6.Location = new Point(3, 135);
             label6.Name = "label6";
-            label6.Size = new Size(115, 25);
+            label6.Size = new Size(134, 25);
             label6.TabIndex = 7;
-            label6.Text = "Last Name";
+            label6.Text = "Last Name : ";
+            label6.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label5
             // 
             label5.AutoSize = true;
+            label5.BackColor = Color.Transparent;
             label5.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label5.Location = new Point(62, 16);
+            label5.ForeColor = Color.White;
+            label5.Location = new Point(0, 32);
             label5.Name = "label5";
-            label5.Size = new Size(118, 25);
+            label5.Size = new Size(137, 25);
             label5.TabIndex = 6;
-            label5.Text = "First Name";
+            label5.Text = "First Name : ";
+            label5.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
@@ -294,17 +326,19 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.BackColor = SystemColors.ActiveCaption;
-            label4.Font = new Font("Times New Roman", 11F, FontStyle.Bold);
-            label4.Location = new Point(17, 9);
+            label4.BackColor = Color.Transparent;
+            label4.Font = new Font("Times New Roman", 13F, FontStyle.Bold);
+            label4.ForeColor = Color.DarkCyan;
+            label4.Location = new Point(83, 11);
             label4.Name = "label4";
-            label4.Size = new Size(175, 25);
+            label4.Size = new Size(224, 30);
             label4.TabIndex = 5;
-            label4.Text = "Customer Details";
+            label4.Text = " Customer Details ";
             label4.Click += label4_Click;
             // 
             // panel1
             // 
+            panel1.BackColor = Color.DarkSeaGreen;
             panel1.Controls.Add(productselection);
             panel1.Controls.Add(categoryselection);
             panel1.Controls.Add(label2);
@@ -329,12 +363,15 @@
             // debtDueDateLabel
             // 
             debtDueDateLabel.AutoSize = true;
+            debtDueDateLabel.BackColor = Color.Transparent;
             debtDueDateLabel.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            debtDueDateLabel.ForeColor = Color.White;
             debtDueDateLabel.Location = new Point(20, 120);
             debtDueDateLabel.Name = "debtDueDateLabel";
-            debtDueDateLabel.Size = new Size(172, 25);
+            debtDueDateLabel.Size = new Size(188, 25);
             debtDueDateLabel.TabIndex = 25;
-            debtDueDateLabel.Text = "due date for debt";
+            debtDueDateLabel.Text = "Due Date of Debt :";
+            debtDueDateLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel4
             // 
@@ -348,35 +385,42 @@
             // label15
             // 
             label15.AutoSize = true;
-            label15.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label15.Location = new Point(509, 25);
+            label15.Font = new Font("Times New Roman", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label15.ForeColor = Color.White;
+            label15.Location = new Point(398, 10);
             label15.Name = "label15";
-            label15.Size = new Size(422, 26);
+            label15.Size = new Size(710, 45);
             label15.TabIndex = 0;
             label15.Text = "PLACE CUSTOMER'S ORDER HERE";
             // 
             // label14
             // 
             label14.AutoSize = true;
-            label14.Font = new Font("Times New Roman", 11F, FontStyle.Bold);
-            label14.Location = new Point(17, 11);
+            label14.BackColor = Color.Beige;
+            label14.Font = new Font("Times New Roman", 13F, FontStyle.Bold);
+            label14.Location = new Point(37, 9);
             label14.Name = "label14";
-            label14.Size = new Size(158, 25);
+            label14.Size = new Size(189, 30);
             label14.TabIndex = 27;
             label14.Text = "Product Details";
+            label14.Click += label14_Click;
             // 
             // button4
             // 
+            button4.BackColor = Color.DarkSeaGreen;
+            button4.Font = new Font("Segoe UI", 11F);
+            button4.ForeColor = Color.White;
             button4.Location = new Point(1105, 876);
             button4.Name = "button4";
             button4.Size = new Size(143, 49);
             button4.TabIndex = 28;
-            button4.Text = "back";
-            button4.UseVisualStyleBackColor = true;
+            button4.Text = " Back ";
+            button4.UseVisualStyleBackColor = false;
             button4.Click += button4_Click;
             // 
             // panel5
             // 
+            panel5.BackColor = Color.DarkSeaGreen;
             panel5.Controls.Add(label13);
             panel5.Controls.Add(lblTotalAmount);
             panel5.Controls.Add(label12);
@@ -391,12 +435,15 @@
             // lblTotalAmount
             // 
             lblTotalAmount.AutoSize = true;
+            lblTotalAmount.BackColor = Color.Transparent;
             lblTotalAmount.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTotalAmount.Location = new Point(299, 16);
+            lblTotalAmount.ForeColor = Color.White;
+            lblTotalAmount.Location = new Point(372, 16);
             lblTotalAmount.Name = "lblTotalAmount";
-            lblTotalAmount.Size = new Size(59, 26);
+            lblTotalAmount.Size = new Size(84, 26);
             lblTotalAmount.TabIndex = 31;
-            lblTotalAmount.Text = "total";
+            lblTotalAmount.Text = "Total : ";
+            lblTotalAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // cartGridView
             // 
@@ -410,63 +457,71 @@
             // label16
             // 
             label16.AutoSize = true;
-            label16.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label16.Location = new Point(929, 111);
+            label16.BackColor = Color.Transparent;
+            label16.Font = new Font("Times New Roman", 13F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label16.ForeColor = SystemColors.WindowFrame;
+            label16.Location = new Point(442, 111);
             label16.Name = "label16";
-            label16.Size = new Size(106, 25);
+            label16.Size = new Size(150, 30);
             label16.TabIndex = 32;
-            label16.Text = "Your Cart";
+            label16.Text = "Your Cart : ";
             // 
             // label17
             // 
             label17.AutoSize = true;
-            label17.Font = new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label17.Location = new Point(38, 16);
+            label17.Font = new Font("Times New Roman", 13F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label17.Location = new Point(266, 12);
             label17.Name = "label17";
-            label17.Size = new Size(145, 25);
+            label17.Size = new Size(177, 30);
             label17.TabIndex = 33;
             label17.Text = "Billing Details";
+            label17.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel3
             // 
-            panel3.BackColor = SystemColors.ActiveCaption;
+            panel3.BackColor = Color.Beige;
             panel3.Controls.Add(label14);
-            panel3.Location = new Point(73, 86);
+            panel3.ForeColor = Color.DarkCyan;
+            panel3.Location = new Point(28, 86);
             panel3.Name = "panel3";
-            panel3.Size = new Size(199, 50);
+            panel3.Size = new Size(275, 50);
             panel3.TabIndex = 34;
             // 
             // panel6
             // 
-            panel6.BackColor = SystemColors.ActiveCaption;
+            panel6.BackColor = Color.Beige;
             panel6.Controls.Add(label4);
-            panel6.Location = new Point(73, 563);
+            panel6.ForeColor = Color.DarkCyan;
+            panel6.Location = new Point(12, 563);
             panel6.Name = "panel6";
-            panel6.Size = new Size(211, 50);
+            panel6.Size = new Size(360, 50);
             panel6.TabIndex = 35;
             // 
             // panel7
             // 
-            panel7.BackColor = SystemColors.ActiveCaption;
+            panel7.BackColor = Color.Beige;
             panel7.Controls.Add(label8);
-            panel7.Location = new Point(457, 563);
+            panel7.ForeColor = Color.DarkCyan;
+            panel7.Location = new Point(397, 563);
             panel7.Name = "panel7";
-            panel7.Size = new Size(199, 50);
+            panel7.Size = new Size(340, 50);
             panel7.TabIndex = 36;
             // 
             // panel8
             // 
-            panel8.BackColor = SystemColors.ActiveCaption;
+            panel8.BackColor = Color.Beige;
             panel8.Controls.Add(label17);
-            panel8.Location = new Point(1034, 547);
+            panel8.ForeColor = Color.DarkCyan;
+            panel8.Location = new Point(792, 562);
             panel8.Name = "panel8";
-            panel8.Size = new Size(199, 50);
+            panel8.Size = new Size(635, 50);
             panel8.TabIndex = 37;
             // 
             // Order
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
             ClientSize = new Size(1466, 960);
             Controls.Add(panel8);
             Controls.Add(panel7);

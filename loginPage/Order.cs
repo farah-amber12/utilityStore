@@ -309,61 +309,61 @@ namespace loginPage
         }
 
 
-private int AddNewCustomer()
-    {
-        try
+        private int AddNewCustomer()
         {
-            // Fetch values directly from input fields
-            string firstName = txtFirstName.Text.Trim();
-            string lastName = txtLastName.Text.Trim();
-            string phone = txtPhone.Text.Trim();
-
-            // Ensure inputs are not empty
-            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(phone))
+            try
             {
-                MessageBox.Show("Please fill in all customer details!", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return -1;
-            }
+                // Fetch values directly from input fields
+                string firstName = txtFirstName.Text.Trim();
+                string lastName = txtLastName.Text.Trim();
+                string phone = txtPhone.Text.Trim();
 
-            // Validate phone format using Regex
-            string phonePattern = @"^03[0-9]{2}-[0-9]{7}$"; // Format: 03XX-XXXXXXX
-            if (!Regex.IsMatch(phone, phonePattern))
-            {
-                MessageBox.Show("Phone number must be in the format 03XX-XXXXXXX.", "Invalid Phone Format", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return -1;
-            }
+                // Ensure inputs are not empty
+                if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(phone))
+                {
+                    MessageBox.Show("Please fill in all customer details!", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return -1;
+                }
 
-            orderdbconnection.Open();
+                // Validate phone format using Regex
+                string phonePattern = @"^03[0-9]{2}-[0-9]{7}$"; // Format: 03XX-XXXXXXX
+                if (!Regex.IsMatch(phone, phonePattern))
+                {
+                    MessageBox.Show("Phone number must be in the format 03XX-XXXXXXX.", "Invalid Phone Format", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return -1;
+                }
 
-            // Query to insert a new customer
-            string query = @"INSERT INTO Customers (FirstName, LastName, Phone) 
+                orderdbconnection.Open();
+
+                // Query to insert a new customer
+                string query = @"INSERT INTO Customers (FirstName, LastName, Phone) 
                          VALUES (@FirstName, @LastName, @Phone);
                          SELECT SCOPE_IDENTITY();"; // Get the new CustomerID
 
-            using (SqlCommand command = new SqlCommand(query, orderdbconnection))
-            {
-                command.Parameters.AddWithValue("@FirstName", firstName);
-                command.Parameters.AddWithValue("@LastName", lastName);
-                command.Parameters.AddWithValue("@Phone", phone);
+                using (SqlCommand command = new SqlCommand(query, orderdbconnection))
+                {
+                    command.Parameters.AddWithValue("@FirstName", firstName);
+                    command.Parameters.AddWithValue("@LastName", lastName);
+                    command.Parameters.AddWithValue("@Phone", phone);
 
-                // Execute query and retrieve the CustomerID
-                object result = command.ExecuteScalar();
-                return Convert.ToInt32(result); // Return the newly generated CustomerID
+                    // Execute query and retrieve the CustomerID
+                    object result = command.ExecuteScalar();
+                    return Convert.ToInt32(result); // Return the newly generated CustomerID
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return -1;
+            }
+            finally
+            {
+                orderdbconnection.Close();
             }
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return -1;
-        }
-        finally
-        {
-            orderdbconnection.Close();
-        }
-    }
 
 
-    private void txtPhone_Leave(object sender, EventArgs e)
+        private void txtPhone_Leave(object sender, EventArgs e)
         {
 
         }
@@ -687,103 +687,103 @@ private int AddNewCustomer()
                   MessageBox.Show($"Error: {ex.Message}");
               }
           }*/
-      /*  private void PlaceOrder(int customerId, int staffId, List<(int productId, int quantity)> cart, decimal receivedAmount, DateTime dueDate)
-        {
-            SqlTransaction transaction = null;
+        /*  private void PlaceOrder(int customerId, int staffId, List<(int productId, int quantity)> cart, decimal receivedAmount, DateTime dueDate)
+          {
+              SqlTransaction transaction = null;
 
-            try
-            {
-                orderdbconnection.Open();
-                transaction = orderdbconnection.BeginTransaction();
+              try
+              {
+                  orderdbconnection.Open();
+                  transaction = orderdbconnection.BeginTransaction();
 
-                // Step 1: Insert into Orders table and get OrderID
-                int orderId = 0;
-                using (SqlCommand orderCommand = new SqlCommand(
-                    "INSERT INTO Orders (OrderDate, CustomerID, StaffID) OUTPUT INSERTED.OrderID VALUES (@OrderDate, @CustomerID, @StaffID)",
-                    orderdbconnection, transaction))
-                {
-                    orderCommand.Parameters.AddWithValue("@OrderDate", DateTime.Now);
-                    orderCommand.Parameters.AddWithValue("@CustomerID", customerId);
-                    orderCommand.Parameters.AddWithValue("@StaffID", staffId);
+                  // Step 1: Insert into Orders table and get OrderID
+                  int orderId = 0;
+                  using (SqlCommand orderCommand = new SqlCommand(
+                      "INSERT INTO Orders (OrderDate, CustomerID, StaffID) OUTPUT INSERTED.OrderID VALUES (@OrderDate, @CustomerID, @StaffID)",
+                      orderdbconnection, transaction))
+                  {
+                      orderCommand.Parameters.AddWithValue("@OrderDate", DateTime.Now);
+                      orderCommand.Parameters.AddWithValue("@CustomerID", customerId);
+                      orderCommand.Parameters.AddWithValue("@StaffID", staffId);
 
-                    orderId = (int)orderCommand.ExecuteScalar();
-                }
+                      orderId = (int)orderCommand.ExecuteScalar();
+                  }
 
-                // Step 2: Process each product in the cart
-                decimal totalSubtotal = 0; // Total cost for the order
-                foreach (var (productId, quantity) in cart)
-                {
-                    // Fetch the selling price of the product
-                    decimal sellingPrice = 0;
-                    using (SqlCommand priceCommand = new SqlCommand(
-                        "SELECT SellingPrice FROM Products WHERE ProductID = @ProductID",
-                        orderdbconnection, transaction))
-                    {
-                        priceCommand.Parameters.AddWithValue("@ProductID", productId);
-                        object result = priceCommand.ExecuteScalar();
+                  // Step 2: Process each product in the cart
+                  decimal totalSubtotal = 0; // Total cost for the order
+                  foreach (var (productId, quantity) in cart)
+                  {
+                      // Fetch the selling price of the product
+                      decimal sellingPrice = 0;
+                      using (SqlCommand priceCommand = new SqlCommand(
+                          "SELECT SellingPrice FROM Products WHERE ProductID = @ProductID",
+                          orderdbconnection, transaction))
+                      {
+                          priceCommand.Parameters.AddWithValue("@ProductID", productId);
+                          object result = priceCommand.ExecuteScalar();
 
-                        if (result != null)
-                        {
-                            sellingPrice = Convert.ToDecimal(result);
-                        }
-                        else
-                        {
-                            MessageBox.Show($"Product with ID {productId} not found.");
-                            transaction.Rollback();
-                            return;
-                        }
-                    }
+                          if (result != null)
+                          {
+                              sellingPrice = Convert.ToDecimal(result);
+                          }
+                          else
+                          {
+                              MessageBox.Show($"Product with ID {productId} not found.");
+                              transaction.Rollback();
+                              return;
+                          }
+                      }
 
-                    // Calculate subtotal for this product
-                    decimal subtotal = quantity * sellingPrice;
-                    totalSubtotal += subtotal;
+                      // Calculate subtotal for this product
+                      decimal subtotal = quantity * sellingPrice;
+                      totalSubtotal += subtotal;
 
-                    // Insert into OrderDetails
-                    using (SqlCommand orderDetailsCommand = new SqlCommand(
-                        "INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Subtotal, recievedAmount) VALUES (@OrderID, @ProductID, @Quantity, @Subtotal, @recievedAmount)",
-                        orderdbconnection, transaction))
-                    {
-                        orderDetailsCommand.Parameters.AddWithValue("@OrderID", orderId);
-                        orderDetailsCommand.Parameters.AddWithValue("@ProductID", productId);
-                        orderDetailsCommand.Parameters.AddWithValue("@Quantity", quantity);
-                        orderDetailsCommand.Parameters.AddWithValue("@Subtotal", subtotal);
-                        orderDetailsCommand.Parameters.AddWithValue("@recievedAmount", receivedAmount);
+                      // Insert into OrderDetails
+                      using (SqlCommand orderDetailsCommand = new SqlCommand(
+                          "INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Subtotal, recievedAmount) VALUES (@OrderID, @ProductID, @Quantity, @Subtotal, @recievedAmount)",
+                          orderdbconnection, transaction))
+                      {
+                          orderDetailsCommand.Parameters.AddWithValue("@OrderID", orderId);
+                          orderDetailsCommand.Parameters.AddWithValue("@ProductID", productId);
+                          orderDetailsCommand.Parameters.AddWithValue("@Quantity", quantity);
+                          orderDetailsCommand.Parameters.AddWithValue("@Subtotal", subtotal);
+                          orderDetailsCommand.Parameters.AddWithValue("@recievedAmount", receivedAmount);
 
-                        orderDetailsCommand.ExecuteNonQuery();
-                    }
-                }
+                          orderDetailsCommand.ExecuteNonQuery();
+                      }
+                  }
 
-                // Step 3: Handle customer debt if totalSubtotal > receivedAmount
-                if (receivedAmount < totalSubtotal)
-                {
-                    decimal debtAmount = totalSubtotal - receivedAmount;
+                  // Step 3: Handle customer debt if totalSubtotal > receivedAmount
+                  if (receivedAmount < totalSubtotal)
+                  {
+                      decimal debtAmount = totalSubtotal - receivedAmount;
 
-                    using (SqlCommand debtCommand = new SqlCommand(
-                        "INSERT INTO CustomerDebt (CustomerID, DebtAmount, DueDate) VALUES (@CustomerID, @DebtAmount, @DueDate)",
-                        orderdbconnection, transaction))
-                    {
-                        debtCommand.Parameters.AddWithValue("@CustomerID", customerId);
-                        debtCommand.Parameters.AddWithValue("@DebtAmount", debtAmount);
-                        debtCommand.Parameters.AddWithValue("@DueDate", dueDate);
+                      using (SqlCommand debtCommand = new SqlCommand(
+                          "INSERT INTO CustomerDebt (CustomerID, DebtAmount, DueDate) VALUES (@CustomerID, @DebtAmount, @DueDate)",
+                          orderdbconnection, transaction))
+                      {
+                          debtCommand.Parameters.AddWithValue("@CustomerID", customerId);
+                          debtCommand.Parameters.AddWithValue("@DebtAmount", debtAmount);
+                          debtCommand.Parameters.AddWithValue("@DueDate", dueDate);
 
-                        debtCommand.ExecuteNonQuery();
-                    }
-                }
+                          debtCommand.ExecuteNonQuery();
+                      }
+                  }
 
-                // Commit transaction
-                transaction.Commit();
-                MessageBox.Show("Order placed successfully!");
-            }
-            catch (Exception ex)
-            {
-                transaction?.Rollback();
-                MessageBox.Show($"Error placing order: {ex.Message}");
-            }
-            finally
-            {
-                orderdbconnection.Close();
-            }
-        }*/
+                  // Commit transaction
+                  transaction.Commit();
+                  MessageBox.Show("Order placed successfully!");
+              }
+              catch (Exception ex)
+              {
+                  transaction?.Rollback();
+                  MessageBox.Show($"Error placing order: {ex.Message}");
+              }
+              finally
+              {
+                  orderdbconnection.Close();
+              }
+          }*/
 
 
         private void label4_Click(object sender, EventArgs e)
@@ -1037,9 +1037,9 @@ private int AddNewCustomer()
                     decimal debtAmount = totalSubtotal - recievedAmount;
 
                     // Calculate due date (e.g., 30 days from now)
-                   DateTime dueDate = DateTime.Now.AddDays(30);
+                    DateTime dueDate = DateTime.Now.AddDays(30);
                     //  debtDueDateLabel.Visible = true;
-                   // debtDueDatePicker.Visible = true;
+                    // debtDueDatePicker.Visible = true;
 
                     //    MessageBox.Show("Received amount is less than the total. Please select a due date.");
 
@@ -1057,13 +1057,13 @@ private int AddNewCustomer()
                     }
 
                     // Inform the cashier about the debt
-                //    MessageBox.Show($"Debt of {debtAmount:C} has been recorded for Customer ID: {customerId}. Due date: {dueDate.ToShortDateString()}");
+                    //    MessageBox.Show($"Debt of {debtAmount:C} has been recorded for Customer ID: {customerId}. Due date: {dueDate.ToShortDateString()}");
                 }
                 //                else
                 //              {
                 //                // Hide the controls if no debt
-                           // debtDueDateLabel.Visible = false;
-                            //debtDueDatePicker.Visible = false;
+                // debtDueDateLabel.Visible = false;
+                //debtDueDatePicker.Visible = false;
                 //      }
 
                 // Commit transaction
@@ -1080,7 +1080,7 @@ private int AddNewCustomer()
                 orderdbconnection.Close();
             }
         }
-       
+
 
         private void button1_Click_1(object sender, EventArgs e)
         {
@@ -1147,6 +1147,16 @@ private int AddNewCustomer()
         }
 
         private void txtFirstName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label14_Click(object sender, EventArgs e)
         {
 
         }
