@@ -29,6 +29,7 @@
             pictureBox5 = new PictureBox();
             pictureBox6 = new PictureBox();
             pictureBox7 = new PictureBox();
+            pictureBox8 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -36,6 +37,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
             SuspendLayout();
             // 
             // btnManageStaff
@@ -56,7 +58,7 @@
             btnManageCategories.BackColor = Color.DarkSeaGreen;
             btnManageCategories.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnManageCategories.ForeColor = Color.White;
-            btnManageCategories.Location = new Point(168, 200);
+            btnManageCategories.Location = new Point(168, 182);
             btnManageCategories.Name = "btnManageCategories";
             btnManageCategories.Size = new Size(222, 50);
             btnManageCategories.TabIndex = 2;
@@ -69,7 +71,7 @@
             btnManageSupplierDebt.BackColor = Color.DarkSeaGreen;
             btnManageSupplierDebt.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnManageSupplierDebt.ForeColor = Color.White;
-            btnManageSupplierDebt.Location = new Point(161, 510);
+            btnManageSupplierDebt.Location = new Point(161, 430);
             btnManageSupplierDebt.Name = "btnManageSupplierDebt";
             btnManageSupplierDebt.Size = new Size(222, 50);
             btnManageSupplierDebt.TabIndex = 4;
@@ -95,7 +97,7 @@
             btnManageProducts.BackColor = Color.DarkSeaGreen;
             btnManageProducts.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnManageProducts.ForeColor = Color.White;
-            btnManageProducts.Location = new Point(168, 350);
+            btnManageProducts.Location = new Point(161, 300);
             btnManageProducts.Name = "btnManageProducts";
             btnManageProducts.Size = new Size(222, 55);
             btnManageProducts.TabIndex = 8;
@@ -105,10 +107,15 @@
             // 
             // btnManageOrders
             // 
-            btnManageOrders.Location = new Point(0, 0);
+            btnManageOrders.BackColor = Color.DarkSeaGreen;
+            btnManageOrders.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnManageOrders.ForeColor = Color.White;
+            btnManageOrders.Location = new Point(168, 529);
             btnManageOrders.Name = "btnManageOrders";
-            btnManageOrders.Size = new Size(75, 23);
+            btnManageOrders.Size = new Size(222, 60);
             btnManageOrders.TabIndex = 0;
+            btnManageOrders.Text = "Manage Orders";
+            btnManageOrders.UseVisualStyleBackColor = false;
             // 
             // btnLogout
             // 
@@ -126,7 +133,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = loginPage.Properties.Resources.manage_staff;
-            pictureBox1.Location = new Point(26, 29);
+            pictureBox1.Location = new Point(26, 7);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(117, 92);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -136,7 +143,7 @@
             // pictureBox2
             // 
             pictureBox2.Image = loginPage.Properties.Resources.catagories;
-            pictureBox2.Location = new Point(26, 178);
+            pictureBox2.Location = new Point(26, 133);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(117, 99);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -146,7 +153,7 @@
             // pictureBox3
             // 
             pictureBox3.Image = loginPage.Properties.Resources.supplier_debt;
-            pictureBox3.Location = new Point(30, 494);
+            pictureBox3.Location = new Point(29, 397);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(113, 83);
             pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -166,7 +173,7 @@
             // pictureBox5
             // 
             pictureBox5.Image = loginPage.Properties.Resources.products_icon;
-            pictureBox5.Location = new Point(26, 333);
+            pictureBox5.Location = new Point(26, 258);
             pictureBox5.Name = "pictureBox5";
             pictureBox5.Size = new Size(117, 97);
             pictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -191,10 +198,21 @@
             pictureBox7.TabIndex = 11;
             pictureBox7.TabStop = false;
             // 
+            // pictureBox8
+            // 
+            pictureBox8.Image = loginPage.Properties.Resources.order_details;
+            pictureBox8.Location = new Point(12, 510);
+            pictureBox8.Name = "pictureBox8";
+            pictureBox8.Size = new Size(127, 91);
+            pictureBox8.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox8.TabIndex = 12;
+            pictureBox8.TabStop = false;
+            // 
             // OwnerForm
             // 
             BackColor = Color.White;
-            ClientSize = new Size(1920, 1080);
+            ClientSize = new Size(1920, 1050);
+            Controls.Add(pictureBox8);
             Controls.Add(btnManageStaff);
             Controls.Add(pictureBox1);
             Controls.Add(btnManageCategories);
@@ -202,6 +220,7 @@
             Controls.Add(btnManageSupplierDebt);
             Controls.Add(pictureBox3);
             Controls.Add(btnManageCustomerDebt);
+            Controls.Add(btnManageOrders);
             Controls.Add(pictureBox4);
             Controls.Add(btnManageProducts);
             Controls.Add(pictureBox5);
@@ -218,6 +237,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
             ResumeLayout(false);
         }
 
@@ -238,5 +258,6 @@
         private PictureBox pictureBox7;
 
         private DataGridView dataGridView1;
+        private PictureBox pictureBox8;
     }
 }
