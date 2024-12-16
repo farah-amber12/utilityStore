@@ -227,7 +227,7 @@ namespace loginPage
             try
             {
                 ProductsConnection.Open();
-                string query = "SELECT SupplierName FROM Supplier";
+                string query = "SELECT SupplierName FROM Supplier order by SupplierName ASC";
 
                 using (SqlCommand command = new SqlCommand(query, ProductsConnection))
                 {

@@ -45,5 +45,12 @@ namespace loginPage
             loginForm.Show();
 
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+           viewOrders viewOrders = new viewOrders();    
+            viewOrders.Show();
+        }
     }
 }

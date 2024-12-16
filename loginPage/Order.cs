@@ -6,11 +6,13 @@ using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Windows.Forms;
 using loginPage;
 using Microsoft.Data.SqlClient; // Import this namespace for database connection
+using System.Text.RegularExpressions; // Required for Regex
 
 namespace loginPage
 {
@@ -46,7 +48,7 @@ namespace loginPage
             try
             {
                 orderdbconnection.Open();
-                string query = "SELECT CategoryName FROM Categories";
+                string query = "SELECT CategoryName FROM Categories order by CategoryName ASC";
 
                 using (SqlCommand command = new SqlCommand(query, orderdbconnection))
                 {
@@ -77,7 +79,8 @@ namespace loginPage
                 string query = @"SELECT ProductName 
                           FROM Products p
                           JOIN Categories c ON p.CategoryID = c.CategoryID
-                          WHERE c.CategoryName = @CategoryName";
+                          WHERE c.CategoryName = @CategoryName
+                            order by ProductName ASC";
 
                 using (SqlCommand command = new SqlCommand(query, orderdbconnection))
                 {
@@ -305,53 +308,62 @@ namespace loginPage
             CheckProductQuantity(productName, quantityRequested);
         }
 
-        private int AddNewCustomer()
+
+private int AddNewCustomer()
+    {
+        try
         {
-            try
+            // Fetch values directly from input fields
+            string firstName = txtFirstName.Text.Trim();
+            string lastName = txtLastName.Text.Trim();
+            string phone = txtPhone.Text.Trim();
+
+            // Ensure inputs are not empty
+            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(phone))
             {
-                // Fetch values directly from input fields
-                string firstName = txtFirstName.Text.Trim(); // Replace txtFirstName with your actual text box name
-                string lastName = txtLastName.Text.Trim();  // Replace txtLastName with your actual text box name
-                string phone = txtPhone.Text.Trim();        // Replace txtPhone with your actual text box name
-
-                // Ensure inputs are not empty
-                if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(phone))
-                {
-                    MessageBox.Show("Please fill in all customer details!", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return -1;
-                }
-
-                orderdbconnection.Open();
-
-                // Query to insert a new customer
-                string query = @"INSERT INTO Customers (FirstName, LastName, Phone) 
-                             VALUES (@FirstName, @LastName, @Phone);
-                             SELECT SCOPE_IDENTITY();"; // Get the new CustomerID
-
-                using (SqlCommand command = new SqlCommand(query, orderdbconnection))
-                {
-                    command.Parameters.AddWithValue("@FirstName", firstName);
-                    command.Parameters.AddWithValue("@LastName", lastName);
-                    command.Parameters.AddWithValue("@Phone", phone);
-
-                    // Execute query and retrieve the CustomerID
-                    object result = command.ExecuteScalar();
-                    return Convert.ToInt32(result); // Return the newly generated CustomerID
-                }
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please fill in all customer details!", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return -1;
             }
-            finally
+
+            // Validate phone format using Regex
+            string phonePattern = @"^03[0-9]{2}-[0-9]{7}$"; // Format: 03XX-XXXXXXX
+            if (!Regex.IsMatch(phone, phonePattern))
             {
-                orderdbconnection.Close();
+                MessageBox.Show("Phone number must be in the format 03XX-XXXXXXX.", "Invalid Phone Format", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return -1;
+            }
+
+            orderdbconnection.Open();
+
+            // Query to insert a new customer
+            string query = @"INSERT INTO Customers (FirstName, LastName, Phone) 
+                         VALUES (@FirstName, @LastName, @Phone);
+                         SELECT SCOPE_IDENTITY();"; // Get the new CustomerID
+
+            using (SqlCommand command = new SqlCommand(query, orderdbconnection))
+            {
+                command.Parameters.AddWithValue("@FirstName", firstName);
+                command.Parameters.AddWithValue("@LastName", lastName);
+                command.Parameters.AddWithValue("@Phone", phone);
+
+                // Execute query and retrieve the CustomerID
+                object result = command.ExecuteScalar();
+                return Convert.ToInt32(result); // Return the newly generated CustomerID
             }
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return -1;
+        }
+        finally
+        {
+            orderdbconnection.Close();
+        }
+    }
 
-        private void txtPhone_Leave(object sender, EventArgs e)
+
+    private void txtPhone_Leave(object sender, EventArgs e)
         {
 
         }
@@ -675,7 +687,7 @@ namespace loginPage
                   MessageBox.Show($"Error: {ex.Message}");
               }
           }*/
-        private void PlaceOrder(int customerId, int staffId, List<(int productId, int quantity)> cart, decimal receivedAmount, DateTime dueDate)
+      /*  private void PlaceOrder(int customerId, int staffId, List<(int productId, int quantity)> cart, decimal receivedAmount, DateTime dueDate)
         {
             SqlTransaction transaction = null;
 
@@ -771,7 +783,7 @@ namespace loginPage
             {
                 orderdbconnection.Close();
             }
-        }
+        }*/
 
 
         private void label4_Click(object sender, EventArgs e)
@@ -1017,18 +1029,19 @@ namespace loginPage
                         orderDetailsCommand.ExecuteNonQuery();
                     }
                 }
-
+                debtDueDateLabel.Visible = false;
+                debtDueDatePicker.Visible = false;
                 // Step 3: Handle customer debt only if there is any
                 if (recievedAmount < totalSubtotal)
                 {
                     decimal debtAmount = totalSubtotal - recievedAmount;
 
                     // Calculate due date (e.g., 30 days from now)
-                    DateTime dueDate = DateTime.Now.AddDays(30);
-                  //  debtDueDateLabel.Visible = true;
-                    //debtDueDatePicker.Visible = true;
+                   DateTime dueDate = DateTime.Now.AddDays(30);
+                    //  debtDueDateLabel.Visible = true;
+                   // debtDueDatePicker.Visible = true;
 
-                //    MessageBox.Show("Received amount is less than the total. Please select a due date.");
+                    //    MessageBox.Show("Received amount is less than the total. Please select a due date.");
 
 
                     // Insert into the CustomerDebt table
@@ -1044,14 +1057,14 @@ namespace loginPage
                     }
 
                     // Inform the cashier about the debt
-                    MessageBox.Show($"Debt of {debtAmount:C} has been recorded for Customer ID: {customerId}. Due date: {dueDate.ToShortDateString()}");
+                //    MessageBox.Show($"Debt of {debtAmount:C} has been recorded for Customer ID: {customerId}. Due date: {dueDate.ToShortDateString()}");
                 }
-//                else
-  //              {
-    //                // Hide the controls if no debt
-      //              debtDueDateLabel.Visible = false;
-        //            debtDueDatePicker.Visible = false;
-          //      }
+                //                else
+                //              {
+                //                // Hide the controls if no debt
+                           // debtDueDateLabel.Visible = false;
+                            //debtDueDatePicker.Visible = false;
+                //      }
 
                 // Commit transaction
                 transaction.Commit();
@@ -1067,7 +1080,7 @@ namespace loginPage
                 orderdbconnection.Close();
             }
         }
-
+       
 
         private void button1_Click_1(object sender, EventArgs e)
         {
@@ -1129,6 +1142,11 @@ namespace loginPage
         }
 
         private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtFirstName_TextChanged(object sender, EventArgs e)
         {
 
         }

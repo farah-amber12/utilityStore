@@ -250,6 +250,7 @@
             txtFirstName.Name = "txtFirstName";
             txtFirstName.Size = new Size(181, 31);
             txtFirstName.TabIndex = 9;
+            txtFirstName.TextChanged += txtFirstName_TextChanged;
             // 
             // label7
             // 

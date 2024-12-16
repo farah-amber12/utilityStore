@@ -1,4 +1,4 @@
-
+﻿
 
 using System.Collections.Generic;
 using System.Data;
@@ -17,7 +17,7 @@ namespace loginPage
         static string frhconnect = "Data Source=DESKTOP-8BL3MIG\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Trust Server Certificate=True";
         static string equconnect = "Data Source=DESKTOP-NJ11NR5\\SQLEXPRESS;Initial Catalog=Utility_Store;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
 
-        public static string connectionString = equconnect;
+        public static string connectionString = frhconnect;
 
 
         public loginForm()
@@ -62,17 +62,17 @@ namespace loginPage
                         {
                             string userRole = reader["Role"].ToString();
 
-                            if (userRole == "Manager")
+                            if (userRole == "manager")
                             {
                                 manager managerForm = new manager();
                                 managerForm.Show();
                             }
-                            else if (userRole == "Owner")
+                            else if (userRole == "owner")
                             {
                                 OwnerForm owner = new OwnerForm();
                                 owner.Show();
                             }
-                            else if (userRole == "Cashier")
+                            else if (userRole == "cashier")
                             {
                                 cashier cashierForm = new cashier();
                                 cashierForm.Show();
@@ -102,6 +102,19 @@ namespace loginPage
             }
         }
 
+        private void showPasswordCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (showpassCB.Checked)
+            {
+                // Show the password by setting PasswordChar to null
+                tbPassword.PasswordChar = '\0'; // No masking
+            }
+            else
+            {
+                // Mask the password again using the bullet character
+                tbPassword.PasswordChar = '●';
+            }
+        }
 
 
 
@@ -133,7 +146,7 @@ namespace loginPage
             {
                 comboBoxRole.SelectedIndex = 0;
             }
-
+            
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -154,6 +167,25 @@ namespace loginPage
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void tbPassword_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void showpassCB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (showpassCB.Checked)
+            {
+                // Show the password by setting PasswordChar to null
+                tbPassword.PasswordChar = '\0'; // No masking
+            }
+            else
+            {
+                // Mask the password again using the bullet character
+                tbPassword.PasswordChar = '●';
+            }
         }
     }
 }

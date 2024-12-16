@@ -41,7 +41,7 @@ namespace loginPage
             label5 = new Label();
             pictureBox1 = new PictureBox();
             button2 = new Button();
-            checkBox1 = new CheckBox();
+            showpassCB = new CheckBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -79,8 +79,10 @@ namespace loginPage
             // 
             tbPassword.Location = new Point(573, 245);
             tbPassword.Name = "tbPassword";
+            tbPassword.PasswordChar = '●';
             tbPassword.Size = new Size(185, 31);
             tbPassword.TabIndex = 5;
+            tbPassword.TextChanged += tbPassword_TextChanged;
             // 
             // button1
             // 
@@ -121,7 +123,6 @@ namespace loginPage
             // comboBoxRole
             // 
             comboBoxRole.FormattingEnabled = true;
-           
             comboBoxRole.Location = new Point(573, 119);
             comboBoxRole.Name = "comboBoxRole";
             comboBoxRole.Size = new Size(185, 33);
@@ -161,16 +162,17 @@ namespace loginPage
             button2.Text = "clear";
             button2.UseVisualStyleBackColor = false;
             // 
-            // checkBox1
+            // showpassCB
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            checkBox1.Location = new Point(573, 308);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(151, 24);
-            checkBox1.TabIndex = 12;
-            checkBox1.Text = "show password";
-            checkBox1.UseVisualStyleBackColor = true;
+            showpassCB.AutoSize = true;
+            showpassCB.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            showpassCB.Location = new Point(573, 308);
+            showpassCB.Name = "showpassCB";
+            showpassCB.Size = new Size(151, 24);
+            showpassCB.TabIndex = 12;
+            showpassCB.Text = "show password";
+            showpassCB.UseVisualStyleBackColor = true;
+            showpassCB.CheckedChanged += showpassCB_CheckedChanged;
             // 
             // loginForm
             // 
@@ -178,7 +180,7 @@ namespace loginPage
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(817, 475);
-            Controls.Add(checkBox1);
+            Controls.Add(showpassCB);
             Controls.Add(button2);
             Controls.Add(pictureBox1);
             Controls.Add(label5);
@@ -216,5 +218,6 @@ namespace loginPage
         private Button button2;
         private CheckBox checkBox1;
         private ComboBox comboBoxRole;
+        private CheckBox showpassCB;
     }
 }
