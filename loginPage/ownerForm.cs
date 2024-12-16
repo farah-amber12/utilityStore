@@ -28,9 +28,9 @@ namespace UtilityStoreApp
         {
             dataGridView = new DataGridView
             {
-                Location = new Point(this.ClientSize.Width - 800, 10), // Adjust to place it on the right side
-                Size = new Size(700, this.ClientSize.Height - 100), // Adjust width and height as needed
-                Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom, // Makes it responsive
+                Location = new Point(this.ClientSize.Width / 2, 0), // Start at the middle of the form
+                Size = new Size(this.ClientSize.Width / 2, this.ClientSize.Height), // Cover the right half
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right, // Responsive anchoring
                 BorderStyle = BorderStyle.Fixed3D,
                 BackgroundColor = Color.White
             };
@@ -81,7 +81,10 @@ namespace UtilityStoreApp
 
         private void btnManageCategories_Click(object sender, EventArgs e)
         {
-            
+            Categories catForm = new Categories();
+            this.Close();
+            catForm.ShowDialog();
+            catForm.Show();
 
         }
 
@@ -113,8 +116,11 @@ namespace UtilityStoreApp
 
         private void btnManageOrders_Click(object sender, EventArgs e)
         {
-            var data = ExecuteQuery("SELECT * FROM Orders");
-            LoadDataToGrid(data);
+           viewOrders vo = new viewOrders();
+            this.Close();
+            vo.ShowDialog();
+            vo.Show();
+
         }
 
         private void btnLogout_Click(object sender, EventArgs e)

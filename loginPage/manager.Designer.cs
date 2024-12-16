@@ -47,7 +47,7 @@
             panel1.Controls.Add(textBox1);
             panel1.Location = new Point(-1, -1);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1553, 121);
+            panel1.Size = new Size(1841, 121);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
             // 
@@ -56,7 +56,7 @@
             textBox1.BackColor = Color.DarkSeaGreen;
             textBox1.BorderStyle = BorderStyle.None;
             textBox1.Font = new Font("Times New Roman", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(379, 37);
+            textBox1.Location = new Point(525, 34);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(719, 37);
             textBox1.TabIndex = 0;
@@ -66,7 +66,7 @@
             // 
             viewAddProducts.Cursor = Cursors.Hand;
             viewAddProducts.Image = (Image)resources.GetObject("viewAddProducts.Image");
-            viewAddProducts.Location = new Point(890, 301);
+            viewAddProducts.Location = new Point(1053, 284);
             viewAddProducts.Name = "viewAddProducts";
             viewAddProducts.Size = new Size(257, 266);
             viewAddProducts.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -78,7 +78,7 @@
             // 
             textBox3.BorderStyle = BorderStyle.None;
             textBox3.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox3.Location = new Point(900, 210);
+            textBox3.Location = new Point(1037, 210);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(257, 28);
             textBox3.TabIndex = 4;
@@ -110,7 +110,7 @@
             // 
             button1.BackColor = Color.DarkSeaGreen;
             button1.ForeColor = Color.White;
-            button1.Location = new Point(1193, 620);
+            button1.Location = new Point(1304, 644);
             button1.Name = "button1";
             button1.Size = new Size(112, 34);
             button1.TabIndex = 7;
