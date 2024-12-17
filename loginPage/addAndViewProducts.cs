@@ -305,7 +305,6 @@ namespace loginPage
 
 
 
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -316,34 +315,81 @@ namespace loginPage
                     SqlCommand cmd = new SqlCommand();
                     cmd.Connection = conn;
 
-                    // Logic to determine query type based on user's date input
-                    if (dtpFrom.Value.Date == DateTime.Today && dtpTo.Value.Date == DateTime.Today)
+
+                    if (cmbFilterType.SelectedItem != null)
                     {
-                        // Treat it as specific date search
-                        cmd.CommandText = @"
-                    SELECT p.*, s.SupplierName 
-                    FROM Products p
-                    INNER JOIN Supplier s ON p.SupplierID = s.SupplierID
-                    WHERE p.ExpiryDate = @SpecificDate";
-                        cmd.Parameters.AddWithValue("@SpecificDate", DateTime.Today);
+                        string selectedFilter = cmbFilterType.SelectedItem.ToString();
+
+                        if (selectedFilter == "Stock Level")
+                        {
+                            // Check if the user selected highest or lowest stock level
+                            if (radioButton1.Checked) // Highest stock level
+                            {
+                                cmd.CommandText = @"
+                        SELECT TOP 1 * 
+                        FROM Products
+                        ORDER BY StockLevel DESC";
+                            }
+                            else if (radioButton2.Checked) // Lowest stock level
+                            {
+                                cmd.CommandText = @"
+                        SELECT TOP 1 * 
+                        FROM Products
+                        ORDER BY StockLevel ASC";
+                            }
+                            else if (!string.IsNullOrWhiteSpace(textBox1.Text)) // Specific stock level
+                            {
+                                cmd.CommandText = @"
+                        SELECT * 
+                        FROM Products
+                        WHERE StockLevel = @StockLevel";
+                                cmd.Parameters.AddWithValue("@StockLevel", int.Parse(textBox1.Text));
+                            }
+                            else
+                            {
+                                MessageBox.Show("Please enter a stock level or select highest/lowest option.");
+                                return;
+                            }
+                        }
+                        else if (selectedFilter == "Expiry Date")
+                        {
+                            // Check if specific date or range is selected
+                            if (dtpFrom.Value.Date == DateTime.Today && dtpTo.Value.Date == DateTime.Today)
+                            {
+                                cmd.CommandText = @"
+                        SELECT p.*, s.SupplierName 
+                        FROM Products p
+                        INNER JOIN Supplier s ON p.SupplierID = s.SupplierID
+                        WHERE p.ExpiryDate = @SpecificDate";
+                                cmd.Parameters.AddWithValue("@SpecificDate", dtpSpecific.Value.Date);
+                            }
+                            else
+                            {
+                                cmd.CommandText = @"
+                        SELECT p.*, s.SupplierName 
+                        FROM Products p
+                        INNER JOIN Supplier s ON p.SupplierID = s.SupplierID
+                        WHERE p.ExpiryDate BETWEEN @FromDate AND @ToDate";
+                                cmd.Parameters.AddWithValue("@FromDate", dtpFrom.Value.Date);
+                                cmd.Parameters.AddWithValue("@ToDate", dtpTo.Value.Date);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please select a valid filter type.");
+                            return;
+                        }
+
+                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+
+                        productsGridView.DataSource = dt;
                     }
                     else
                     {
-                        // Use range if dates aren't today
-                        cmd.CommandText = @"
-                    SELECT p.*, s.SupplierName 
-                    FROM Products p
-                    INNER JOIN Supplier s ON p.SupplierID = s.SupplierID
-                    WHERE p.ExpiryDate BETWEEN @FromDate AND @ToDate";
-                        cmd.Parameters.AddWithValue("@FromDate", dtpFrom.Value.Date);
-                        cmd.Parameters.AddWithValue("@ToDate", dtpTo.Value.Date);
+                        MessageBox.Show("Please select a filter type.");
                     }
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-
-                    dgvResults.DataSource = dt;
                 }
             }
             catch (Exception ex)
@@ -352,6 +398,44 @@ namespace loginPage
             }
         }
 
+        private void cmbFilterType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbFilterType.SelectedItem != null)
+            {
+                string selectedFilter = cmbFilterType.SelectedItem.ToString();
+
+                if (selectedFilter == "Stock Level")
+                {
+                    radioButton1.Visible = true; // Highest stock level
+                    radioButton2.Visible = true; // Lowest stock level
+                    textBox1.Visible = true; // Specific stock level input
+
+                    dtpFrom.Visible = false;
+                    dtpTo.Visible = false;
+                    dtpSpecific.Visible = false;
+                    labelSpecific.Visible = false;
+                }
+                else if (selectedFilter == "Expiry Date")
+                {
+                    radioButton1.Visible = false;
+                    radioButton2.Visible = false;
+                    textBox1.Visible = false;
+
+                    dtpFrom.Visible = true; // Date range 'from'
+                    dtpTo.Visible = true; // Date range 'to'
+                    dtpSpecific.Visible = true; // Specific date
+                    labelSpecific.Visible = true;
+                }
+            }
+        }
+
+        public void refresh_click(object sender, EventArgs e)
+        {
+            RefreshProductGrid();
+            radioButton1.Checked = false;
+            radioButton2.Checked = false;
+
+        }
         private void label3_Click(object sender, EventArgs e)
         {
 

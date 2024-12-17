@@ -64,6 +64,12 @@
             textBox1 = new TextBox();
             dtpSpecific = new DateTimePicker();
             labelSpecific = new Label();
+            Refresh = new Button();
+            radioButton1 = new RadioButton();
+            radioButton2 = new RadioButton();
+            cmbFilterType = new ComboBox();
+            label1 = new Label();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)productsGridView).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
@@ -219,7 +225,7 @@
             // 
             cmbUnit.FormattingEnabled = true;
             cmbUnit.Items.AddRange(new object[] { "piece", "miligram", "gram", "kilogram", "millilitre", "liter", "" });
-            cmbUnit.Location = new Point(1105, 153);
+            cmbUnit.Location = new Point(1036, 163);
             cmbUnit.Name = "cmbUnit";
             cmbUnit.Size = new Size(150, 33);
             cmbUnit.TabIndex = 23;
@@ -255,7 +261,7 @@
             // suppliercombo
             // 
             suppliercombo.FormattingEnabled = true;
-            suppliercombo.Location = new Point(1105, 225);
+            suppliercombo.Location = new Point(1120, 226);
             suppliercombo.Name = "suppliercombo";
             suppliercombo.Size = new Size(150, 33);
             suppliercombo.TabIndex = 27;
@@ -372,6 +378,7 @@
             dtpFrom.Name = "dtpFrom";
             dtpFrom.Size = new Size(120, 31);
             dtpFrom.TabIndex = 0;
+            dtpFrom.Visible = false;
             // 
             // dtpTo
             // 
@@ -380,10 +387,11 @@
             dtpTo.Name = "dtpTo";
             dtpTo.Size = new Size(120, 31);
             dtpTo.TabIndex = 1;
+            dtpTo.Visible = false;
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(1604, 163);
+            btnSearch.Location = new Point(1633, 120);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(144, 43);
             btnSearch.TabIndex = 2;
@@ -393,12 +401,13 @@
             // 
             // dgvResults
             // 
-            dgvResults.ColumnHeadersHeight = 34;
-            dgvResults.Location = new Point(1454, 225);
+            dgvResults.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvResults.Location = new Point(12, 200);
             dgvResults.Name = "dgvResults";
+            dgvResults.RowHeadersVisible = false;
             dgvResults.RowHeadersWidth = 62;
-            dgvResults.Size = new Size(240, 150);
-            dgvResults.TabIndex = 34;
+            dgvResults.Size = new Size(760, 300);
+            dgvResults.TabIndex = 4;
             // 
             // labelFrom
             // 
@@ -408,6 +417,7 @@
             labelFrom.Size = new Size(96, 25);
             labelFrom.TabIndex = 4;
             labelFrom.Text = "From Date";
+            labelFrom.Visible = false;
             // 
             // labelTo
             // 
@@ -417,10 +427,11 @@
             labelTo.Size = new Size(72, 25);
             labelTo.TabIndex = 5;
             labelTo.Text = "To Date";
+            labelTo.Visible = false;
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(1332, 173);
+            textBox1.Location = new Point(1364, 126);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(244, 31);
             textBox1.TabIndex = 34;
@@ -428,19 +439,11 @@
             // dtpSpecific
             // 
             dtpSpecific.Format = DateTimePickerFormat.Short;
-            dtpSpecific.Location = new Point(1435, 242);
+            dtpSpecific.Location = new Point(1435, 244);
             dtpSpecific.Name = "dtpSpecific";
             dtpSpecific.Size = new Size(120, 31);
             dtpSpecific.TabIndex = 2;
-
-            // 
-            this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvResults.Location = new System.Drawing.Point(12, 200);
-            this.dgvResults.Name = "dgvResults";
-            this.dgvResults.RowHeadersVisible = false;
-            this.dgvResults.Size = new System.Drawing.Size(760, 300);
-            this.dgvResults.TabIndex = 4;
-            // 
+            dtpSpecific.Visible = false;
             // 
             // labelSpecific
             // 
@@ -450,6 +453,79 @@
             labelSpecific.Size = new Size(114, 25);
             labelSpecific.TabIndex = 7;
             labelSpecific.Text = "Specific Date";
+            labelSpecific.Visible = false;
+            // 
+            // Refresh
+            // 
+            Refresh.BackColor = Color.DarkSeaGreen;
+            Refresh.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Refresh.ForeColor = Color.White;
+            Refresh.Location = new Point(960, 307);
+            Refresh.Name = "Refresh";
+            Refresh.Size = new Size(193, 52);
+            Refresh.TabIndex = 35;
+            Refresh.Text = "Refresh";
+            Refresh.UseVisualStyleBackColor = false;
+            Refresh.Click += refresh_click;
+            // 
+            // radioButton1
+            // 
+            radioButton1.AutoSize = true;
+            radioButton1.Location = new Point(1604, 215);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(98, 29);
+            radioButton1.TabIndex = 36;
+            radioButton1.TabStop = true;
+            radioButton1.Text = "Highest";
+            radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.Visible = false;
+            // 
+            // radioButton2
+            // 
+            radioButton2.AutoSize = true;
+            radioButton2.Location = new Point(1604, 265);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(92, 29);
+            radioButton2.TabIndex = 37;
+            radioButton2.TabStop = true;
+            radioButton2.Text = "Lowest";
+            radioButton2.UseVisualStyleBackColor = true;
+            radioButton2.Visible = false;
+            // 
+            // cmbFilterType
+            // 
+            cmbFilterType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFilterType.FormattingEnabled = true;
+            cmbFilterType.Items.AddRange(new object[] { "Select Filter", "Stock Level", "Expiry Date" });
+            cmbFilterType.Location = new Point(1437, 205);
+            cmbFilterType.Name = "cmbFilterType";
+            cmbFilterType.Size = new Size(139, 33);
+            cmbFilterType.TabIndex = 0;
+            cmbFilterType.SelectedIndexChanged += cmbFilterType_SelectedIndexChanged;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = Color.SeaGreen;
+            label1.Font = new Font("Segoe UI", 11F);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(1324, 212);
+            label1.Name = "label1";
+            label1.Size = new Size(96, 30);
+            label1.TabIndex = 38;
+            label1.Text = "Filter By:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Bell MT", 12F, FontStyle.Bold);
+            label2.ForeColor = Color.MediumSeaGreen;
+            label2.Location = new Point(1262, 126);
+            label2.Name = "label2";
+            label2.Size = new Size(96, 29);
+            label2.TabIndex = 39;
+            label2.Text = "Search :";
             // 
             // Products
             // 
@@ -457,6 +533,11 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gainsboro;
             ClientSize = new Size(1898, 1024);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(radioButton2);
+            Controls.Add(radioButton1);
+            Controls.Add(Refresh);
             Controls.Add(textBox1);
             Controls.Add(tableLayoutPanel2);
             Controls.Add(button4);
@@ -486,6 +567,7 @@
             Controls.Add(dtpSpecific);
             Controls.Add(labelSpecific);
             Controls.Add(btnSearch);
+            Controls.Add(cmbFilterType);
             Controls.Add(dtpTo);
             Controls.Add(dtpFrom);
             Controls.Add(label4);
@@ -535,11 +617,17 @@
         private System.Windows.Forms.DateTimePicker dtpTo;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.DataGridView dgvResults;
+        private System.Windows.Forms.ComboBox cmbFilterType;
         private System.Windows.Forms.Label labelFrom;
         private System.Windows.Forms.Label labelTo;
         private TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label labelSpecific;
         private System.Windows.Forms.DateTimePicker dtpSpecific;
         private TextBox textBox1;
+        private Button Refresh;
+        private RadioButton radioButton1;
+        private RadioButton radioButton2;
+        private Label label1;
+        private Label label2;
     }
 }
